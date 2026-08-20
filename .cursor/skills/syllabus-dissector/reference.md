@@ -1,76 +1,88 @@
-# Syllabus Dissector — JSON Reference
+# Syllabus Dissector — Reference
 
-## Full annotated schema
+## Automatic extraction (primary workflow)
+
+The agent runs `dissect_syllabus.py` or `auto_dissect.py` — **not** hand-written JSON.
+
+`auto_dissect.py` pipeline per category:
+
+1. Parse **Assignments** block → category names + weights
+2. Build **search aliases** (e.g. Sleep Paper → `paper 1`, `hist 103 paper 1`)
+3. **Grep** every paragraph in the full syllabus text
+4. **Capture** dedicated regions (study guides, prompt pages, Extra Credit block)
+5. **Structure** into sections via heading heuristics
+6. **Concatenate** all matches into `extracted_text` (verbatim, separated by `---`)
+
+## JSON schema (auto-generated)
 
 ```jsonc
 {
-  "class": {
-    "code": "HIST-103",           // REQUIRED. Sheet name (max 31 chars).
-    "name": "Modern Europe",
-    "instructor": "Dr. O'Neill",
-    "term": "Fall 2026",
-    "color": "#1F77B4"            // Optional hex; auto-assigned if omitted.
-  },
+  "class": { "code": "HIST-103", "name": "...", "instructor": "...", "term": "..." },
   "grading_scale": {
-    "a_threshold": "93% (100-93)",// Exact %/points for an 'A'.
+    "a_threshold": "93% (100-93)",
     "raw_scale": "A: 100-93; ...",
-    "scale_type": "percentage"    // "percentage" or "points".
+    "scale_type": "percentage"
   },
-  "categories": [
-    {
-      "name": "Sleep Paper",
-      "weight": 20,
-      "weight_unit": "percent",
-      "start_date": "2025-09-04",
-      "due_date": "2025-09-15",
-      "is_group_project": false,
-      "notes": "Optional short note",
-      "sections": {               // Structured extraction — headings → content.
-        "Overview": "Paragraph text...",
-        "Prompts (pick ONE)": ["Prompt 1...", "Prompt 2..."],
-        "Required Readings": ["Reading 1...", "Reading 2..."],
-        "Format Requirements": ["4 pages, double spaced", "..."]
-      },
-      "extracted_text": "Verbatim syllabus passages for this assignment..."
-    }
-  ]
+  "categories": [{
+    "name": "Sleep Paper",
+    "weight": 20,
+    "weight_unit": "percent",
+    "start_date": "2025-09-04",   // inferred from matched text
+    "due_date": "2025-09-15",
+    "is_group_project": false,
+    "sections": {                  // auto-structured from grep results
+      "Overview (Assignments section)": "...",
+      "Prompts (pick ONE)": ["...", "..."],
+      "Helpful Hints": ["..."]
+    },
+    "extracted_text": "...\n\n---\n\n..."  // all grep hits, verbatim
+  }]
 }
 ```
 
-## Extraction rules
+## Category detection
 
-The agent must read the **entire** syllabus PDF and, for each graded category
-or assignment, capture **all** information the syllabus contains:
+Looks for the **real** Assignments section (skips TOC duplicates) with lines like:
 
-- Grade weight and category description
-- Due dates, exam dates, locations, submission method
-- Every prompt, question, or option the student must choose from
-- Required readings tied to that assignment
-- Format requirements (page count, citation style, thesis, etc.)
-- Rubric hints, "helpful hints", restrictions (e.g. no internet)
-- Related section/week schedule entries
-- Verbatim text in `extracted_text` as a fallback archive
+- `Discussion Section – 15%`
+- `Sleep Paper -20%`
+- `Extra Credit` (unweighted, appended if present anywhere in syllabus)
+
+Supports `-`, `–` (en-dash), and `%` / `pts` / `points`.
+
+## Grep aliases (examples)
+
+| Category | Also searches for |
+|----------|-------------------|
+| Sleep Paper | `paper 1`, `hist 103 paper 1` |
+| Witchcraft Paper | `paper 2`, `witchcraft & daily life` |
+| Mid-term | `midterm`, `midterm study guide` |
+| Final Exam | `final study guide` |
+| Extra Credit | `experiencing the past`, `extra points` |
+| Identification Quizzes | `identification quiz`, `id quiz` |
+
+## Dedicated block patterns
+
+Long assignment-specific regions are captured even when spread across pages:
+
+- `HIST 103 Paper 1: Sleep in the Early Modern Period` → full prompt block
+- `Witchcraft & Daily Life Paper` → full prompt block
+- `Hist 103: Midterm Study Guide` / `Final Study Guide`
+- `Extra Credit` section through attachment list
 
 ## Output layout
 
 ```
 output/
-  syllabi.xlsx              # Excel workbook (one summary sheet per class)
-  documents/
-    hist-103-sleep-paper.pdf
-    hist-103-witchcraft-paper.pdf
-    ...
-  syllabus-bundle.zip       # Deliver this — keeps xlsx + PDFs together
+  syllabi.xlsx
+  documents/*.pdf
+  hist103.json          # optional --keep-json
 ```
 
-Excel **"Open PDF"** cells use `HYPERLINK` formulas pointing at hosted PDF URLs
-(`--link-base`). The user downloads only `syllabi.xlsx` and clicks to open
-PDFs in their browser — no zip required.
+Excel **Open PDF** uses hosted URLs via `--link-base` (standalone download works).
 
-## Behavior
+## Limitations
 
-- Categories sorted by weight descending; `null` weights last.
-- Re-running the same `class.code` replaces its sheet and PDFs.
-- Workbook created from `templates/blank_template.xlsx`.
-
-See [examples/hist103.json](examples/hist103.json) for a complete real example.
+- Cannot extract text **inside** attached Word/PDF files referenced by the syllabus
+- Campus-event extra credit (announced later) only captures what the syllabus states
+- Unusual Assignments formatting may need alias tweaks in `auto_dissect.py`
