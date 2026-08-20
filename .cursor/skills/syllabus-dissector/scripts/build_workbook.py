@@ -6,7 +6,8 @@ Reads a JSON description of one class (see schema below), then:
   * writes the grading scale and the exact threshold required for an 'A',
   * lists each grading category sorted by weight (highest first),
   * records start date, due date, and group-project flag per category,
-  * writes granular per-assignment Markdown files and hyperlinks to them,
+  * writes granular per-assignment Markdown files plus matching detail sheets
+    inside the workbook (internal links — work in a standalone downloaded .xlsx),
   * color-codes the sheet tab and rows based on the class.
 
 Re-running for the same class replaces that class's sheet (idempotent), while
@@ -137,10 +138,7 @@ def format_weight(cat: dict) -> str:
     return f"{w:g}%"
 
 
-def write_detail_file(details_dir: Path, class_code: str, cat: dict) -> Path:
-    slug = slugify(f"{class_code}-{cat.get('name', 'item')}")
-    md_path = details_dir / f"{slug}.md"
-
+def detail_lines(class_code: str, cat: dict) -> list[str]:
     lines = [f"# {cat.get('name', 'Assignment')}", ""]
     lines.append(f"- **Class:** {class_code}")
     lines.append(f"- **Weight:** {format_weight(cat)}")
@@ -158,18 +156,81 @@ def write_detail_file(details_dir: Path, class_code: str, cat: dict) -> Path:
         lines.append("")
         lines.append(details)
         lines.append("")
-    md_path.write_text("\n".join(lines), encoding="utf-8")
+    return lines
+
+
+def write_detail_file(details_dir: Path, class_code: str, cat: dict) -> Path:
+    slug = slugify(f"{class_code}-{cat.get('name', 'item')}")
+    md_path = details_dir / f"{slug}.md"
+    md_path.write_text("\n".join(detail_lines(class_code, cat)), encoding="utf-8")
     return md_path
 
 
-def get_or_replace_sheet(wb: Workbook, sheet_name: str):
-    # Drop the default empty sheet openpyxl creates.
-    if wb.sheetnames == ["Sheet"] and wb["Sheet"].max_row == 1 and wb["Sheet"].max_column == 1:
-        if wb["Sheet"]["A1"].value is None:
-            wb.remove(wb["Sheet"])
-    if sheet_name in wb.sheetnames:
-        wb.remove(wb[sheet_name])
-    return wb.create_sheet(title=sheet_name)
+def detail_sheet_name(class_code: str, cat: dict) -> str:
+    return sanitize_sheet_name(f"{class_code}-{cat.get('name', 'item')}")
+
+
+def excel_quote_sheet(name: str) -> str:
+    """Quote a sheet name for Excel references / HYPERLINK targets."""
+    return name.replace("'", "''")
+
+
+def internal_link(sheet_name: str, cell: str = "A1") -> str:
+    return f"#'{excel_quote_sheet(sheet_name)}'!{cell}"
+
+
+def remove_class_sheets(wb: Workbook, class_code: str) -> None:
+    """Remove a class summary sheet and all of its detail sheets."""
+    main = sanitize_sheet_name(class_code)
+    prefix = f"{main}-"
+    for name in list(wb.sheetnames):
+        if name == main or name.startswith(prefix):
+            wb.remove(wb[name])
+
+
+def create_detail_sheet(
+    wb: Workbook,
+    sheet_name: str,
+    class_code: str,
+    cat: dict,
+    base_color: str,
+    main_sheet_name: str,
+) -> None:
+    ws = wb.create_sheet(title=sheet_name)
+    ws.sheet_properties.tabColor = tint(base_color, 0.55)
+    ws.column_dimensions["A"].width = 110
+
+    back = ws["A1"]
+    back.value = f'=HYPERLINK("{internal_link(main_sheet_name)}","← Back to {class_code}")'
+    back.font = Font(color="0563C1", underline="single")
+
+    row = 3
+    title = ws.cell(row=row, column=1, value=cat.get("name", "Assignment"))
+    title.font = Font(bold=True, size=16, color=base_color)
+    row += 2
+
+    for line in detail_lines(class_code, cat):
+        stripped = line.strip()
+        if not stripped:
+            row += 1
+            continue
+        cell = ws.cell(row=row, column=1, value=stripped.lstrip("#").strip())
+        if stripped.startswith("# "):
+            cell.font = Font(bold=True, size=13)
+        elif stripped.startswith("## "):
+            cell.font = Font(bold=True, size=12)
+        elif stripped.startswith("- **"):
+            cell.font = Font(bold=False)
+        cell.alignment = Alignment(wrap_text=True, vertical="top")
+        row += 1
+
+
+def remove_blank_template_sheet(wb: Workbook) -> None:
+    if "Sheet" not in wb.sheetnames or len(wb.sheetnames) <= 1:
+        return
+    ws = wb["Sheet"]
+    if ws.max_row == 1 and ws.max_column == 1 and ws["A1"].value is None:
+        wb.remove(ws)
 
 
 def default_template() -> Path:
@@ -181,7 +242,6 @@ def build(
     data: dict,
     workbook_path: Path,
     template_path: Path | None = None,
-    link_base: str | None = None,
 ) -> None:
     cls = data.get("class", {})
     class_code = str(cls.get("code") or cls.get("name") or "Class").strip()
@@ -211,7 +271,9 @@ def build(
         else:
             wb = Workbook()
 
-    ws = get_or_replace_sheet(wb, sheet_name)
+    remove_class_sheets(wb, class_code)
+
+    ws = wb.create_sheet(title=sheet_name)
     ws.sheet_properties.tabColor = base_color
 
     ncols = len(HEADERS)
@@ -264,12 +326,9 @@ def build(
     # --- Data rows (sorted by weight desc) ---
     categories = sorted(data.get("categories", []), key=weight_sort_key)
     for i, cat in enumerate(categories):
-        md_path = write_detail_file(details_dir, class_code, cat)
-        rel = md_path.relative_to(workbook_path.parent).as_posix()
-        # When a link base (e.g. the published GitHub URL of the workbook's
-        # folder) is given, link to the online copy so the "Details" links open
-        # even from a standalone downloaded workbook. Otherwise link locally.
-        target = f"{link_base.rstrip('/')}/{rel}" if link_base else rel
+        write_detail_file(details_dir, class_code, cat)
+        ds_name = detail_sheet_name(class_code, cat)
+        create_detail_sheet(wb, ds_name, class_code, cat, base_color, sheet_name)
 
         values = [
             cat.get("name", ""),
@@ -277,7 +336,7 @@ def build(
             cat.get("start_date") or "",
             cat.get("due_date") or "",
             "Yes" if cat.get("is_group_project") else "No",
-            "Open details",
+            None,  # Details column uses a formula below
         ]
         band = band_light if i % 2 == 0 else band_lighter
         for col, value in enumerate(values, start=1):
@@ -286,8 +345,10 @@ def build(
             c.border = BORDER
             c.alignment = Alignment(vertical="center", wrap_text=(col == 1))
         link_cell = ws.cell(row=row, column=ncols)
-        link_cell.hyperlink = target
+        link_cell.value = f'=HYPERLINK("{internal_link(ds_name)}","Open details")'
         link_cell.font = Font(color="0563C1", underline="single")
+        link_cell.fill = band
+        link_cell.border = BORDER
         row += 1
 
     # --- Total weight row ---
@@ -311,9 +372,15 @@ def build(
         ws.column_dimensions[get_column_letter(col)].width = width
     ws.freeze_panes = ws.cell(row=header_row + 1, column=1)
 
+    remove_blank_template_sheet(wb)
+
     wb.save(str(workbook_path))
+    detail_count = len(categories)
     print(f"Updated sheet '{sheet_name}' in {workbook_path}")
-    print(f"Wrote {len(categories)} detail file(s) to {details_dir}")
+    print(
+        f"Wrote {detail_count} detail sheet(s) inside the workbook and "
+        f"{detail_count} .md file(s) to {details_dir}"
+    )
 
 
 def main() -> int:
@@ -329,20 +396,11 @@ def main() -> int:
         default=None,
         help="Blank .xlsx template to start from (defaults to the bundled one)",
     )
-    parser.add_argument(
-        "--link-base",
-        default=None,
-        help=(
-            "Base URL for the Details links (e.g. the GitHub URL of the folder "
-            "holding the workbook). If set, links point online so they open "
-            "from a standalone downloaded workbook. Omit for local file links."
-        ),
-    )
     args = parser.parse_args()
 
     data = json.loads(Path(args.json).expanduser().read_text(encoding="utf-8"))
     template = Path(args.template).expanduser() if args.template else None
-    build(data, Path(args.workbook).expanduser(), template, args.link_base)
+    build(data, Path(args.workbook).expanduser(), template)
     return 0
 
 

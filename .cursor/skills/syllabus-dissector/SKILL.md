@@ -112,14 +112,12 @@ python scripts/build_workbook.py /tmp/class.json --workbook "syllabi.xlsx"
   (`templates/blank_template.xlsx`) so the result is a genuine `.xlsx` that
   opens in Excel/Google Sheets. Override with `--template <path>` if desired.
 - Categories are sorted by weight (descending) automatically.
-- Detail `.md` files are written to a `details/` folder next to the workbook,
-  and the "Details" column links to them with relative paths (keep the workbook
-  and `details/` folder together when moving them).
-- If the workbook will be **downloaded/shared on its own** (relative links break
-  when the `details/` folder isn't alongside it), pass `--link-base <url>` — the
-  published URL of the workbook's folder — so the links point online and open
-  from anywhere. Example base for a GitHub branch:
-  `https://github.com/<owner>/<repo>/blob/<branch>/output`
+- Detail `.md` files are also written to a `details/` folder next to the workbook
+  (for GitHub / version control).
+- **Details links live inside the workbook:** each assignment gets its own detail
+  **sheet tab** inside the same `.xlsx`, and the "Open details" cell uses an
+  internal `HYPERLINK` formula (e.g. `#'HIST-103-Sleep Paper'!A1`). These work
+  in a standalone downloaded file — no external files or URLs needed.
 - Re-running for the same `class.code` **replaces that class's sheet** (safe to
   re-run), while leaving other classes untouched. Point every class at the
   **same** `--workbook` so all four classes live in one file.
