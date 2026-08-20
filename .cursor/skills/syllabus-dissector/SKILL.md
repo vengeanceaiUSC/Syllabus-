@@ -121,6 +121,18 @@ python scripts/build_workbook.py /tmp/class.json --workbook "syllabi.xlsx"
 Tell the user which class sheet was added/updated, the total weight, the 'A'
 threshold, and where the workbook and detail files live.
 
+### Optional: export an openable HTML view
+
+`.xlsx` files can't be previewed on GitHub and may not open on machines without
+Excel. Produce a self-contained HTML copy (opens in any browser, keeps the
+per-class colors and clickable detail links):
+
+```bash
+python scripts/export_html.py "syllabi.xlsx"   # writes syllabi.html next to it
+```
+
+Keep `syllabi.html` next to the `details/` folder so its links resolve.
+
 ## Requirements
 
 Install once: `pip install -r requirements.txt`
