@@ -172,7 +172,12 @@ def get_or_replace_sheet(wb: Workbook, sheet_name: str):
     return wb.create_sheet(title=sheet_name)
 
 
-def build(data: dict, workbook_path: Path) -> None:
+def default_template() -> Path:
+    """Bundled blank template shipped with the skill."""
+    return Path(__file__).resolve().parent.parent / "templates" / "blank_template.xlsx"
+
+
+def build(data: dict, workbook_path: Path, template_path: Path | None = None) -> None:
     cls = data.get("class", {})
     class_code = str(cls.get("code") or cls.get("name") or "Class").strip()
     sheet_name = sanitize_sheet_name(class_code)
@@ -189,9 +194,17 @@ def build(data: dict, workbook_path: Path) -> None:
     details_dir.mkdir(parents=True, exist_ok=True)
 
     if workbook_path.exists():
+        # Keep appending to the workbook already in progress.
         wb = load_workbook(str(workbook_path))
     else:
-        wb = Workbook()
+        # Start from a real, empty Excel template so the result is a genuine
+        # .xlsx that opens in Excel/Google Sheets. Fall back to a fresh workbook
+        # only if the template is missing.
+        tmpl = template_path or default_template()
+        if tmpl and Path(tmpl).exists():
+            wb = load_workbook(str(tmpl))
+        else:
+            wb = Workbook()
 
     ws = get_or_replace_sheet(wb, sheet_name)
     ws.sheet_properties.tabColor = base_color
@@ -300,12 +313,18 @@ def main() -> int:
     parser.add_argument(
         "--workbook",
         default="syllabi.xlsx",
-        help="Path to the Excel workbook (created if missing)",
+        help="Path to the Excel workbook (created from the template if missing)",
+    )
+    parser.add_argument(
+        "--template",
+        default=None,
+        help="Blank .xlsx template to start from (defaults to the bundled one)",
     )
     args = parser.parse_args()
 
     data = json.loads(Path(args.json).expanduser().read_text(encoding="utf-8"))
-    build(data, Path(args.workbook).expanduser())
+    template = Path(args.template).expanduser() if args.template else None
+    build(data, Path(args.workbook).expanduser(), template)
     return 0
 
 
