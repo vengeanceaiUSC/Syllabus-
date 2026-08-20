@@ -89,4 +89,4 @@ user the direct download link to **just the xlsx**:
 pip install -r requirements.txt
 ```
 
-(`openpyxl`, `pdfplumber`, `python-docx`, `beautifulsoup4`, `fpdf2`)
+(`openpyxl`, `pdfplumber`, `python-docx`, `beautifulsoup4`, `reportlab`)

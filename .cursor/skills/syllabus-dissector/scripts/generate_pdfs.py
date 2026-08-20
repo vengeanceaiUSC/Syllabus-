@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
 """Generate a detailed PDF document for one syllabus assignment/category.
 
-Each PDF contains every piece of information extracted from the syllabus about
-that assignment: weight, dates, prompts, rubrics, readings, submission rules,
-and any verbatim syllabus text the agent captured in the JSON.
+Uses ReportLab for reliable layout (no fpdf2 cursor/fragment bugs).
 
 Usage:
     python generate_pdfs.py <class.json> --out-dir documents/
@@ -15,13 +13,23 @@ import json
 import re
 from pathlib import Path
 
-from fpdf import FPDF
+from reportlab.lib import colors
+from reportlab.lib.enums import TA_LEFT
+from reportlab.lib.pagesizes import letter
+from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
+from reportlab.lib.units import inch
+from reportlab.platypus import (
+    ListFlowable,
+    ListItem,
+    Paragraph,
+    SimpleDocTemplate,
+    Spacer,
+    Table,
+    TableStyle,
+)
 
-# Layout constants (mm)
-MARGIN = 20
-LINE = 5.5
-SECTION_GAP = 4
-BULLET_INDENT = 6
+ACCENT = colors.HexColor("#B41E1E")
+MARGIN = 0.85 * inch  # equal left/right margins
 
 
 def slugify(text: str) -> str:
@@ -39,99 +47,154 @@ def format_weight(cat: dict) -> str:
     return f"{w:g}%"
 
 
-def safe_text(text: str) -> str:
+def esc(text: str) -> str:
+    """Escape text for ReportLab Paragraph markup."""
     if not text:
         return ""
+    text = str(text)
+    text = text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
     replacements = {
         "\u2014": "-", "\u2013": "-",
         "\u2018": "'", "\u2019": "'",
         "\u201c": '"', "\u201d": '"',
-        "\u2026": "...", "\u2190": "<-",
+        "\u2026": "...",
     }
     for src, dst in replacements.items():
         text = text.replace(src, dst)
-    return text.encode("latin-1", errors="replace").decode("latin-1")
+    return text
 
 
-class AssignmentPDF(FPDF):
-    def __init__(self, accent: tuple[int, int, int] = (180, 30, 30)):
-        super().__init__()
-        self.accent = accent
+def build_styles():
+    base = getSampleStyleSheet()
+    content_w = letter[0] - 2 * MARGIN
 
-    def footer(self):
-        self.set_y(-14)
-        self.set_font("Helvetica", "I", 8)
-        self.set_text_color(140, 140, 140)
-        self.set_x(self.l_margin)
-        self.cell(0, 8, safe_text(f"Page {self.page_no()}"), align="C")
+    return {
+        "content_w": content_w,
+        "title": ParagraphStyle(
+            "DocTitle",
+            parent=base["Heading1"],
+            fontName="Helvetica-Bold",
+            fontSize=20,
+            textColor=ACCENT,
+            spaceAfter=6,
+            alignment=TA_LEFT,
+        ),
+        "subtitle": ParagraphStyle(
+            "DocSubtitle",
+            parent=base["Normal"],
+            fontName="Helvetica",
+            fontSize=10,
+            textColor=colors.HexColor("#555555"),
+            spaceAfter=3,
+            alignment=TA_LEFT,
+        ),
+        "section": ParagraphStyle(
+            "SectionHead",
+            parent=base["Normal"],
+            fontName="Helvetica-Bold",
+            fontSize=11,
+            textColor=colors.white,
+            alignment=TA_LEFT,
+            leftIndent=0,
+        ),
+        "body": ParagraphStyle(
+            "Body",
+            parent=base["Normal"],
+            fontName="Helvetica",
+            fontSize=10,
+            textColor=colors.HexColor("#222222"),
+            spaceAfter=6,
+            leading=14,
+            alignment=TA_LEFT,
+        ),
+        "bullet": ParagraphStyle(
+            "Bullet",
+            parent=base["Normal"],
+            fontName="Helvetica",
+            fontSize=10,
+            textColor=colors.HexColor("#222222"),
+            leftIndent=14,
+            bulletIndent=0,
+            spaceAfter=4,
+            leading=14,
+            alignment=TA_LEFT,
+        ),
+        "extract": ParagraphStyle(
+            "Extract",
+            parent=base["Normal"],
+            fontName="Helvetica-Oblique",
+            fontSize=9,
+            textColor=colors.HexColor("#444444"),
+            spaceAfter=8,
+            leading=13,
+            alignment=TA_LEFT,
+        ),
+        "meta_label": ParagraphStyle(
+            "MetaLabel",
+            parent=base["Normal"],
+            fontName="Helvetica-Bold",
+            fontSize=10,
+            textColor=colors.HexColor("#555555"),
+            alignment=TA_LEFT,
+        ),
+        "meta_value": ParagraphStyle(
+            "MetaValue",
+            parent=base["Normal"],
+            fontName="Helvetica",
+            fontSize=10,
+            textColor=colors.HexColor("#111111"),
+            alignment=TA_LEFT,
+        ),
+    }
 
-    @property
-    def body_w(self) -> float:
-        return self.w - self.l_margin - self.r_margin
+
+def section_bar(title: str, styles: dict) -> Table:
+    w = styles["content_w"]
+    t = Table(
+        [[Paragraph(esc(title), styles["section"])]],
+        colWidths=[w],
+    )
+    t.setStyle(
+        TableStyle(
+            [
+                ("BACKGROUND", (0, 0), (-1, -1), ACCENT),
+                ("LEFTPADDING", (0, 0), (-1, -1), 10),
+                ("RIGHTPADDING", (0, 0), (-1, -1), 10),
+                ("TOPPADDING", (0, 0), (-1, -1), 7),
+                ("BOTTOMPADDING", (0, 0), (-1, -1), 7),
+            ]
+        )
+    )
+    return t
 
 
-class PDFWriter:
-    """Thin wrapper that always resets x before writing (avoids fpdf2 layout bugs)."""
+def bullet_list(items: list[str], styles: dict) -> ListFlowable:
+    flow = []
+    for item in items:
+        flow.append(ListItem(Paragraph(esc(item), styles["bullet"]), leftIndent=12))
+    return ListFlowable(flow, bulletType="bullet", start="•", leftIndent=18)
 
-    def __init__(self, pdf: AssignmentPDF):
-        self.pdf = pdf
 
-    def ln(self, h: float = LINE * 0.6) -> None:
-        self.pdf.ln(h)
-
-    def rule(self) -> None:
-        self.pdf.set_x(self.pdf.l_margin)
-        y = self.pdf.get_y()
-        self.pdf.set_draw_color(220, 220, 220)
-        self.pdf.line(self.pdf.l_margin, y, self.pdf.w - self.pdf.r_margin, y)
-        self.ln(SECTION_GAP)
-
-    def paragraph(self, text: str, size: int = 10, bold: bool = False) -> None:
-        self.pdf.set_x(self.pdf.l_margin)
-        self.pdf.set_font("Helvetica", "B" if bold else "", size)
-        self.pdf.set_text_color(40, 40, 40)
-        self.pdf.multi_cell(self.pdf.body_w, LINE, safe_text(text))
-        self.ln(2)
-
-    def bullet(self, text: str) -> None:
-        self.pdf.set_x(self.pdf.l_margin)
-        self.pdf.set_font("Helvetica", "", 10)
-        self.pdf.set_text_color(40, 40, 40)
-        x0 = self.pdf.l_margin
-        self.pdf.set_x(x0)
-        self.pdf.cell(BULLET_INDENT, LINE, "-")
-        self.pdf.multi_cell(self.pdf.body_w - BULLET_INDENT, LINE, safe_text(text))
-        self.ln(1)
-
-    def section_title(self, title: str) -> None:
-        self.ln(SECTION_GAP)
-        self.pdf.set_x(self.pdf.l_margin)
-        y = self.pdf.get_y()
-        # Light accent bar behind heading
-        self.pdf.set_fill_color(*self.pdf.accent)
-        self.pdf.rect(self.pdf.l_margin, y, self.pdf.body_w, 8, style="F")
-        self.pdf.set_xy(self.pdf.l_margin + 3, y + 1.5)
-        self.pdf.set_font("Helvetica", "B", 11)
-        self.pdf.set_text_color(255, 255, 255)
-        self.pdf.cell(self.pdf.body_w - 6, 5, safe_text(title))
-        self.pdf.set_y(y + 10)
-        self.ln(2)
-
-    def meta_row(self, label: str, value: str) -> None:
-        self.pdf.set_x(self.pdf.l_margin)
-        self.pdf.set_font("Helvetica", "B", 10)
-        self.pdf.set_text_color(80, 80, 80)
-        label_w = 36
-        self.pdf.cell(label_w, LINE, safe_text(label))
-        self.pdf.set_font("Helvetica", "", 10)
-        self.pdf.set_text_color(30, 30, 30)
-        remaining = self.pdf.body_w - label_w
-        # Short values on one line; long values wrap beneath the label column.
-        if len(value) < 70:
-            self.pdf.cell(remaining, LINE, safe_text(value))
-        else:
-            self.pdf.multi_cell(remaining, LINE, safe_text(value))
-        self.ln(2)
+def meta_table(rows: list[tuple[str, str]], styles: dict) -> Table:
+    w = styles["content_w"]
+    label_w = 1.35 * inch
+    data = [
+        [Paragraph(esc(l), styles["meta_label"]), Paragraph(esc(v), styles["meta_value"])]
+        for l, v in rows
+    ]
+    t = Table(data, colWidths=[label_w, w - label_w])
+    t.setStyle(
+        TableStyle(
+            [
+                ("VALIGN", (0, 0), (-1, -1), "TOP"),
+                ("LEFTPADDING", (0, 0), (-1, -1), 0),
+                ("RIGHTPADDING", (0, 0), (-1, -1), 0),
+                ("TOPPADDING", (0, 0), (-1, -1), 3),
+                ("BOTTOMPADDING", (0, 0), (-1, -1), 3),
+            ]
+        )
+    )
+    return t
 
 
 def write_assignment_pdf(
@@ -142,79 +205,72 @@ def write_assignment_pdf(
     term: str,
     cat: dict,
 ) -> Path:
-    pdf = AssignmentPDF()
-    pdf.set_margins(MARGIN, MARGIN, MARGIN)
-    pdf.set_auto_page_break(auto=True, margin=MARGIN)
-    pdf.add_page()
-    w = PDFWriter(pdf)
+    styles = build_styles()
+    story = []
 
-    # --- Title block ---
-    pdf.set_x(pdf.l_margin)
-    pdf.set_font("Helvetica", "B", 20)
-    pdf.set_text_color(*pdf.accent)
-    pdf.multi_cell(pdf.body_w, 10, safe_text(cat.get("name", "Assignment")))
-    w.ln(2)
-
-    pdf.set_x(pdf.l_margin)
-    pdf.set_font("Helvetica", "", 11)
-    pdf.set_text_color(90, 90, 90)
-    subtitle = class_code + (f"  |  {class_name}" if class_name else "")
-    pdf.multi_cell(pdf.body_w, 6, safe_text(subtitle))
+    # Title block
+    story.append(Paragraph(esc(cat.get("name", "Assignment")), styles["title"]))
+    subtitle = esc(class_code + (f"  |  {class_name}" if class_name else ""))
+    story.append(Paragraph(subtitle, styles["subtitle"]))
     if instructor:
-        w.ln(1)
-        pdf.set_x(pdf.l_margin)
-        pdf.multi_cell(pdf.body_w, 6, safe_text(f"Instructor: {instructor}"))
+        story.append(Paragraph(f"Instructor: {esc(instructor)}", styles["subtitle"]))
     if term:
-        w.ln(1)
-        pdf.set_x(pdf.l_margin)
-        pdf.multi_cell(pdf.body_w, 6, safe_text(f"Term: {term}"))
-    w.ln(4)
-    w.rule()
+        story.append(Paragraph(f"Term: {esc(term)}", styles["subtitle"]))
+    story.append(Spacer(1, 0.15 * inch))
 
-    # --- Summary table ---
-    w.section_title("Assignment Summary")
-    w.meta_row("Grade weight:", format_weight(cat))
+    # Summary
+    story.append(section_bar("Assignment Summary", styles))
+    story.append(Spacer(1, 0.08 * inch))
+    meta_rows = [("Grade weight:", format_weight(cat))]
     if cat.get("start_date"):
-        w.meta_row("Start date:", cat["start_date"])
+        meta_rows.append(("Start date:", cat["start_date"]))
     if cat.get("due_date"):
-        w.meta_row("Due date:", cat["due_date"])
-    w.meta_row("Group project:", "Yes" if cat.get("is_group_project") else "No")
+        meta_rows.append(("Due date:", cat["due_date"]))
+    meta_rows.append(("Group project:", "Yes" if cat.get("is_group_project") else "No"))
     if cat.get("notes"):
-        w.meta_row("Notes:", cat["notes"])
+        meta_rows.append(("Notes:", cat["notes"]))
+    story.append(meta_table(meta_rows, styles))
+    story.append(Spacer(1, 0.12 * inch))
 
-    # --- Structured sections ---
+    # Structured sections
     sections = cat.get("sections") or {}
     for heading, content in sections.items():
-        w.section_title(heading)
+        story.append(section_bar(heading, styles))
+        story.append(Spacer(1, 0.08 * inch))
         if isinstance(content, list):
-            for item in content:
-                w.bullet(str(item))
+            story.append(bullet_list([str(i) for i in content], styles))
         else:
-            w.paragraph(str(content))
-        w.ln(2)
+            story.append(Paragraph(esc(str(content)), styles["body"]))
+        story.append(Spacer(1, 0.1 * inch))
 
     if not sections:
         details = (cat.get("details_md") or "").strip()
         if details:
-            w.section_title("Details from Syllabus")
-            w.paragraph(details)
+            story.append(section_bar("Details from Syllabus", styles))
+            story.append(Spacer(1, 0.08 * inch))
+            story.append(Paragraph(esc(details), styles["body"]))
 
-    # --- Verbatim extract (smaller, at bottom) ---
     extracted = (cat.get("extracted_text") or "").strip()
     if extracted:
-        w.section_title("Full Syllabus Extract")
-        pdf.set_x(pdf.l_margin)
-        pdf.set_font("Helvetica", "I", 9)
-        pdf.set_text_color(70, 70, 70)
+        story.append(section_bar("Full Syllabus Extract", styles))
+        story.append(Spacer(1, 0.08 * inch))
         for para in extracted.split("\n\n"):
             para = para.strip()
             if para:
-                pdf.set_x(pdf.l_margin)
-                pdf.multi_cell(pdf.body_w, 4.5, safe_text(para))
-                w.ln(3)
+                story.append(Paragraph(esc(para), styles["extract"]))
 
     out_path.parent.mkdir(parents=True, exist_ok=True)
-    pdf.output(str(out_path))
+    doc = SimpleDocTemplate(
+        str(out_path),
+        pagesize=letter,
+        leftMargin=MARGIN,
+        rightMargin=MARGIN,
+        topMargin=MARGIN,
+        bottomMargin=MARGIN,
+        title=esc(cat.get("name", "Assignment")),
+        author=esc(instructor or class_code),
+    )
+    doc.build(story)
     return out_path
 
 
@@ -229,9 +285,7 @@ def generate_all(data: dict, out_dir: Path) -> list[Path]:
     for cat in data.get("categories", []):
         slug = slugify(f"{class_code}-{cat.get('name', 'item')}")
         pdf_path = out_dir / f"{slug}.pdf"
-        write_assignment_pdf(
-            pdf_path, class_code, class_name, instructor, term, cat
-        )
+        write_assignment_pdf(pdf_path, class_code, class_name, instructor, term, cat)
         paths.append(pdf_path)
     return paths
 
