@@ -61,28 +61,27 @@ See [examples/hist103.json](examples/hist103.json) for a full example and
 ### Step 3: Build/append the workbook
 
 ```bash
-python scripts/build_workbook.py /tmp/class.json --workbook output/syllabi.xlsx
+python scripts/build_workbook.py /tmp/class.json --workbook output/syllabi.xlsx \
+  --link-base "https://raw.githubusercontent.com/<owner>/<repo>/<branch>/output/documents"
 ```
 
+The `--link-base` flag is **required for published output**. It makes each
+**"Open PDF"** cell a `HYPERLINK` formula pointing at the hosted PDF on GitHub.
+The user downloads **only** `syllabi.xlsx`, clicks **Open PDF**, and the
+document opens in their browser — no zip, no local `documents/` folder needed.
+
 This creates/updates:
-- `output/syllabi.xlsx` — one summary sheet per class (from the blank template)
-- `output/documents/<class>-<assignment>.pdf` — one PDF per assignment
+- `output/syllabi.xlsx` — one summary sheet per class
+- `output/documents/*.pdf` — hosted on GitHub at the link-base URL
 
 Re-running for the same `class.code` replaces that class's sheet and PDFs.
 
-Point every class at the **same** `--workbook` so all four classes accumulate.
+### Step 4: Publish
 
-### Step 4: Package and deliver
+Commit and push `output/syllabi.xlsx` and `output/documents/*.pdf`. Give the
+user the direct download link to **just the xlsx**:
 
-**PDF links only work when the workbook and `documents/` folder stay together.**
-Always deliver as a zip bundle:
-
-```bash
-cd output && zip -r syllabus-bundle.zip syllabi.xlsx documents/
-```
-
-Give the user the direct download link to `syllabus-bundle.zip`. They unzip,
-open `syllabi.xlsx`, and click **"Open PDF"** — Excel opens the linked PDF.
+`https://raw.githubusercontent.com/<owner>/<repo>/<branch>/output/syllabi.xlsx`
 
 ## Requirements
 

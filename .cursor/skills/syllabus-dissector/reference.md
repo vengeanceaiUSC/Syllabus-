@@ -63,8 +63,9 @@ output/
   syllabus-bundle.zip       # Deliver this — keeps xlsx + PDFs together
 ```
 
-Excel **"Open PDF"** links use relative paths (`documents/….pdf`). They work
-when the user unzips the bundle and opens `syllabi.xlsx` from that folder.
+Excel **"Open PDF"** cells use `HYPERLINK` formulas pointing at hosted PDF URLs
+(`--link-base`). The user downloads only `syllabi.xlsx` and clicks to open
+PDFs in their browser — no zip required.
 
 ## Behavior
 

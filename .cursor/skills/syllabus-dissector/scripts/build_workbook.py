@@ -141,7 +141,18 @@ def default_template() -> Path:
     return Path(__file__).resolve().parent.parent / "templates" / "blank_template.xlsx"
 
 
-def build(data: dict, workbook_path: Path, template_path: Path | None = None) -> None:
+def pdf_hyperlink(target: str, label: str = "Open PDF") -> str:
+    """Excel formula that opens a URL or file path when clicked."""
+    safe = target.replace('"', '""')
+    return f'=HYPERLINK("{safe}","{label}")'
+
+
+def build(
+    data: dict,
+    workbook_path: Path,
+    template_path: Path | None = None,
+    link_base: str | None = None,
+) -> None:
     cls = data.get("class", {})
     class_code = str(cls.get("code") or cls.get("name") or "Class").strip()
     sheet_name = sanitize_sheet_name(class_code)
@@ -222,7 +233,13 @@ def build(data: dict, workbook_path: Path, template_path: Path | None = None) ->
     for i, cat in enumerate(categories):
         slug = slugify(f"{class_code}-{cat.get('name', 'item')}")
         pdf_path = pdf_by_slug.get(slug)
-        rel_pdf = f"documents/{slug}.pdf" if pdf_path else ""
+        if pdf_path and link_base:
+            # Hosted PDF URL — works from a standalone downloaded workbook (opens in browser).
+            target = f"{link_base.rstrip('/')}/{slug}.pdf"
+        elif pdf_path:
+            target = f"documents/{slug}.pdf"
+        else:
+            target = ""
 
         values = [
             cat.get("name", ""),
@@ -230,7 +247,7 @@ def build(data: dict, workbook_path: Path, template_path: Path | None = None) ->
             cat.get("start_date") or "",
             cat.get("due_date") or "",
             "Yes" if cat.get("is_group_project") else "No",
-            "Open PDF",
+            pdf_hyperlink(target) if target else "",
         ]
         band = band_light if i % 2 == 0 else band_lighter
         for col, value in enumerate(values, start=1):
@@ -238,13 +255,8 @@ def build(data: dict, workbook_path: Path, template_path: Path | None = None) ->
             c.fill = band
             c.border = BORDER
             c.alignment = Alignment(vertical="center", wrap_text=(col == 1))
-
-        if rel_pdf:
-            link_cell = ws.cell(row=row, column=ncols)
-            link_cell.hyperlink = rel_pdf
-            link_cell.font = Font(color="0563C1", underline="single")
-            link_cell.fill = band
-            link_cell.border = BORDER
+            if col == ncols and target:
+                c.font = Font(color="0563C1", underline="single")
         row += 1
 
     total = sum(float(c["weight"]) for c in categories if c.get("weight") is not None)
@@ -268,11 +280,20 @@ def main() -> int:
     parser.add_argument("json", help="Path to the class JSON file")
     parser.add_argument("--workbook", default="syllabi.xlsx")
     parser.add_argument("--template", default=None)
+    parser.add_argument(
+        "--link-base",
+        default=None,
+        help=(
+            "Base URL where PDFs are hosted (e.g. raw GitHub documents/ URL). "
+            "When set, Open PDF links use full https:// URLs so a standalone "
+            "downloaded workbook opens PDFs in the browser — no zip needed."
+        ),
+    )
     args = parser.parse_args()
 
     data = json.loads(Path(args.json).expanduser().read_text(encoding="utf-8"))
     template = Path(args.template).expanduser() if args.template else None
-    build(data, Path(args.workbook).expanduser(), template)
+    build(data, Path(args.workbook).expanduser(), template, args.link_base)
     return 0
 
 
