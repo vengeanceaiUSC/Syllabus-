@@ -177,7 +177,12 @@ def default_template() -> Path:
     return Path(__file__).resolve().parent.parent / "templates" / "blank_template.xlsx"
 
 
-def build(data: dict, workbook_path: Path, template_path: Path | None = None) -> None:
+def build(
+    data: dict,
+    workbook_path: Path,
+    template_path: Path | None = None,
+    link_base: str | None = None,
+) -> None:
     cls = data.get("class", {})
     class_code = str(cls.get("code") or cls.get("name") or "Class").strip()
     sheet_name = sanitize_sheet_name(class_code)
@@ -261,6 +266,10 @@ def build(data: dict, workbook_path: Path, template_path: Path | None = None) ->
     for i, cat in enumerate(categories):
         md_path = write_detail_file(details_dir, class_code, cat)
         rel = md_path.relative_to(workbook_path.parent).as_posix()
+        # When a link base (e.g. the published GitHub URL of the workbook's
+        # folder) is given, link to the online copy so the "Details" links open
+        # even from a standalone downloaded workbook. Otherwise link locally.
+        target = f"{link_base.rstrip('/')}/{rel}" if link_base else rel
 
         values = [
             cat.get("name", ""),
@@ -277,7 +286,7 @@ def build(data: dict, workbook_path: Path, template_path: Path | None = None) ->
             c.border = BORDER
             c.alignment = Alignment(vertical="center", wrap_text=(col == 1))
         link_cell = ws.cell(row=row, column=ncols)
-        link_cell.hyperlink = rel
+        link_cell.hyperlink = target
         link_cell.font = Font(color="0563C1", underline="single")
         row += 1
 
@@ -320,11 +329,20 @@ def main() -> int:
         default=None,
         help="Blank .xlsx template to start from (defaults to the bundled one)",
     )
+    parser.add_argument(
+        "--link-base",
+        default=None,
+        help=(
+            "Base URL for the Details links (e.g. the GitHub URL of the folder "
+            "holding the workbook). If set, links point online so they open "
+            "from a standalone downloaded workbook. Omit for local file links."
+        ),
+    )
     args = parser.parse_args()
 
     data = json.loads(Path(args.json).expanduser().read_text(encoding="utf-8"))
     template = Path(args.template).expanduser() if args.template else None
-    build(data, Path(args.workbook).expanduser(), template)
+    build(data, Path(args.workbook).expanduser(), template, args.link_base)
     return 0
 
 

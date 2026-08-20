@@ -115,6 +115,11 @@ python scripts/build_workbook.py /tmp/class.json --workbook "syllabi.xlsx"
 - Detail `.md` files are written to a `details/` folder next to the workbook,
   and the "Details" column links to them with relative paths (keep the workbook
   and `details/` folder together when moving them).
+- If the workbook will be **downloaded/shared on its own** (relative links break
+  when the `details/` folder isn't alongside it), pass `--link-base <url>` — the
+  published URL of the workbook's folder — so the links point online and open
+  from anywhere. Example base for a GitHub branch:
+  `https://github.com/<owner>/<repo>/blob/<branch>/output`
 - Re-running for the same `class.code` **replaces that class's sheet** (safe to
   re-run), while leaving other classes untouched. Point every class at the
   **same** `--workbook` so all four classes live in one file.
