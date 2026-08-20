@@ -108,6 +108,9 @@ Notes:
 python scripts/build_workbook.py /tmp/class.json --workbook "syllabi.xlsx"
 ```
 
+- A new workbook is created from the bundled empty Excel template
+  (`templates/blank_template.xlsx`) so the result is a genuine `.xlsx` that
+  opens in Excel/Google Sheets. Override with `--template <path>` if desired.
 - Categories are sorted by weight (descending) automatically.
 - Detail `.md` files are written to a `details/` folder next to the workbook,
   and the "Details" column links to them with relative paths (keep the workbook
