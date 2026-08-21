@@ -116,6 +116,8 @@ python scripts/dissect_syllabus.py "Course_Calendar.pdf" \
 
 **Expected quality:** ~8/10 with calendar alone; ~9/10 if supplement syllabus provided.
 
+**Strategy section (BUAD-281):** Excel sheet includes a green **Strategy** row (homework-bank / AI mechanics study approach). Auto-injected via `BUAD_281_STRATEGY` in `auto_dissect.py` — not from the syllabus PDF.
+
 ### C. Marshall percentage syllabus + Course Schedule (e.g. BUAD-304)
 
 Uses **Course Evaluation** (not an Assignments block) + a **Course Schedule** table:

@@ -92,6 +92,12 @@ These caused **~4/10 verbatim quality** before the table-path fix:
 | **Truncated fragments** | `"Cost volume profit ana"`, `"ked In Learning Excel"` | Table cells preserve full cell text |
 | **No structured sections** | Only "Overview" + "Calendar Entries" blobs | Exam / Homework / Footnotes sections |
 
+### Strategy (BUAD-281)
+
+Optional top-level `"strategy"` string in JSON — rendered on the Excel sheet between the weight bar and assignment table (green wrap row). Not extracted from the syllabus; injected for BUAD-281 calendar mode:
+
+> If your AI tool breaks down and solves the homework bank problems - extracting step-by-step mechanics from the textbook - mastering those exact mechanics is all you need to get an A without reading prose.
+
 ---
 
 ## JSON schema (auto-generated)

@@ -284,6 +284,16 @@ def build(
         ws.row_dimensions[row].height = 28
         row += 1
 
+    strategy = data.get("strategy") or cls.get("strategy")
+    if strategy:
+        ws.cell(row=row, column=1, value="Strategy").font = label_font
+        ws.merge_cells(start_row=row, start_column=2, end_row=row, end_column=ncols)
+        strat_cell = ws.cell(row=row, column=2, value=strategy)
+        strat_cell.alignment = Alignment(wrap_text=True, vertical="top")
+        strat_cell.fill = PatternFill("solid", fgColor="E2EFDA")
+        ws.row_dimensions[row].height = 48
+        row += 1
+
     row += 1
 
     header_row = row

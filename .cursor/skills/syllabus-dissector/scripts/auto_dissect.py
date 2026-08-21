@@ -155,6 +155,11 @@ MARSHALL_SHARPEN_START = "7/6"
 MARSHALL_SHARPEN_DUE = "9/4"
 # Connect prep is NOT a Course Evaluation grade bucket (see reference.md).
 MARSHALL_CONNECT_CATEGORY = "Personal Assessments (Connect)"
+BUAD_281_STRATEGY = (
+    "If your AI tool breaks down and solves the homework bank problems - "
+    "extracting step-by-step mechanics from the textbook - mastering those exact "
+    "mechanics is all you need to get an A without reading prose."
+)
 MARSHALL_INFERRED_STARTS: list[tuple[str, str, str]] = [
     ("Participation", r"8/24", r"\b8/24\b"),
     ("Case Analysis Assignments", r"8/26", r"USC-CT and Case\s*\n?\s*Analysis videos"),
@@ -2406,7 +2411,15 @@ def dissect(
     if color:
         cls["color"] = color
     apply_start_date_cutoff(result_categories, year)
-    return {"class": cls, "grading_scale": grading_scale, "categories": result_categories}
+    payload: dict = {
+        "class": cls,
+        "grading_scale": grading_scale,
+        "categories": result_categories,
+    }
+    code_key = re.sub(r"\s+", "-", class_code.strip().upper())
+    if code_key == "BUAD-281" and calendar_mode:
+        payload["strategy"] = BUAD_281_STRATEGY
+    return payload
 
 
 def main() -> int:
