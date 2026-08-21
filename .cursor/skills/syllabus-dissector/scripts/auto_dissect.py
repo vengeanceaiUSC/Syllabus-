@@ -888,7 +888,7 @@ def parse_hist103_weekly_items(text: str, year: int) -> list[dict]:
                 "start_date": start_iso,
                 "due_date": due_iso,
                 "category_hint": _hist103_route(f"{week_name} {chunk[:300]}"),
-                "notes": "Weekly schedule",
+                "notes": "Homework",
                 "kind": "week",
             }
         )
@@ -900,7 +900,7 @@ def parse_hist103_weekly_items(text: str, year: int) -> list[dict]:
                     "start_date": start_iso,
                     "due_date": due_iso,
                     "category_hint": "Identification Quizzes",
-                    "notes": "Weekly lecture - quiz prep",
+                    "notes": "Homework",
                     "kind": "week_lecture",
                 }
             )
@@ -911,7 +911,7 @@ def parse_hist103_weekly_items(text: str, year: int) -> list[dict]:
                     "start_date": start_iso,
                     "due_date": due_iso,
                     "category_hint": "Discussion Section",
-                    "notes": reading,
+                    "notes": f"Homework - {reading}",
                     "kind": "section_reading",
                 }
             )
