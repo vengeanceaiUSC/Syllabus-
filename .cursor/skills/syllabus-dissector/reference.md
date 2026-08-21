@@ -276,10 +276,11 @@ Populate **Start Date** only when the syllabus explicitly states when work begin
 **Never use as start:**
 - Due-only lines (`Due September 15th`, `Sleep Paper Due`)
 - Earliest date from `parse_dates_from_text()` grep
-- `start = due` for single-day exams or papers
+- **`start_date == due_date`** on the same row (false detection — strip start)
+- `start = due` for single-day exams, calendar sessions, or Connect items
 - Pre-Aug 1 dates (dropped to blank)
 
-Implemented in `sanitize_start_date()`, `parse_dates_from_text()` (due-only), `marshall_dates_for_category()`, and HIST-103 due-line parsing.
+Implemented in `sanitize_start_date()`, `strip_false_start_when_same_as_due()`, `parse_dates_from_text()` (due-only), calendar/Connect parsers, and HIST-103 due-line parsing.
 
 **Example:** Sleep Paper → Start Date **blank**, Due Date **2026-09-15**.
 
@@ -299,6 +300,7 @@ Implemented in `sanitize_start_date()`, `parse_dates_from_text()` (due-only), `m
 | **Missing schedule dates** | Course Schedule table JSON misparsed columns | Regex on prose schedule section with line-join heuristics |
 | **Participation flagged group** | `team` in participation blurb triggered group flag | `infer_group_project()` excludes Participation |
 | **Connect under Participation** | Connect self-assessments routed into Participation or other graded rows via schedule-week heuristic | Separate **`Personal Assessments (Connect)`** section; Participation gets **Research** only |
+| **Start Date = Due Date** | Session date copied into both columns (BUAD-281 calendar, BUAD-304 Connect) | Due-only in parsers; `strip_false_start_when_same_as_due()` in `apply_start_date_cutoff()` |
 | **Research credits missing** | Syllabus only says "see Brightspace" | Merge `--research-guide` PDF for SONA milestones |
 
 ---

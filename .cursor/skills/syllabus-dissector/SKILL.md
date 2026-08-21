@@ -39,15 +39,17 @@ the syllabus mentions about that item — extracted automatically.
 
 | Verified start | Example |
 |----------------|---------|
-| Schedule block week range | `Sep 1-4: Everyday Life` → Reading sub-row starts Sep 1 |
-| Calendar class session row | BUAD-281 Class 5 (9/9) reading/homework row |
-| Explicit opens/assigned language | SONA *opens* Aug 24; Connect window from syllabus |
-| Marshall schedule milestone patterns | Team project explained 8/31 (matched prose in schedule) |
+| Schedule block week range (start **before** end) | HIST-103 `Sep 1-4` → Reading start Sep 1, due Sep 4 |
+| Explicit *opens* / *assigned* language | SONA *opens* Aug 24; team project explained 8/31 |
+| Marshall `MARSHALL_INFERRED_STARTS` prose match | Schedule line matched, not deliverable due date |
+| Cert announcement date (before submission due) | LinkedIn mentioned 9/23, due 12/2 |
 
 | **Not** a start date | Action |
 |---------------------|--------|
-| Due date only (e.g. Sleep Paper Sep 15) | Start Date blank |
-| Earliest date in grep verbatim | Start Date blank |
+| Class session / due-by date only | Start Date **blank**, Due Date = session (BUAD-281, BUAD-304 Connect) |
+| **Start Date = Due Date** on same row | **False detection** — clear Start Date |
+| Due-only lines (e.g. Sleep Paper Sep 15) | Start Date blank |
+| Earliest date from grep verbatim | Start Date blank |
 | Pre-Aug 1 inferred dates | Start Date blank |
 
 ## Workflow (automatic — do NOT hand-write JSON)
@@ -157,6 +159,37 @@ Sleep Paper: 6 sections, 5783 chars verbatim       # full syllabus — good
 Homework: 2 sections, 2173 chars verbatim          # calendar — good if rows are clean
 LinkedIn Learning: 2 sections, 632 chars verbatim  # calendar cert — short is OK if source is short
 ```
+
+**Start-date sanity check** (run on `--keep-json` output after each class):
+
+```bash
+python3 - <<'PY'
+import json, sys
+path = sys.argv[1]
+data = json.load(open(path))
+bad = []
+for cat in data["categories"]:
+    for sub in cat.get("assignments") or []:
+        s, d = sub.get("start_date") or "", sub.get("due_date") or ""
+        if s and d and s == d:
+            bad.append(f"{cat['name']}: {sub.get('name','')[:50]}")
+    s, d = cat.get("start_date") or "", cat.get("due_date") or ""
+    if s and d and s == d:
+        bad.append(f"{cat['name']} (category row)")
+if bad:
+    print("FAIL start==due:", *bad, sep="\n  ")
+    raise SystemExit(1)
+print("OK: no start==due false detections")
+PY
+output/buad304.json
+```
+
+**Red flags (all sheets):**
+
+| Symptom | Likely cause | Fix |
+|---------|--------------|-----|
+| Start Date = Due Date on Homework/Reading | Copied session date into both columns | `strip_false_start_when_same_as_due()`; calendar/Connect parsers use due-only |
+| Connect under Participation | Old `CONNECT_WEEK_CATEGORY` routing | **`Personal Assessments (Connect)`** section |
 
 **Red flags (calendar PDFs):**
 

@@ -898,13 +898,13 @@ def build_calendar_assignments_by_category(
         elif "midterm 1" in low and exams.get("Midterm 1"):
             iso = parse_calendar_dates(text, cat, year)
             out[cat.name] = [
-                sub_assignment(line[:100], iso[0] or iso[1], iso[1], LABEL_EXAM)
+                sub_assignment(line[:100], "", iso[1], LABEL_EXAM)
                 for line in exams["Midterm 1"]
             ]
         elif "midterm 2" in low and exams.get("Midterm 2"):
             iso = parse_calendar_dates(text, cat, year)
             out[cat.name] = [
-                sub_assignment(line[:100], iso[0] or iso[1], iso[1], LABEL_EXAM)
+                sub_assignment(line[:100], "", iso[1], LABEL_EXAM)
                 for line in exams["Midterm 2"]
             ]
         elif "final" in low and "exam" in low:
@@ -914,7 +914,7 @@ def build_calendar_assignments_by_category(
                 out[cat.name] = [
                     sub_assignment(
                         "Final Exam",
-                        iso[0] or iso[1],
+                        "",
                         iso[1],
                         LABEL_EXAM,
                     )
@@ -2164,11 +2164,24 @@ def sanitize_start_date(iso: str, year: int) -> str:
     return iso
 
 
+def strip_false_start_when_same_as_due(start: str, due: str) -> str:
+    """Never copy the due date into Start Date (common false detection)."""
+    if start and due and start == due:
+        return ""
+    return start
+
+
 def apply_start_date_cutoff(categories: list[dict], year: int) -> None:
     for cat in categories:
         cat["start_date"] = sanitize_start_date(cat.get("start_date", ""), year)
+        cat["start_date"] = strip_false_start_when_same_as_due(
+            cat["start_date"], cat.get("due_date", "")
+        )
         for sub in cat.get("assignments") or []:
             sub["start_date"] = sanitize_start_date(sub.get("start_date", ""), year)
+            sub["start_date"] = strip_false_start_when_same_as_due(
+                sub["start_date"], sub.get("due_date", "")
+            )
 
 
 def dissect(

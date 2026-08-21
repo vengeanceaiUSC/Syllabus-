@@ -22,7 +22,7 @@
       "assignments": [
         {
           "name": "9/30 Midterm 1: 250 Points Chapters 1, 2, 3, 4, 5, 8",
-          "start_date": "2026-09-30",
+          "start_date": "",
           "due_date": "2026-09-30",
           "notes": "Exam"
         }
@@ -50,7 +50,7 @@
       "assignments": [
         {
           "name": "10/26 Midterm 2: 250 Points Chapters 6, 7, 9, & 16",
-          "start_date": "2026-10-26",
+          "start_date": "",
           "due_date": "2026-10-26",
           "notes": "Exam"
         }
@@ -76,7 +76,7 @@
       "assignments": [
         {
           "name": "Final Exam",
-          "start_date": "2026-12-16",
+          "start_date": "",
           "due_date": "2026-12-16",
           "notes": "Exam"
         }
