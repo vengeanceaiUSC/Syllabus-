@@ -226,6 +226,27 @@ When `Course Evaluation` is present (and document is **not** a point-based Cours
 
 Participation PDF sections: `Research Participation Guide (key dates)`, `(contacts)`, `(quick reference excerpt)`.
 
+### Sub-assignment type labels (Excel Details column)
+
+Every indented sub-row under a category uses a **strict type label** in the Details column (`notes` in JSON). Do not use free-text notes like "Weekly schedule" or "Homework - {reading text}".
+
+| Label | Use for |
+|-------|---------|
+| **Reading** | Weekly schedule blocks, section readings, textbook/chapter prep, lecture topics, calendar Required Reading rows |
+| **Homework** | Connect self-assessments, Sharpen, problem sets, quizzes, primary source activities |
+| **Assignment** | Papers, memos, proposals, outlines, presentations, peer evaluation, team deliverables |
+| **Exam** | Midterm, final |
+| **Research** | SONA milestones from `--research-guide` |
+| **Certification** | LinkedIn / Stukent cert rows |
+
+Implemented in `auto_dissect.py`: `classify_major_vs_daily()`, `classify_hist103_sub_item()`, `calendar_week_assignments()` (splits Reading vs Homework per class session).
+
+**HIST-103 example:** `Week Sep 15-18: Renaissance` → Details = **Reading** (not Homework).
+
+**BUAD-281 example:** calendar row with Required Reading → **Reading**; problem set with points → **Homework**.
+
+**BUAD-304 example:** Connect self-assessment → **Homework**; Team project paper due → **Assignment**; SONA registration → **Research**.
+
 ### Marshall schedule parsing notes
 
 - Join split lines: date on one line, `due` on the next

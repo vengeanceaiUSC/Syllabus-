@@ -184,6 +184,81 @@ RESEARCH_MILESTONES: list[tuple[str, str, str, str]] = [
     ("Complete 2.0 research credits", r"Deadline Dec(?:ember)?\s+4|December 4", "2026-12-04", "due"),
 ]
 MD_DATE = re.compile(r"\b(\d{1,2})/(\d{1,2})\b")
+
+# Strict Details-column labels for sub-assignment rows (see reference.md)
+LABEL_READING = "Reading"
+LABEL_HOMEWORK = "Homework"
+LABEL_ASSIGNMENT = "Assignment"
+LABEL_EXAM = "Exam"
+LABEL_RESEARCH = "Research"
+LABEL_CERTIFICATION = "Certification"
+
+
+def sub_assignment(
+    name: str,
+    start: str,
+    due: str,
+    label: str,
+) -> dict:
+    """Sub-row for Excel: `notes` is always the strict type label (Reading, Homework, etc.)."""
+    return {
+        "name": name[:120],
+        "start_date": start,
+        "due_date": due,
+        "notes": label,
+    }
+
+
+def classify_major_vs_daily(name: str) -> str:
+    """Classify sub-row type: Reading, Homework, Assignment, or Exam."""
+    low = name.lower()
+    if re.search(r"\b(midterm|final exam)\b", low):
+        return LABEL_EXAM
+    if re.search(r"\bfinal\b", low) and re.search(r"\b(exam|december|dec)\b", low):
+        return LABEL_EXAM
+    if re.search(
+        r"\b(paper due|paper\b|project paper|team project|proposal|contract|memo due|"
+        r"reflection paper|presentation slides|peer evaluation|outline due|certification|"
+        r"sleep paper|witchcraft paper|case analysis)\b",
+        low,
+    ):
+        return LABEL_ASSIGNMENT
+    if re.search(
+        r"\b(self-assessment|connect:|sharpen|questionnaire|problem|quiz|identification|"
+        r"primary source activity|points?\)|\d-\d+\s*[,;]?\s*\d+\s*points?)\b",
+        low,
+    ):
+        return LABEL_HOMEWORK
+    if re.search(
+        r"\b(reading|textbook|chapter|ch\.|ares reading|case coursepack|lecture topic)\b",
+        low,
+    ):
+        return LABEL_READING
+    return LABEL_HOMEWORK
+
+
+def classify_hist103_sub_item(kind: str, name: str) -> str:
+    """HIST-103 weekly schedule rows: readings vs daily work vs major deliverables."""
+    if kind in ("week", "week_lecture", "section_reading"):
+        return LABEL_READING
+    return classify_major_vs_daily(name)
+
+
+def _hist103_sub_item(
+    name: str,
+    start: str,
+    due: str,
+    label: str,
+    category_hint: str,
+    kind: str,
+) -> dict:
+    return {
+        **sub_assignment(name, start, due, label),
+        "category_hint": category_hint,
+        "kind": kind,
+    }
+
+
 CAL_EXAM = re.compile(
     r"(Midterm \d+|Final Exam)\s*:\s*(\d+)\s*Points?",
     re.I,
@@ -628,11 +703,13 @@ def parse_marshall_connect_assessments(schedule: str, year: int) -> list[dict]:
         cat = _connect_category_for_class_date(class_md) if class_md else "Participation"
         items.append(
             {
-                "name": f"Connect: Self-Assessment {code} - {title}",
-                "start_date": connect_start,
-                "due_date": connect_due,
+                **sub_assignment(
+                    f"Connect: Self-Assessment {code} - {title}",
+                    connect_start,
+                    connect_due,
+                    LABEL_HOMEWORK,
+                ),
                 "category": cat,
-                "notes": f"Assigned in class week of {class_iso}; Connect window",
             }
         )
     return items
@@ -677,12 +754,12 @@ def build_marshall_assignments_by_category(
             out[cat_name] = []
         start = inferred.get(cat_key, d["date_iso"])
         out[cat_name].append(
-            {
-                "name": _deliverable_assignment_name(d["raw"], cat_key),
-                "start_date": min(start, d["date_iso"]) if start else d["date_iso"],
-                "due_date": d["date_iso"],
-                "notes": "Course Schedule due date",
-            }
+            sub_assignment(
+                _deliverable_assignment_name(d["raw"], cat_key),
+                min(start, d["date_iso"]) if start else d["date_iso"],
+                d["date_iso"],
+                classify_major_vs_daily(_deliverable_assignment_name(d["raw"], cat_key)),
+            )
         )
 
     # Connect self-assessments (McGraw-Hill daily prep)
@@ -693,21 +770,19 @@ def build_marshall_assignments_by_category(
         )
         if cat_name not in out:
             out[cat_name] = []
-        out[cat_name].append(
-            {k: v for k, v in item.items() if k != "category"}
-        )
+        out[cat_name].append({k: v for k, v in item.items() if k != "category"})
 
     # Connect platform extras (Brightspace defaults for BUAD 304)
     if re.search(r"McGraw-Hill Connect|Connect module", text, re.I):
         part_name = next((c.name for c in categories if "participation" in c.name.lower()), None)
         if part_name:
             out[part_name].append(
-                {
-                    "name": "Connect: Sharpen Companion",
-                    "start_date": _normalize_md_date(MARSHALL_SHARPEN_START, year),
-                    "due_date": _normalize_md_date(MARSHALL_SHARPEN_DUE, year),
-                    "notes": "Brightspace Connect module",
-                }
+                sub_assignment(
+                    "Connect: Sharpen Companion",
+                    _normalize_md_date(MARSHALL_SHARPEN_START, year),
+                    _normalize_md_date(MARSHALL_SHARPEN_DUE, year),
+                    LABEL_HOMEWORK,
+                )
             )
 
     # Research participation milestones
@@ -716,12 +791,12 @@ def build_marshall_assignments_by_category(
         if part_name:
             for m in parse_research_participation_milestones(research_guide, year):
                 out[part_name].append(
-                    {
-                        "name": f"Research: {m['label']}",
-                        "start_date": m["date_iso"] if m["kind"] == "start" else "",
-                        "due_date": m["date_iso"] if m["kind"] == "due" else "",
-                        "notes": "Research Participation Guide",
-                    }
+                    sub_assignment(
+                        f"Research: {m['label']}",
+                        m["date_iso"] if m["kind"] == "start" else "",
+                        m["date_iso"] if m["kind"] == "due" else "",
+                        LABEL_RESEARCH,
+                    )
                 )
 
     # Deduplicate by name within each category
@@ -739,7 +814,7 @@ def build_marshall_assignments_by_category(
 
 
 def calendar_week_assignments(rows: list[dict], year: int) -> list[dict]:
-    """One row per calendar class session with homework and/or required reading."""
+    """One row per class session; split Reading vs Homework when both appear."""
     items: list[dict] = []
     for row in rows:
         date = calendar_row_date(row)
@@ -750,26 +825,17 @@ def calendar_week_assignments(rows: list[dict], year: int) -> list[dict]:
         hw = (row.get("homework") or "").replace(" / ", "; ").strip()
         topic = (row.get("topic") or "").replace(" / ", "; ").strip()
         has_hw = row_has_homework_points(row)
-        if not reading and not has_hw and not topic:
-            continue
         cls = row.get("class") or ""
-        label = topic[:70] if topic else (f"Homework: {hw[:50]}" if has_hw else f"Reading: {reading[:50]}")
-        name = f"Class {cls} ({date})  -  {label}" if cls else f"{date}  -  {label}"
-        notes_parts = []
-        if topic:
-            notes_parts.append(f"Topic: {topic[:100]}")
+        prefix = f"Class {cls} ({date})" if cls else str(date)
         if reading:
-            notes_parts.append(f"Required Reading: {reading[:120]}")
-        if hw:
-            notes_parts.append(f"Homework: {hw[:100]}")
-        items.append(
-            {
-                "name": name[:120],
-                "start_date": iso,
-                "due_date": iso,
-                "notes": " | ".join(notes_parts) or "Course Calendar",
-            }
-        )
+            name = f"{prefix} - {reading[:90]}"
+            if topic:
+                name = f"{prefix} - {topic[:40]}: {reading[:70]}"
+            items.append(sub_assignment(name, iso, iso, LABEL_READING))
+        if has_hw and hw:
+            items.append(sub_assignment(f"{prefix} - {hw[:90]}", iso, iso, LABEL_HOMEWORK))
+        elif topic and not reading and not has_hw:
+            items.append(sub_assignment(f"{prefix} - {topic[:90]}", iso, iso, LABEL_READING))
     return items
 
 
@@ -793,13 +859,13 @@ def build_calendar_assignments_by_category(
         elif "midterm 1" in low and exams.get("Midterm 1"):
             iso = parse_calendar_dates(text, cat, year)
             out[cat.name] = [
-                {"name": line[:100], "start_date": iso[0] or iso[1], "due_date": iso[1], "notes": "Exam"}
+                sub_assignment(line[:100], iso[0] or iso[1], iso[1], LABEL_EXAM)
                 for line in exams["Midterm 1"]
             ]
         elif "midterm 2" in low and exams.get("Midterm 2"):
             iso = parse_calendar_dates(text, cat, year)
             out[cat.name] = [
-                {"name": line[:100], "start_date": iso[0] or iso[1], "due_date": iso[1], "notes": "Exam"}
+                sub_assignment(line[:100], iso[0] or iso[1], iso[1], LABEL_EXAM)
                 for line in exams["Midterm 2"]
             ]
         elif "final" in low and "exam" in low:
@@ -807,23 +873,18 @@ def build_calendar_assignments_by_category(
             if merged:
                 iso = parse_calendar_dates(text, cat, year)
                 out[cat.name] = [
-                    {
-                        "name": "Final Exam",
-                        "start_date": iso[0] or iso[1],
-                        "due_date": iso[1],
-                        "notes": merged[:120],
-                    }
+                    sub_assignment(
+                        "Final Exam",
+                        iso[0] or iso[1],
+                        iso[1],
+                        LABEL_EXAM,
+                    )
                 ]
         elif "linkedin" in low or "stukent" in low:
             cert = "linkedin" if "linkedin" in low else "stukent"
             start, due = calendar_cert_dates(rows, cert, year)
             out[cat.name] = [
-                {
-                    "name": cat.name,
-                    "start_date": start,
-                    "due_date": due,
-                    "notes": "Certification (Course Calendar)",
-                }
+                sub_assignment(cat.name, start, due, LABEL_CERTIFICATION)
             ]
     return out
 
@@ -882,38 +943,41 @@ def parse_hist103_weekly_items(text: str, year: int) -> list[dict]:
             if reading_text and "module:" not in reading_text:
                 readings.append(reading_text)
         week_name = f"Week {mon} {d1}-{d2}: {title}"
+        route_hint = _hist103_route(f"{week_name} {chunk[:300]}")
         items.append(
-            {
-                "name": week_name,
-                "start_date": start_iso,
-                "due_date": due_iso,
-                "category_hint": _hist103_route(f"{week_name} {chunk[:300]}"),
-                "notes": "Homework",
-                "kind": "week",
-            }
+            _hist103_sub_item(
+                week_name,
+                start_iso,
+                due_iso,
+                classify_hist103_sub_item("week", week_name),
+                route_hint,
+                "week",
+            )
         )
         # Lecture topics / readings also listed under quizzes (in-class identification prep)
         if "section reading" not in title.lower():
+            lecture_name = f"{week_name} (lecture topics)"
             items.append(
-                {
-                    "name": f"{week_name} (lecture topics)",
-                    "start_date": start_iso,
-                    "due_date": due_iso,
-                    "category_hint": "Identification Quizzes",
-                    "notes": "Homework",
-                    "kind": "week_lecture",
-                }
+                _hist103_sub_item(
+                    lecture_name,
+                    start_iso,
+                    due_iso,
+                    classify_hist103_sub_item("week_lecture", lecture_name),
+                    "Identification Quizzes",
+                    "week_lecture",
+                )
             )
         for ri, reading in enumerate(readings, 1):
+            reading_name = f"{week_name} - Section reading {ri}: {reading[:80]}"
             items.append(
-                {
-                    "name": f"{week_name}  -  Section readings {ri}",
-                    "start_date": start_iso,
-                    "due_date": due_iso,
-                    "category_hint": "Discussion Section",
-                    "notes": f"Homework - {reading}",
-                    "kind": "section_reading",
-                }
+                _hist103_sub_item(
+                    reading_name,
+                    start_iso,
+                    due_iso,
+                    classify_hist103_sub_item("section_reading", reading_name),
+                    "Discussion Section",
+                    "section_reading",
+                )
             )
         for dm in re.finditer(
             r"(Aug|Sep|Oct|Nov|Dec)\s+(\d{1,2}):\s*([^\n]*(?:Due|Paper Due)[^\n]*)",
@@ -923,14 +987,14 @@ def parse_hist103_weekly_items(text: str, year: int) -> list[dict]:
             due_line = re.sub(r"\s+", " ", dm.group(3)).strip()
             due_iso_day = _hist_month_day_to_iso(dm.group(1), int(dm.group(2)), year)
             items.append(
-                {
-                    "name": due_line[:100],
-                    "start_date": start_iso,
-                    "due_date": due_iso_day,
-                    "category_hint": _hist103_route(due_line),
-                    "notes": "Due date (course schedule)",
-                    "kind": "due",
-                }
+                _hist103_sub_item(
+                    due_line[:100],
+                    start_iso,
+                    due_iso_day,
+                    classify_hist103_sub_item("due", due_line),
+                    _hist103_route(due_line),
+                    "due",
+                )
             )
         if re.search(r"Primary Source Activity", chunk, re.I):
             for dm in re.finditer(
@@ -939,22 +1003,23 @@ def parse_hist103_weekly_items(text: str, year: int) -> list[dict]:
                 re.I,
             ):
                 due_iso_day = _hist_month_day_to_iso(dm.group(1), int(dm.group(2)), year)
+                psa_name = "Primary Source Activity (due in section)"
                 items.append(
-                    {
-                        "name": "Primary Source Activity (due in section)",
-                        "start_date": start_iso,
-                        "due_date": due_iso_day,
-                        "category_hint": "Discussion Section",
-                        "notes": re.sub(r"\s+", " ", dm.group(0))[:120],
-                        "kind": "due",
-                    }
+                    _hist103_sub_item(
+                        psa_name,
+                        start_iso,
+                        due_iso_day,
+                        classify_hist103_sub_item("due", psa_name),
+                        "Discussion Section",
+                        "due",
+                    )
                 )
     # Explicit paper due lines elsewhere in syllabus
-    for pat, label, cat in [
-        (r"Due September 15th[^\n]*", "Sleep Paper due", "Sleep Paper"),
-        (r"Due Nov 10 at[^\n]*", "Witchcraft Paper due", "Witchcraft Paper"),
-        (r"Dec 10: Final Exam", "Final Exam", "Final Exam"),
-        (r"Oct 6: Midterm", "Midterm Exam", "Mid-term"),
+    for pat, label, cat, item_label in [
+        (r"Due September 15th[^\n]*", "Sleep Paper due", "Sleep Paper", LABEL_ASSIGNMENT),
+        (r"Due Nov 10 at[^\n]*", "Witchcraft Paper due", "Witchcraft Paper", LABEL_ASSIGNMENT),
+        (r"Dec 10: Final Exam", "Final Exam", "Final Exam", LABEL_EXAM),
+        (r"Oct 6: Midterm", "Midterm Exam", "Mid-term", LABEL_EXAM),
     ]:
         m = re.search(pat, text, re.I)
         if m:
@@ -964,14 +1029,14 @@ def parse_hist103_weekly_items(text: str, year: int) -> list[dict]:
             if dm:
                 due_iso = _hist_month_day_to_iso(dm.group(1), int(dm.group(2)), year)
             items.append(
-                {
-                    "name": line,
-                    "start_date": due_iso,
-                    "due_date": due_iso,
-                    "category_hint": cat,
-                    "notes": m.group(0)[:100],
-                    "kind": "due",
-                }
+                _hist103_sub_item(
+                    line,
+                    due_iso,
+                    due_iso,
+                    item_label,
+                    cat,
+                    "due",
+                )
             )
     return items
 

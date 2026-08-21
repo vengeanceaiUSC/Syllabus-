@@ -25,79 +25,79 @@
           "name": "Research: Setup deadline (registration, prescreening, contacts)",
           "start_date": "",
           "due_date": "2026-09-25",
-          "notes": "Research Participation Guide"
+          "notes": "Research"
         },
         {
           "name": "Research: Employee contact surveys sent",
           "start_date": "",
           "due_date": "2026-10-26",
-          "notes": "Research Participation Guide"
+          "notes": "Research"
         },
         {
           "name": "Research: Complete 2.0 research credits",
           "start_date": "",
           "due_date": "2026-12-04",
-          "notes": "Research Participation Guide"
+          "notes": "Research"
         },
         {
           "name": "Connect: Sharpen Companion",
           "start_date": "N/A",
           "due_date": "2026-09-04",
-          "notes": "Brightspace Connect module"
+          "notes": "Homework"
         },
         {
           "name": "Research: SONA registration opens",
           "start_date": "2026-08-24",
           "due_date": "",
-          "notes": "Research Participation Guide"
+          "notes": "Research"
         },
         {
           "name": "Connect: Self-Assessment 11.01 - What is my",
           "start_date": "2026-08-24",
           "due_date": "2026-12-20",
-          "notes": "Assigned in class week of 2026-09-09; Connect window"
+          "notes": "Homework"
         },
         {
           "name": "Connect: Self-Assessment 11.02 - What is my",
           "start_date": "2026-08-24",
           "due_date": "2026-12-20",
-          "notes": "Assigned in class week of 2026-09-09; Connect window"
+          "notes": "Homework"
         },
         {
           "name": "Connect: Self-Assessment 12.02 - Which influence",
           "start_date": "2026-08-24",
           "due_date": "2026-12-20",
-          "notes": "Assigned in class week of 2026-08-24; Connect window"
+          "notes": "Homework"
         },
         {
           "name": "Connect: Self-Assessment 3.01 - What is my Big thinking about your topics and",
           "start_date": "2026-08-24",
           "due_date": "2026-12-20",
-          "notes": "Assigned in class week of 2026-08-31; Connect window"
+          "notes": "Homework"
         },
         {
           "name": "Connect: Self-Assessment 3.04 - What Is Your Level",
           "start_date": "2026-08-24",
           "due_date": "2026-12-20",
-          "notes": "Assigned in class week of 2026-08-31; Connect window"
+          "notes": "Homework"
         },
         {
           "name": "Connect: Self-Assessment 5.01 - Assessing Your",
           "start_date": "2026-08-24",
           "due_date": "2026-12-20",
-          "notes": "Assigned in class week of 2026-09-02; Connect window"
+          "notes": "Homework"
         },
         {
           "name": "Research: Prescreening questionnaire opens",
           "start_date": "2026-09-11",
           "due_date": "",
-          "notes": "Research Participation Guide"
+          "notes": "Research"
         },
         {
           "name": "Research: Study invitations begin (after setup)",
           "start_date": "2026-09-26",
           "due_date": "",
-          "notes": "Research Participation Guide"
+          "notes": "Research"
         }
       ],
       "sections": {
@@ -184,7 +184,7 @@
           "name": "Midterm Exam",
           "start_date": "2026-08-24",
           "due_date": "2026-10-14",
-          "notes": "Course Schedule due date"
+          "notes": "Exam"
         }
       ],
       "sections": {
@@ -222,19 +222,19 @@
           "name": "Connect: Self-Assessment 12.01 - What kind of",
           "start_date": "2026-08-24",
           "due_date": "2026-12-20",
-          "notes": "Assigned in class week of 2026-09-16; Connect window"
+          "notes": "Homework"
         },
         {
           "name": "Thomas Green Case Analysis Memo",
           "start_date": "2026-08-26",
           "due_date": "2026-09-16",
-          "notes": "Course Schedule due date"
+          "notes": "Assignment"
         },
         {
           "name": "SkillsForTomorrow Analysis Memo",
           "start_date": "2026-08-26",
           "due_date": "2026-10-21",
-          "notes": "Course Schedule due date"
+          "notes": "Homework"
         }
       ],
       "sections": {
@@ -278,19 +278,19 @@
           "name": "Connect: Self-Assessment 16.02 - What Is Your",
           "start_date": "2026-08-24",
           "due_date": "2026-12-20",
-          "notes": "Assigned in class week of 2026-11-30; Connect window"
+          "notes": "Homework"
         },
         {
           "name": "Connect: Self-Assessment 16.03 - Assessing Your",
           "start_date": "2026-08-24",
           "due_date": "2026-12-20",
-          "notes": "Assigned in class week of 2026-11-30; Connect window"
+          "notes": "Homework"
         },
         {
           "name": "Personal Reflection Paper",
           "start_date": "2026-08-31",
           "due_date": "2026-12-02",
-          "notes": "Course Schedule due date"
+          "notes": "Assignment"
         }
       ],
       "sections": {
@@ -329,19 +329,19 @@
           "name": "Connect: Self-Assessment 10.5 - Preferred Conflict",
           "start_date": "2026-08-24",
           "due_date": "2026-12-20",
-          "notes": "Assigned in class week of 2026-09-28; Connect window"
+          "notes": "Homework"
         },
         {
           "name": "Connect: Self-Assessment 9.01 - Assessing My",
           "start_date": "2026-08-24",
           "due_date": "2026-12-20",
-          "notes": "Assigned in class week of 2026-09-28; Connect window"
+          "notes": "Homework"
         },
         {
           "name": "Team project proposal & team contract",
           "start_date": "2026-08-31",
           "due_date": "2026-09-28",
-          "notes": "Course Schedule due date"
+          "notes": "Assignment"
         }
       ],
       "sections": {
@@ -417,25 +417,25 @@
           "name": "Connect: Self-Assessment 14.02 - What Type of Organizational Culture Do I",
           "start_date": "2026-08-24",
           "due_date": "2026-12-20",
-          "notes": "Assigned in class week of 2026-11-04; Connect window"
+          "notes": "Homework"
         },
         {
           "name": "Connect: Self-Assessment 8.01 - Group",
           "start_date": "2026-08-24",
           "due_date": "2026-12-20",
-          "notes": "Assigned in class week of 2026-10-19; Connect window"
+          "notes": "Homework"
         },
         {
           "name": "Team project outline",
           "start_date": "2026-08-31",
           "due_date": "2026-10-19",
-          "notes": "Course Schedule due date"
+          "notes": "Assignment"
         },
         {
           "name": "Team project paper",
           "start_date": "2026-08-31",
           "due_date": "2026-11-09",
-          "notes": "Course Schedule due date"
+          "notes": "Assignment"
         }
       ],
       "sections": {
@@ -639,7 +639,7 @@
           "name": "Presentation slides",
           "start_date": "2026-08-31",
           "due_date": "2026-11-09",
-          "notes": "Course Schedule due date"
+          "notes": "Assignment"
         }
       ],
       "sections": {
@@ -827,7 +827,7 @@
           "name": "Self & peer evaluation",
           "start_date": "2026-08-31",
           "due_date": "2026-11-18",
-          "notes": "Course Schedule due date"
+          "notes": "Assignment"
         }
       ],
       "sections": {
@@ -897,7 +897,7 @@
           "name": "Final Exam",
           "start_date": "2026-08-24",
           "due_date": "2026-12-09",
-          "notes": "Course Schedule due date"
+          "notes": "Exam"
         }
       ],
       "sections": {
