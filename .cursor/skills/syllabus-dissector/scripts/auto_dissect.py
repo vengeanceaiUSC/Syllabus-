@@ -579,16 +579,9 @@ def marshall_dates_for_category(
     )
     all_dates = sorted({d["date_iso"] for d in deliverables if d["category"] == key})
     start = inferred.get(key, "")
-    if all_dates and not start:
-        start = all_dates[0]
-    elif all_dates and start:
-        start = min(start, all_dates[0])
     due = due_dates[-1] if due_dates else (all_dates[-1] if all_dates else "")
     if not due and milestone_dates:
         due = milestone_dates[-1]
-    # Single exam/event day: start = due when no earlier inferred start
-    if due and not start:
-        start = due
     return start, due
 
 
@@ -752,11 +745,13 @@ def build_marshall_assignments_by_category(
         cat_name = next((c.name for c in categories if marshall_category_key(c.name) == cat_key), cat_key)
         if cat_name not in out:
             out[cat_name] = []
-        start = inferred.get(cat_key, d["date_iso"])
+        start = inferred.get(cat_key, "")
+        if not start:
+            start = ""
         out[cat_name].append(
             sub_assignment(
                 _deliverable_assignment_name(d["raw"], cat_key),
-                min(start, d["date_iso"]) if start else d["date_iso"],
+                start,
                 d["date_iso"],
                 classify_major_vs_daily(_deliverable_assignment_name(d["raw"], cat_key)),
             )
@@ -989,7 +984,7 @@ def parse_hist103_weekly_items(text: str, year: int) -> list[dict]:
             items.append(
                 _hist103_sub_item(
                     due_line[:100],
-                    start_iso,
+                    "",
                     due_iso_day,
                     classify_hist103_sub_item("due", due_line),
                     _hist103_route(due_line),
@@ -1007,7 +1002,7 @@ def parse_hist103_weekly_items(text: str, year: int) -> list[dict]:
                 items.append(
                     _hist103_sub_item(
                         psa_name,
-                        start_iso,
+                        "",
                         due_iso_day,
                         classify_hist103_sub_item("due", psa_name),
                         "Discussion Section",
@@ -1031,7 +1026,7 @@ def parse_hist103_weekly_items(text: str, year: int) -> list[dict]:
             items.append(
                 _hist103_sub_item(
                     line,
-                    due_iso,
+                    "",
                     due_iso,
                     item_label,
                     cat,
@@ -1665,10 +1660,11 @@ def parse_calendar_dates(text: str, cat: Category, year: int) -> tuple[str, str]
         return "", ""
 
     if not dates:
-        return parse_dates_from_text(text, year)
+        _, due = parse_dates_from_text(text, year)
+        return "", due
 
     unique = sorted(set(dates))
-    return (unique[0], unique[-1]) if len(unique) > 1 else ("", unique[0])
+    return "", unique[-1]
 
 
 def find_course_evaluation_block(text: str) -> str:
@@ -1995,6 +1991,7 @@ def _month_to_iso(m: re.Match, default_year: int) -> str:
 
 
 def parse_dates_from_text(text: str, default_year: int = 2025) -> tuple[str, str]:
+    """Extract due date only. Never infer a start date from grep/context windows."""
     dates: list[tuple[int, str]] = []
     for m in MONTH_DATE.finditer(text):
         iso = _month_to_iso(m, default_year)
@@ -2005,8 +2002,7 @@ def parse_dates_from_text(text: str, default_year: int = 2025) -> tuple[str, str
         return "", ""
     unique = sorted({d for _, d in dates})
     due = next((d for p, d in dates if p == 2), unique[-1])
-    start = unique[0] if len(unique) > 1 else ""
-    return start, due
+    return "", due
 
 
 def structure_block(block: str) -> dict[str, list[str] | str]:
@@ -2105,14 +2101,12 @@ def infer_year(term: str) -> int:
 
 
 def sanitize_start_date(iso: str, year: int) -> str:
-    """Replace start dates before August 1 of the term year with N/A."""
-    if not iso:
+    """Drop unverified or pre-term starts; leave Start Date blank in Excel."""
+    if not iso or iso.upper() == "N/A":
         return ""
-    if iso.upper() == "N/A":
-        return "N/A"
     cutoff = f"{year:04d}-08-01"
     if iso < cutoff:
-        return "N/A"
+        return ""
     return iso
 
 

@@ -16,7 +16,7 @@
       "name": "Discussion Section",
       "weight": 15.0,
       "weight_unit": "percent",
-      "start_date": "2026-11-10",
+      "start_date": "",
       "due_date": "2026-11-12",
       "is_group_project": true,
       "assignments": [
@@ -330,7 +330,7 @@
       "name": "Identification Quizzes",
       "weight": 5.0,
       "weight_unit": "percent",
-      "start_date": "2026-08-25",
+      "start_date": "",
       "due_date": "2026-12-10",
       "is_group_project": false,
       "assignments": [
@@ -515,13 +515,13 @@
       "name": "Sleep Paper",
       "weight": 20.0,
       "weight_unit": "percent",
-      "start_date": "N/A",
+      "start_date": "",
       "due_date": "2026-09-15",
       "is_group_project": false,
       "assignments": [
         {
           "name": "Sleep Paper Due",
-          "start_date": "2026-09-15",
+          "start_date": "",
           "due_date": "2026-09-15",
           "notes": "Assignment"
         },
@@ -641,13 +641,13 @@
       "name": "Witchcraft Paper",
       "weight": 20.0,
       "weight_unit": "percent",
-      "start_date": "2026-08-25",
+      "start_date": "",
       "due_date": "2026-11-10",
       "is_group_project": false,
       "assignments": [
         {
           "name": "Witchcraft Paper Due",
-          "start_date": "2026-11-10",
+          "start_date": "",
           "due_date": "2026-11-10",
           "notes": "Assignment"
         },
@@ -880,13 +880,13 @@
       "name": "Mid-term",
       "weight": 20.0,
       "weight_unit": "percent",
-      "start_date": "2026-08-25",
+      "start_date": "",
       "due_date": "2026-10-09",
       "is_group_project": false,
       "assignments": [
         {
           "name": "Midterm Exam",
-          "start_date": "2026-10-06",
+          "start_date": "",
           "due_date": "2026-10-06",
           "notes": "Exam"
         },
@@ -988,13 +988,13 @@
       "name": "Final Exam",
       "weight": 20.0,
       "weight_unit": "percent",
-      "start_date": "N/A",
+      "start_date": "",
       "due_date": "2026-09-17",
       "is_group_project": false,
       "assignments": [
         {
           "name": "Final Exam",
-          "start_date": "2026-12-10",
+          "start_date": "",
           "due_date": "2026-12-10",
           "notes": "Exam"
         }

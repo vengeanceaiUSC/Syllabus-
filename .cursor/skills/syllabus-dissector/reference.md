@@ -250,6 +250,27 @@ Implemented in `auto_dissect.py` (label assignment) and `build_workbook.py` (`so
 
 Only **BUAD-281** and **BUAD-304** have Homework sub-rows; HIST-103 has none (readings only).
 
+### Start dates — verified only
+
+Populate **Start Date** only when the syllabus explicitly states when work begins. Otherwise leave the cell **blank** (not `N/A`, not the due date).
+
+**Verified sources:**
+- HIST-103 / calendar **Reading** sub-rows: week range or class-session date from the schedule table
+- BUAD-281 calendar rows: class date from `CALENDAR_TABLE_JSON`
+- BUAD-304 Connect/Sharpen: explicit Connect window dates from syllabus (`8/24`–`12/20`)
+- Marshall categories: `MARSHALL_INFERRED_STARTS` prose matches only (not earliest deliverable due)
+- Research guide: milestones with `kind: start` (*opens*, *registration opens*)
+
+**Never use as start:**
+- Due-only lines (`Due September 15th`, `Sleep Paper Due`)
+- Earliest date from `parse_dates_from_text()` grep
+- `start = due` for single-day exams or papers
+- Pre-Aug 1 dates (dropped to blank)
+
+Implemented in `sanitize_start_date()`, `parse_dates_from_text()` (due-only), `marshall_dates_for_category()`, and HIST-103 due-line parsing.
+
+**Example:** Sleep Paper → Start Date **blank**, Due Date **2026-09-15**.
+
 ### Marshall schedule parsing notes
 
 - Join split lines: date on one line, `due` on the next

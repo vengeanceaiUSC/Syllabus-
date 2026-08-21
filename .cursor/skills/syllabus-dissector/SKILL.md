@@ -13,7 +13,7 @@ the syllabus mentions about that item — extracted automatically.
 
 1. **Sorting & weighting** — categories sorted highest-weight first
 2. **Grading scale** — full scale + exact **A** threshold (or points total for calendars)
-3. **Assignment details** — start date, due date, group-project flag
+3. **Assignment details** — start date (only when syllabus-verified), due date, group-project flag
 4. **PDF documents** — one per category; structured sections + verbatim extract
 5. **Excel hyperlinks** — **Open PDF** opens hosted PDF in browser
 6. **Sub-assignments** — indented schedule rows under each graded category. Sub-rows are **grouped by type** (Reading, then Homework, etc.) and sorted by date. Each sub-row uses:
@@ -32,6 +32,23 @@ the syllabus mentions about that item — extracted automatically.
 | **Exam** | Midterm, final |
 | **Research** | SONA / research participation milestones |
 | **Certification** | LinkedIn / Stukent certs |
+
+### Start dates — verified only
+
+**Leave Start Date blank** unless the syllabus explicitly states when something begins. Do not infer starts from due dates, reading weeks, or grep noise.
+
+| Verified start | Example |
+|----------------|---------|
+| Schedule block week range | `Sep 1-4: Everyday Life` → Reading sub-row starts Sep 1 |
+| Calendar class session row | BUAD-281 Class 5 (9/9) reading/homework row |
+| Explicit opens/assigned language | SONA *opens* Aug 24; Connect window from syllabus |
+| Marshall schedule milestone patterns | Team project explained 8/31 (matched prose in schedule) |
+
+| **Not** a start date | Action |
+|---------------------|--------|
+| Due date only (e.g. Sleep Paper Sep 15) | Start Date blank |
+| Earliest date in grep verbatim | Start Date blank |
+| Pre-Aug 1 inferred dates | Start Date blank |
 
 ## Workflow (automatic — do NOT hand-write JSON)
 
