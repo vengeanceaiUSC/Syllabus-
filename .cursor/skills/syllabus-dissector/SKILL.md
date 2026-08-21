@@ -35,6 +35,7 @@ python scripts/dissect_syllabus.py "<path-to-syllabus>" \
   --term "Fall 2026" \
   --workbook output/syllabi.xlsx \
   --link-base "https://raw.githubusercontent.com/<owner>/<repo>/<branch>/output/documents" \
+  --source-link-base "https://raw.githubusercontent.com/<owner>/<repo>/<branch>/output/sources" \
   --keep-json output/hist103.json
 ```
 
@@ -117,10 +118,12 @@ failed and you are patching a known gap.
 
 ### Publish
 
-Commit `output/syllabi.xlsx`, `output/documents/*.pdf`, and optionally
-`output/*.json`. Give the user:
+Commit `output/syllabi.xlsx`, `output/documents/*.pdf`, `output/sources/*-source.pdf`,
+and optionally `output/*.json`. Give the user:
 
 `https://raw.githubusercontent.com/<owner>/<repo>/<branch>/output/syllabi.xlsx`
+
+Each class sheet includes a large **SEE HERE** link (row 2) to the original syllabus PDF.
 
 ## Requirements
 

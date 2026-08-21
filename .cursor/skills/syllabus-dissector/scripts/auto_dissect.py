@@ -95,6 +95,20 @@ def make_aliases(name: str) -> list[str]:
         aliases.update({"stukent simternship", "simternship"})
     if low == "homework":
         aliases.update({"points", "problem", "chapter"})
+    if "case analysis" in low:
+        aliases.update({"case analysis", "case preparation", "usc-ct", "critical thinking framework"})
+    if "team project" in low and "paper" in low:
+        aliases.update({"team project", "project paper", "fieldwork study", "issue analysis"})
+    if "reflection" in low:
+        aliases.update({"final reflection", "reflection paper", "learning journal"})
+    if "proposal" in low and "contract" in low:
+        aliases.update({"project proposal", "team contract"})
+    if low == "presentation":
+        aliases.update({"team project presentation", "in-class presentation", "q&a"})
+    if "peer evaluation" in low or "self & peer" in low:
+        aliases.update({"peer evaluation", "self and peer", "self & peer evaluation"})
+    if "participation" in low:
+        aliases.update({"class participation", "research studies participation", "attendance"})
     return sorted(aliases, key=len, reverse=True)
 
 
@@ -733,6 +747,72 @@ def parse_calendar_dates(text: str, cat: Category, year: int) -> tuple[str, str]
     return (unique[0], unique[-1]) if len(unique) > 1 else ("", unique[0])
 
 
+def find_course_evaluation_block(text: str) -> str:
+    """Locate Course Evaluation / grading breakdown (Marshall-style syllabi)."""
+    m = re.search(r"Course Evaluation\s*\n", text, re.I)
+    if not m:
+        return ""
+    snippet = text[m.end() : m.end() + 2500]
+    end = re.search(r"\nTotal\s+100\s*%|\nFinal grades represent", snippet, re.I)
+    return snippet[: end.start()] if end else snippet[:1200]
+
+
+def _drop_aggregate_parents(cats: list[Category]) -> list[Category]:
+    """Remove parent rows when child weights sum to the parent (e.g. Team Project 30%)."""
+    by_name = {c.name: c for c in cats}
+    drop: set[str] = set()
+    aggregates = {
+        "Individual Assignments": [
+            "Midterm Exam",
+            "Case Analysis Assignments",
+            "Final Reflection Paper",
+        ],
+        "Team Project": [
+            "Proposal & Team Contract",
+            "Paper",
+            "Presentation",
+            "Self & Peer Evaluation",
+        ],
+    }
+    for parent, children in aggregates.items():
+        if parent not in by_name:
+            continue
+        child_sum = sum(by_name[c].weight or 0 for c in children if c in by_name)
+        if abs(child_sum - (by_name[parent].weight or 0)) < 0.01:
+            drop.add(parent)
+    filtered = [c for c in cats if c.name not in drop]
+    for c in filtered:
+        if c.name == "Paper":
+            c.name = "Team Project Paper"
+            c.aliases = make_aliases("Team Project Paper")
+    return filtered
+
+
+def parse_course_evaluation_categories(text: str) -> list[Category]:
+    """Parse 'Participation 15%' style lines from a Course Evaluation block."""
+    block = find_course_evaluation_block(text)
+    if not block:
+        return []
+    cats: list[Category] = []
+    for line in block.splitlines():
+        line = line.strip()
+        cm = re.match(r"^(.+?)\s+(\d+(?:\.\d+)?)\s*%\s*$", line)
+        if not cm:
+            continue
+        name = cm.group(1).strip()
+        if name.lower() == "total":
+            continue
+        cats.append(
+            Category(
+                name=name,
+                weight=float(cm.group(2)),
+                weight_unit="percent",
+                aliases=make_aliases(name),
+            )
+        )
+    return _drop_aggregate_parents(cats)
+
+
 def find_assignments_block(text: str) -> str:
     """Locate the real Assignments section (skip TOC/nav duplicates)."""
     best = ""
@@ -751,45 +831,46 @@ def find_assignments_block(text: str) -> str:
 def parse_categories(text: str) -> list[Category]:
     cats: list[Category] = []
     block = find_assignments_block(text)
-    if not block:
-        return cats
-
-    lines = block.splitlines()
-    i = 0
-    while i < len(lines):
-        line = lines[i].strip()
-        cm = re.match(
-            r"^(.+?)\s*[\-\u2013]\s*(\d+(?:\.\d+)?)\s*(%|pts?|points)\s*(.*)$",
-            line,
-            re.I,
-        )
-        if cm:
-            name = cm.group(1).strip()
-            weight = float(cm.group(2))
-            unit_raw = cm.group(3).lower()
-            unit = "points" if unit_raw.startswith("pt") or unit_raw == "points" else "percent"
-            blurb_parts = [cm.group(4).strip()] if cm.group(4).strip() else []
-            i += 1
-            while i < len(lines):
-                nxt = lines[i].strip()
-                if re.match(r"^.+?\s*[\-\u2013]\s*\d", nxt):
-                    break
-                if not nxt:
-                    i += 1
-                    continue
-                blurb_parts.append(nxt)
-                i += 1
-            cats.append(
-                Category(
-                    name=name,
-                    weight=weight,
-                    weight_unit=unit,
-                    aliases=make_aliases(name),
-                    assignment_blurb=" ".join(blurb_parts),
-                )
+    if block:
+        lines = block.splitlines()
+        i = 0
+        while i < len(lines):
+            line = lines[i].strip()
+            cm = re.match(
+                r"^(.+?)\s*[\-\u2013]\s*(\d+(?:\.\d+)?)\s*(%|pts?|points)\s*(.*)$",
+                line,
+                re.I,
             )
-        else:
-            i += 1
+            if cm:
+                name = cm.group(1).strip()
+                weight = float(cm.group(2))
+                unit_raw = cm.group(3).lower()
+                unit = "points" if unit_raw.startswith("pt") or unit_raw == "points" else "percent"
+                blurb_parts = [cm.group(4).strip()] if cm.group(4).strip() else []
+                i += 1
+                while i < len(lines):
+                    nxt = lines[i].strip()
+                    if re.match(r"^.+?\s*[\-\u2013]\s*\d", nxt):
+                        break
+                    if not nxt:
+                        i += 1
+                        continue
+                    blurb_parts.append(nxt)
+                    i += 1
+                cats.append(
+                    Category(
+                        name=name,
+                        weight=weight,
+                        weight_unit=unit,
+                        aliases=make_aliases(name),
+                        assignment_blurb=" ".join(blurb_parts),
+                    )
+                )
+            else:
+                i += 1
+
+    if not cats:
+        cats = parse_course_evaluation_categories(text)
 
     if re.search(r"\bExtra Credit\b", text, re.I):
         if not any(c.name.lower() == "extra credit" for c in cats):
@@ -811,6 +892,16 @@ def parse_grading_scale(text: str) -> dict:
             scale["a_threshold"] = f"{am.group(3)}%+"
         if re.search(r"\bpts?\b|\bpoints\b", raw, re.I):
             scale["scale_type"] = "points"
+    if scale["a_threshold"] == "N/A" and re.search(
+        r"Final grades represent how you perform.*relative to other students",
+        text,
+        re.I | re.S,
+    ):
+        scale["a_threshold"] = "Curved (class rank)"
+        scale["raw_scale"] = (
+            "Weighted score (% of points earned) + class average + student ranking "
+            "(relative grading - no fixed A threshold in syllabus)"
+        )
     return scale
 
 
@@ -895,6 +986,26 @@ def find_dedicated_blocks(text: str, cat: Category) -> list[str]:
     if "quiz" in low:
         specs += [
             (r"Identification Quizzes[\-\u2013]\s*\d+\s*%\n", [r"\nSleep Paper"]),
+        ]
+    if "case analysis" in low:
+        specs += [
+            (r"Case Analysis Assignments\.", [r"\nFinal Reflection Paper", r"\nTeam Project"]),
+        ]
+    if "reflection" in low and "paper" in low:
+        specs += [
+            (r"Final Reflection Paper\.", [r"\nTeam Project", r"\nFinal Exam"]),
+        ]
+    if "team project" in low and "paper" in low:
+        specs += [
+            (r"Team Project\s*\n", [r"\nFinal Exam", r"\nOnline Class Expectations"]),
+        ]
+    if "participation" in low and "15" not in low:
+        specs += [
+            (r"Participation\s*\nAttendance Policy", [r"\nIndividual Assignments", r"\n4\n"]),
+        ]
+    if "mid" in low and "term" in low and "hist" not in low:
+        specs += [
+            (r"Midterm Exam\.", [r"\nCase Analysis", r"\nTeam Project"]),
         ]
 
     # Generic schedule due-line (skip Extra Credit - no stable end marker)

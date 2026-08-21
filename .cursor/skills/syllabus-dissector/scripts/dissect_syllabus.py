@@ -8,17 +8,22 @@ Usage:
         --instructor "Dr. Lindsay O'Neill" \\
         --term "Fall 2026" \\
         --workbook output/syllabi.xlsx \\
-        --link-base "https://raw.githubusercontent.com/<owner>/<repo>/<branch>/output/documents"
+        --link-base "https://raw.githubusercontent.com/<owner>/<repo>/<branch>/output/documents" \\
+        --source-link-base "https://raw.githubusercontent.com/<owner>/<repo>/<branch>/output/sources"
 """
 from __future__ import annotations
 
 import argparse
+import json
+import shutil
 import subprocess
 import sys
 import tempfile
 from pathlib import Path
 
 SCRIPTS = Path(__file__).resolve().parent
+sys.path.insert(0, str(SCRIPTS))
+from generate_pdfs import slugify  # noqa: E402
 
 
 def run(cmd: list[str]) -> None:
@@ -36,6 +41,11 @@ def main() -> int:
     parser.add_argument("--color", default="")
     parser.add_argument("--workbook", default="output/syllabi.xlsx")
     parser.add_argument("--link-base", default="", help="Hosted PDF base URL for Excel links")
+    parser.add_argument(
+        "--source-link-base",
+        default="",
+        help="Hosted URL base for original syllabus PDFs (SEE HERE row in Excel)",
+    )
     parser.add_argument("--keep-json", default="", help="Save intermediate JSON to this path")
     parser.add_argument(
         "--supplement",
@@ -43,6 +53,17 @@ def main() -> int:
         help="Optional full syllabus file to merge (adds instructions for calendar certs, etc.)",
     )
     args = parser.parse_args()
+
+    workbook_path = Path(args.workbook).expanduser()
+    sources_dir = workbook_path.parent / "sources"
+    sources_dir.mkdir(parents=True, exist_ok=True)
+
+    source_slug = f"{slugify(args.class_code)}-source.pdf"
+    source_dest = sources_dir / source_slug
+    shutil.copy2(Path(args.syllabus).expanduser(), source_dest)
+    source_url = ""
+    if args.source_link_base:
+        source_url = f"{args.source_link_base.rstrip('/')}/{source_slug}"
 
     with tempfile.TemporaryDirectory() as tmp:
         text_path = Path(tmp) / "syllabus.txt"
@@ -88,18 +109,25 @@ def main() -> int:
                 dissect_cmd.extend([flag, val])
         run(dissect_cmd)
 
+        if source_url:
+            data = json.loads(json_path.read_text(encoding="utf-8"))
+            data.setdefault("class", {})["source_url"] = source_url
+            json_path.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+
         build_cmd = [
             sys.executable,
             str(SCRIPTS / "build_workbook.py"),
             str(json_path),
             "--workbook",
-            args.workbook,
+            str(workbook_path),
         ]
         if args.link_base:
             build_cmd.extend(["--link-base", args.link_base])
         run(build_cmd)
 
-    print(f"\nDone. Workbook: {args.workbook}")
+    print(f"\nDone. Workbook: {workbook_path}")
+    if source_url:
+        print(f"Source PDF: {source_dest}")
     if args.keep_json:
         print(f"JSON: {args.keep_json}")
     return 0

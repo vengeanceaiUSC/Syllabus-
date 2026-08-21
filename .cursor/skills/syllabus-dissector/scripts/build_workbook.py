@@ -198,6 +198,17 @@ def build(
     ws.row_dimensions[1].height = 22
 
     row = 2
+    source_url = cls.get("source_url") or ""
+    if source_url:
+        ws.merge_cells(f"A{row}:{last_col}{row}")
+        see_cell = ws.cell(row=row, column=1)
+        see_cell.value = pdf_hyperlink(source_url, "SEE HERE")
+        see_cell.font = Font(bold=True, size=20, color="C00000", underline="single")
+        see_cell.fill = PatternFill("solid", fgColor="FFF2CC")
+        see_cell.alignment = Alignment(horizontal="center", vertical="center")
+        ws.row_dimensions[row].height = 40
+        row += 1
+
     for label, value in [
         ("Instructor", cls.get("instructor")),
         ("Term", cls.get("term")),
