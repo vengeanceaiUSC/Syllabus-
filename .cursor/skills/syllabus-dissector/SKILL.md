@@ -47,6 +47,7 @@ the syllabus mentions about that item — extracted automatically.
 | **Not** a start date | Action |
 |---------------------|--------|
 | Class session / due-by date only | Start Date **blank**, Due Date = session (BUAD-281, BUAD-304 Connect) |
+| **Homework without explicit start in rubric** | Start Date **blank** — check category PDF/`extracted_text`; `strip_unverified_homework_starts()` |
 | **Start Date = Due Date** on same row | **False detection** — clear Start Date |
 | Due-only lines (e.g. Sleep Paper Sep 15) | Start Date blank |
 | Earliest date from grep verbatim | Start Date blank |
@@ -184,11 +185,36 @@ PY
 output/buad304.json
 ```
 
+**Homework start-date check** (same JSON files — Homework-labeled sub-rows + Homework / Connect categories):
+
+```bash
+python3 - <<'PY'
+import json, sys
+path = sys.argv[1]
+data = json.load(open(path))
+bad = []
+for cat in data["categories"]:
+    name = cat.get("name", "")
+    if name.lower() == "homework" or name == "Personal Assessments (Connect)":
+        if cat.get("start_date"):
+            bad.append(f"{name} (category row) start={cat['start_date']}")
+    for sub in cat.get("assignments") or []:
+        if sub.get("notes") == "Homework" and sub.get("start_date"):
+            bad.append(f"{name}: {sub.get('name','')[:50]} start={sub['start_date']}")
+if bad:
+    print("FAIL homework start without rubric:", *bad, sep="\n  ")
+    raise SystemExit(1)
+print("OK: no unverified homework starts")
+PY
+output/buad281.json
+```
+
 **Red flags (all sheets):**
 
 | Symptom | Likely cause | Fix |
 |---------|--------------|-----|
 | Start Date = Due Date on Homework/Reading | Copied session date into both columns | `strip_false_start_when_same_as_due()`; calendar/Connect parsers use due-only |
+| Homework category start = earliest due | Calendar span treated first session as start | `calendar_homework_dates()` returns due span only; `strip_unverified_homework_starts()` |
 | Connect under Participation | Old `CONNECT_WEEK_CATEGORY` routing | **`Personal Assessments (Connect)`** section |
 
 **Red flags (calendar PDFs):**

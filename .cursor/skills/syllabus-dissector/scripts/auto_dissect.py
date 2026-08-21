@@ -742,11 +742,12 @@ def build_marshall_assignments_by_category(
     connect_items.extend(parse_marshall_connect_assessments(schedule, year))
 
     if re.search(r"McGraw-Hill Connect|Connect module", text, re.I):
+        sharpen_start, sharpen_due = sharpen_dates_from_text(text, year)
         connect_items.append(
             sub_assignment(
                 "Connect: Sharpen Companion",
-                sanitize_start_date(_normalize_md_date(MARSHALL_SHARPEN_START, year), year),
-                _normalize_md_date(MARSHALL_SHARPEN_DUE, year),
+                sharpen_start,
+                sharpen_due,
                 LABEL_HOMEWORK,
             )
         )
@@ -1413,13 +1414,14 @@ def calendar_cert_dates(rows: list[dict], cert: str, year: int) -> tuple[str, st
 
 
 def calendar_homework_dates(rows: list[dict], year: int) -> tuple[str, str]:
+    """Due span only - calendar lists session due dates, not explicit homework starts."""
     isos = sorted(
         md_to_iso(calendar_row_date(r), year)
         for r in rows
         if row_has_homework_points(r)
     )
     isos = [d for d in isos if d]
-    return (isos[0], isos[-1]) if isos else ("", "")
+    return ("", isos[-1]) if isos else ("", "")
 
 
 def gather_supplement_passages(supplement: str, cat: Category) -> list[str]:
@@ -2171,6 +2173,125 @@ def strip_false_start_when_same_as_due(start: str, due: str) -> str:
     return start
 
 
+EXPLICIT_START_MARKERS = re.compile(
+    r"\b(?:opens?|opening|available(?:\s+from|\s+on)?|assigned|begins?|starts?|"
+    r"introduced|mentioned|announced|get\s+started|registration\s+opens?)\b",
+    re.I,
+)
+MONTHS_SHORT = (
+    "jan",
+    "feb",
+    "mar",
+    "apr",
+    "may",
+    "jun",
+    "jul",
+    "aug",
+    "sep",
+    "oct",
+    "nov",
+    "dec",
+)
+
+
+def _category_rubric_text(cat: dict) -> str:
+    """Concatenate extracted_text + structured sections for rubric checks."""
+    parts = [cat.get("extracted_text") or ""]
+    for value in (cat.get("sections") or {}).values():
+        if isinstance(value, list):
+            parts.extend(str(v) for v in value)
+        elif isinstance(value, str):
+            parts.append(value)
+    return "\n".join(parts)
+
+
+def _item_rubric_snippet(rubric: str, item_name: str, window: int = 420) -> str:
+    """Narrow rubric window to the homework item (Connect code, problem set, etc.)."""
+    if not rubric or not item_name:
+        return rubric
+    needles: list[str] = []
+    code = re.search(r"(\d+\.\d+)", item_name)
+    if code:
+        needles.append(code.group(1))
+    needles.append(item_name.replace("Connect: ", "")[:48].strip())
+    for needle in needles:
+        if not needle:
+            continue
+        idx = rubric.lower().find(needle.lower())
+        if idx >= 0:
+            return rubric[max(0, idx - window) : idx + window]
+    return rubric
+
+
+def _iso_in_rubric_snippet(iso: str, snippet: str) -> bool:
+    if not iso or not snippet:
+        return False
+    if iso in snippet:
+        return True
+    _, mo, day = iso.split("-")
+    month_i = int(mo)
+    day_i = int(day)
+    md = [
+        f"{month_i}/{day_i}",
+        f"{month_i:02d}/{day_i:02d}",
+    ]
+    if any(m in snippet for m in md):
+        return True
+    mon = MONTHS_SHORT[month_i - 1]
+    return bool(re.search(rf"\b{mon}\w*\s+{day_i}\b", snippet, re.I))
+
+
+def rubric_explicitly_states_start(rubric: str, start_iso: str, item_name: str = "") -> bool:
+    """True only when raw rubric prose states when work begins (not just a due/session date)."""
+    if not start_iso or not rubric:
+        return False
+    snippet = _item_rubric_snippet(rubric, item_name) if item_name else rubric
+    if not EXPLICIT_START_MARKERS.search(snippet):
+        return False
+    return _iso_in_rubric_snippet(start_iso, snippet)
+
+
+def sharpen_dates_from_text(text: str, year: int) -> tuple[str, str]:
+    """Sharpen due/start only when syllabus prose states them explicitly."""
+    start = ""
+    due = ""
+    m = re.search(
+        r"Sharpen[^\n]{0,240}?(?:opens?|available|from|due)[^\n]{0,80}?(\d{1,2}/\d{1,2})",
+        text,
+        re.I,
+    )
+    if m:
+        iso = _normalize_md_date(m.group(1), year)
+        ctx = text[max(0, m.start() - 40) : m.end() + 40]
+        if re.search(r"\b(?:opens?|available|from|start)\b", ctx, re.I):
+            start = sanitize_start_date(iso, year)
+        if re.search(r"\bdue\b", ctx, re.I):
+            due = iso
+    if not due:
+        due = _normalize_md_date(MARSHALL_SHARPEN_DUE, year)
+    return start, due
+
+
+def strip_unverified_homework_starts(categories: list[dict]) -> None:
+    """Homework rows: blank Start Date unless the category rubric explicitly lists one."""
+    for cat in categories:
+        rubric = _category_rubric_text(cat)
+        is_hw_category = (
+            cat.get("name", "").lower() == "homework"
+            or cat.get("name") == MARSHALL_CONNECT_CATEGORY
+        )
+        if is_hw_category and cat.get("start_date"):
+            if not rubric_explicitly_states_start(rubric, cat["start_date"], cat.get("name", "")):
+                cat["start_date"] = ""
+        for sub in cat.get("assignments") or []:
+            if sub.get("notes") != LABEL_HOMEWORK:
+                continue
+            if sub.get("start_date") and not rubric_explicitly_states_start(
+                rubric, sub["start_date"], sub.get("name", "")
+            ):
+                sub["start_date"] = ""
+
+
 def apply_start_date_cutoff(categories: list[dict], year: int) -> None:
     for cat in categories:
         cat["start_date"] = sanitize_start_date(cat.get("start_date", ""), year)
@@ -2182,6 +2303,7 @@ def apply_start_date_cutoff(categories: list[dict], year: int) -> None:
             sub["start_date"] = strip_false_start_when_same_as_due(
                 sub["start_date"], sub.get("due_date", "")
             )
+    strip_unverified_homework_starts(categories)
 
 
 def dissect(
@@ -2266,9 +2388,7 @@ def dissect(
                 "name": MARSHALL_CONNECT_CATEGORY,
                 "weight": None,
                 "weight_unit": "percent",
-                "start_date": sanitize_start_date(
-                    _normalize_md_date(MARSHALL_CONNECT_START, year), year
-                ),
+                "start_date": "",
                 "due_date": _normalize_md_date(MARSHALL_CONNECT_DUE, year),
                 "is_group_project": False,
                 "assignments": marshall_connect_items,

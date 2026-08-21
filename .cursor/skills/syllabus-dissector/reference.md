@@ -268,7 +268,7 @@ Populate **Start Date** only when the syllabus explicitly states when work begin
 
 **Verified sources:**
 - HIST-103 weekly **Reading** sub-rows: week-range start + end from schedule block (`Sep 1-4`)
-- BUAD-281 calendar rows: **due date only** (class session, `due by 8:00 am`) — Start Date blank
+- BUAD-281 calendar rows: **due date only** (class session, `due by 8:00 am`) — Start Date blank; Homework category row start blank unless rubric says *opens/assigned*
 - BUAD-304 Connect session rows: schedule class date as **due only** (Start Date blank); Sharpen due 9/4
 - Marshall categories: `MARSHALL_INFERRED_STARTS` prose matches only (not earliest deliverable due)
 - Research guide: milestones with `kind: start` (*opens*, *registration opens*)
@@ -279,8 +279,9 @@ Populate **Start Date** only when the syllabus explicitly states when work begin
 - **`start_date == due_date`** on the same row (false detection — strip start)
 - `start = due` for single-day exams, calendar sessions, or Connect items
 - Pre-Aug 1 dates (dropped to blank)
+- **Homework** start unless rubric uses explicit *opens / assigned / mentioned* language with that date
 
-Implemented in `sanitize_start_date()`, `strip_false_start_when_same_as_due()`, `parse_dates_from_text()` (due-only), calendar/Connect parsers, and HIST-103 due-line parsing.
+Implemented in `sanitize_start_date()`, `strip_false_start_when_same_as_due()`, `strip_unverified_homework_starts()`, `parse_dates_from_text()` (due-only), calendar/Connect parsers, and HIST-103 due-line parsing.
 
 **Example:** Sleep Paper → Start Date **blank**, Due Date **2026-09-15**.
 
@@ -301,6 +302,7 @@ Implemented in `sanitize_start_date()`, `strip_false_start_when_same_as_due()`, 
 | **Participation flagged group** | `team` in participation blurb triggered group flag | `infer_group_project()` excludes Participation |
 | **Connect under Participation** | Connect self-assessments routed into Participation or other graded rows via schedule-week heuristic | Separate **`Personal Assessments (Connect)`** section; Participation gets **Research** only |
 | **Start Date = Due Date** | Session date copied into both columns (BUAD-281 calendar, BUAD-304 Connect) | Due-only in parsers; `strip_false_start_when_same_as_due()` in `apply_start_date_cutoff()` |
+| **Homework start = earliest due** | First graded session mistaken for category start | `calendar_homework_dates()` due-only; `strip_unverified_homework_starts()` checks raw rubric |
 | **Research credits missing** | Syllabus only says "see Brightspace" | Merge `--research-guide` PDF for SONA milestones |
 
 ---

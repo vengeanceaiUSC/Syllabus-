@@ -145,7 +145,7 @@
       "name": "Homework",
       "weight": 170.0,
       "weight_unit": "points",
-      "start_date": "2026-09-09",
+      "start_date": "",
       "due_date": "2026-12-02",
       "is_group_project": false,
       "assignments": [

@@ -838,7 +838,7 @@
       "name": "Personal Assessments (Connect)",
       "weight": null,
       "weight_unit": "percent",
-      "start_date": "2026-08-24",
+      "start_date": "",
       "due_date": "2026-12-20",
       "is_group_project": false,
       "assignments": [
