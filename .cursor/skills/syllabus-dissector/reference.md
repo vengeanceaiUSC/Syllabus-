@@ -269,7 +269,7 @@ Populate **Start Date** only when the syllabus explicitly states when work begin
 **Verified sources:**
 - HIST-103 weekly **Reading** sub-rows: week-range start + end from schedule block (`Sep 1-4`)
 - BUAD-281 calendar rows: **due date only** (class session, `due by 8:00 am`) — Start Date blank
-- BUAD-304 Connect session rows: schedule session date as due when listed; Connect window end as fallback
+- BUAD-304 Connect session rows: schedule class date as **due only** (Start Date blank); Sharpen due 9/4
 - Marshall categories: `MARSHALL_INFERRED_STARTS` prose matches only (not earliest deliverable due)
 - Research guide: milestones with `kind: start` (*opens*, *registration opens*)
 

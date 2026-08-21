@@ -680,7 +680,7 @@ def parse_marshall_connect_assessments(schedule: str, year: int) -> list[dict]:
         items.append(
             sub_assignment(
                 f"Connect: Self-Assessment {code} - {title}",
-                session_iso,
+                "",
                 session_iso or connect_due,
                 LABEL_HOMEWORK,
             )
