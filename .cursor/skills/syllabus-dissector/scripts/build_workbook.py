@@ -43,6 +43,30 @@ HEADERS = [
 THIN = Side(style="thin", color="D9D9D9")
 BORDER = Border(left=THIN, right=THIN, top=THIN, bottom=THIN)
 
+OVERVIEW_SHEET = "Overview"
+MAJOR_LABELS = frozenset({"Assignment", "Exam", "Certification"})
+MAJOR_NAME = re.compile(
+    r"\b(paper|midterm|final exam|final|exam|project|presentation|memo|"
+    r"certification|simternship|linkedin|proposal|contract|reflection)\b",
+    re.I,
+)
+PAPER_NAME = re.compile(r"\bpaper\b", re.I)
+MONTH_NAMES = (
+    "",
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+)
+
 # Sub-row type labels (Category column) — sort order for grouped display
 SUB_LABEL_ORDER = {
     "Reading": 0,
@@ -186,6 +210,283 @@ def pdf_hyperlink(target: str, label: str = "Open PDF") -> str:
     """Excel formula that opens a URL or file path when clicked."""
     safe = target.replace('"', '""')
     return f'=HYPERLINK("{safe}","{label}")'
+
+
+def sheet_link(sheet_name: str, label: str | None = None) -> str:
+    """Internal workbook hyperlink to another worksheet."""
+    safe_sheet = sheet_name.replace("'", "''")
+    text = label or sheet_name
+    safe_label = text.replace('"', '""')
+    return f'=HYPERLINK("#\'{safe_sheet}\'!A1","{safe_label}")'
+
+
+def collect_class_json_files(workbook_path: Path) -> list[dict]:
+    """Load every class JSON next to the workbook (output/*.json)."""
+    json_dir = workbook_path.parent
+    out: list[dict] = []
+    for path in sorted(json_dir.glob("*.json")):
+        try:
+            data = json.loads(path.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, OSError):
+            continue
+        if data.get("class", {}).get("code") and data.get("categories") is not None:
+            out.append(data)
+    return out
+
+
+def _due_sort_key(due: str, label: str, name: str, is_sub: bool = False) -> tuple:
+    return (due or "9999-99-99", 1 if is_sub else 0, SUB_LABEL_ORDER.get(label, 99), name)
+
+
+def _is_major_category(cat: dict) -> bool:
+    name = cat.get("name") or ""
+    if cat.get("weight") is None and not MAJOR_NAME.search(name):
+        return False
+    return bool(MAJOR_NAME.search(name))
+
+
+def _paper_names(categories: list[dict]) -> list[str]:
+    return [
+        cat.get("name") or ""
+        for cat in categories
+        if PAPER_NAME.search(cat.get("name") or "")
+    ]
+
+
+def iter_due_items(data: dict) -> list[dict]:
+    """Flatten category + sub-rows that carry due dates."""
+    code = str(data.get("class", {}).get("code") or "")
+    items: list[dict] = []
+    for cat in data.get("categories") or []:
+        cat_name = cat.get("name") or ""
+        due = cat.get("due_date") or ""
+        if due:
+            items.append(
+                {
+                    "class_code": code,
+                    "category": cat_name,
+                    "name": cat_name,
+                    "due_date": due,
+                    "label": "",
+                    "is_major": _is_major_category(cat),
+                    "is_sub": False,
+                }
+            )
+        for sub in cat.get("assignments") or []:
+            sd = sub.get("due_date") or ""
+            if not sd:
+                continue
+            label = sub.get("notes") or ""
+            sname = sub.get("name") or ""
+            is_major = label in MAJOR_LABELS or (
+                label == "Assignment" and bool(MAJOR_NAME.search(sname))
+            )
+            items.append(
+                {
+                    "class_code": code,
+                    "category": cat_name,
+                    "name": sname,
+                    "due_date": sd,
+                    "label": label,
+                    "is_major": is_major,
+                    "is_sub": True,
+                }
+            )
+    return items
+
+
+def class_has_label(data: dict, label: str) -> bool:
+    for cat in data.get("categories") or []:
+        for sub in cat.get("assignments") or []:
+            if sub.get("notes") == label:
+                return True
+    return False
+
+
+def summarize_class(data: dict) -> dict:
+    cls = data.get("class", {})
+    code = str(cls.get("code") or "")
+    categories = data.get("categories") or []
+    due_items = iter_due_items(data)
+    sorted_all = sorted(
+        due_items,
+        key=lambda x: _due_sort_key(x["due_date"], x["label"], x["name"], x["is_sub"]),
+    )
+    sorted_major = sorted(
+        [x for x in due_items if x["is_major"]],
+        key=lambda x: _due_sort_key(x["due_date"], x["label"], x["name"], x["is_sub"]),
+    )
+    first_any = sorted_all[0] if sorted_all else None
+    first_major = sorted_major[0] if sorted_major else None
+    papers = _paper_names(categories)
+    return {
+        "code": code,
+        "name": cls.get("name") or "",
+        "term": cls.get("term") or "",
+        "has_reading": class_has_label(data, "Reading"),
+        "has_homework": class_has_label(data, "Homework"),
+        "papers": papers,
+        "has_group_project": any(c.get("is_group_project") for c in categories),
+        "first_any": first_any,
+        "first_major": first_major,
+        "due_items": due_items,
+    }
+
+
+def _month_key(iso: str) -> str:
+    return iso[:7] if len(iso) >= 7 else ""
+
+
+def _month_heading(month_key: str) -> str:
+    if not month_key or len(month_key) < 7:
+        return "Do First This Month"
+    year_s, mon_s = month_key.split("-")
+    return f"Do First - {MONTH_NAMES[int(mon_s)]} {year_s}"
+
+
+def build_overview_sheet(wb: Workbook, all_data: list[dict]) -> None:
+    """Cover-page stats: workload flags, first due items, monthly priority list."""
+    if OVERVIEW_SHEET in wb.sheetnames:
+        wb.remove(wb[OVERVIEW_SHEET])
+    ws = wb.create_sheet(title=OVERVIEW_SHEET, index=0)
+    ws.sheet_properties.tabColor = "203764"
+
+    summaries = [summarize_class(d) for d in all_data]
+    summaries.sort(key=lambda s: s["code"])
+
+    all_due: list[dict] = []
+    for s in summaries:
+        all_due.extend(s["due_items"])
+    all_due.sort(key=lambda x: _due_sort_key(x["due_date"], x["label"], x["name"], x["is_sub"]))
+
+    focus_month = _month_key(all_due[0]["due_date"]) if all_due else ""
+    month_items = [x for x in all_due if _month_key(x["due_date"]) == focus_month]
+
+    title_fill = PatternFill("solid", fgColor="203764")
+    header_fill = PatternFill("solid", fgColor="4472C4")
+    section_fill = PatternFill("solid", fgColor="D9E1F2")
+    title_font = Font(bold=True, size=16, color="FFFFFF")
+    header_font = Font(bold=True, color="FFFFFF")
+    label_font = Font(bold=True)
+    ncols = 9
+    last_col = get_column_letter(ncols)
+
+    row = 1
+    ws.merge_cells(f"A{row}:{last_col}{row}")
+    c = ws.cell(row=row, column=1, value="Stats Breakdown")
+    c.font = title_font
+    c.fill = title_fill
+    c.alignment = Alignment(horizontal="left", vertical="center")
+    ws.row_dimensions[row].height = 28
+    row += 1
+
+    terms = sorted({s["term"] for s in summaries if s["term"]})
+    if terms:
+        ws.merge_cells(f"A{row}:{last_col}{row}")
+        ws.cell(row=row, column=1, value=f"Term: {', '.join(terms)}").font = Font(italic=True)
+        row += 1
+
+    if all_due:
+        start = all_due[0]
+        ws.merge_cells(f"A{row}:{last_col}{row}")
+        lead = (
+            f"Start here: {start['due_date']} - {start['class_code']} - "
+            f"{start['label'] or 'Category'}: {start['name'][:70]}"
+        )
+        cell = ws.cell(row=row, column=1, value=lead)
+        cell.font = Font(bold=True, color="C00000")
+        cell.fill = PatternFill("solid", fgColor="FFF2CC")
+        cell.alignment = Alignment(wrap_text=True)
+        ws.row_dimensions[row].height = 32
+        row += 1
+
+    row += 1
+    summary_headers = [
+        "Class",
+        "Reading",
+        "Homework",
+        "Papers",
+        "Group Project",
+        "First on list",
+        "List due",
+        "First major",
+        "Major due",
+    ]
+    hdr_row = row
+    for col, name in enumerate(summary_headers, start=1):
+        c = ws.cell(row=row, column=col, value=name)
+        c.font = header_font
+        c.fill = header_fill
+        c.border = BORDER
+        c.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
+    row += 1
+
+    for i, s in enumerate(summaries):
+        band = PatternFill("solid", fgColor="F2F2F2" if i % 2 else "FFFFFF")
+        fa = s["first_any"]
+        fm = s["first_major"]
+        papers_text = ", ".join(s["papers"]) if s["papers"] else "-"
+        values = [
+            sheet_link(sanitize_sheet_name(s["code"]), s["code"]),
+            "Yes" if s["has_reading"] else "-",
+            "Yes" if s["has_homework"] else "-",
+            papers_text,
+            "Yes" if s["has_group_project"] else "-",
+            (fa["name"][:55] if fa else "-"),
+            (fa["due_date"] if fa else "-"),
+            (fm["name"][:55] if fm else "-"),
+            (fm["due_date"] if fm else "-"),
+        ]
+        for col, value in enumerate(values, start=1):
+            c = ws.cell(row=row, column=col, value=value)
+            c.fill = band
+            c.border = BORDER
+            c.alignment = Alignment(wrap_text=True, vertical="top")
+            if col == 1 and str(value).startswith("=HYPERLINK"):
+                c.font = Font(bold=True, color="0563C1", underline="single")
+        row += 1
+
+    row += 1
+    ws.merge_cells(f"A{row}:{last_col}{row}")
+    sec = ws.cell(row=row, column=1, value=_month_heading(focus_month))
+    sec.font = label_font
+    sec.fill = section_fill
+    row += 1
+
+    month_headers = ["Due", "Class", "Type", "Item"]
+    for col, name in enumerate(month_headers, start=1):
+        c = ws.cell(row=row, column=col, value=name)
+        c.font = header_font
+        c.fill = header_fill
+        c.border = BORDER
+    row += 1
+
+    for i, item in enumerate(month_items[:40]):
+        band = PatternFill("solid", fgColor="F2F2F2" if i % 2 else "FFFFFF")
+        label = item["label"] or "Category"
+        for col, value in enumerate(
+            [item["due_date"], item["class_code"], label, item["name"][:80]],
+            start=1,
+        ):
+            c = ws.cell(row=row, column=col, value=value)
+            c.fill = band
+            c.border = BORDER
+            c.alignment = Alignment(wrap_text=True, vertical="top")
+            if col == 3 and label in SUB_LABEL_COLORS:
+                c.font = Font(bold=True, color=SUB_LABEL_COLORS[label])
+        row += 1
+
+    widths = [14, 10, 10, 28, 12, 36, 12, 36, 12]
+    for col, width in enumerate(widths, start=1):
+        ws.column_dimensions[get_column_letter(col)].width = width
+    ws.column_dimensions["D"].width = 32
+    ws.freeze_panes = ws.cell(row=hdr_row + 1, column=1)
+
+
+def refresh_overview_sheet(wb: Workbook, workbook_path: Path) -> None:
+    all_data = collect_class_json_files(workbook_path)
+    if len(all_data) >= 1:
+        build_overview_sheet(wb, all_data)
 
 
 def build(
@@ -389,6 +690,7 @@ def build(
     ws.freeze_panes = ws.cell(row=header_row + 1, column=1)
 
     remove_blank_template_sheet(wb)
+    refresh_overview_sheet(wb, workbook_path)
     wb.save(str(workbook_path))
     print(f"Updated sheet '{sheet_name}' in {workbook_path}")
     print(f"Wrote {len(pdf_paths)} PDF document(s) to {docs_dir}")

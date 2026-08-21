@@ -16,7 +16,8 @@ the syllabus mentions about that item — extracted automatically.
 3. **Assignment details** — start date (only when syllabus-verified), due date, group-project flag
 4. **PDF documents** — one per category; structured sections + verbatim extract
 5. **Excel hyperlinks** — **Open PDF** opens hosted PDF in browser
-6. **Sub-assignments** — indented schedule rows under each graded category. Sub-rows are **grouped by type** (Reading, then Homework, etc.) and sorted by date. Each sub-row uses:
+6. **Overview cover sheet** — first tab summarizes all classes (Reading/Homework/Papers/Group flags, first due item, first major due, monthly do-first list)
+7. **Sub-assignments** — indented schedule rows under each graded category. Sub-rows are **grouped by type** (Reading, then Homework, etc.) and sorted by date. Each sub-row uses:
 
 | Column | Parent category row | Sub-row |
 |--------|---------------------|---------|

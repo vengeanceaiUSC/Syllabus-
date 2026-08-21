@@ -327,14 +327,22 @@ Supports `-`, en-dash (`\u2013`), and `%` / `pts` / `points`.
 
 ```
 output/
-  syllabi.xlsx
+  syllabi.xlsx          # Overview tab (cover) + one sheet per class
   documents/*.pdf
-  buad281.json          # optional --keep-json
-
-examples/
-  hist103.auto.json     # golden reference — full syllabus
-  buad281.auto.json     # golden reference — course calendar (ISO dates)
+  *.json                # optional --keep-json (Overview reads all JSON in output/)
 ```
+
+### Overview cover sheet (first tab)
+
+Built automatically whenever `build_workbook.py` runs. Scans every `output/*.json` and writes tab **`Overview`**:
+
+| Section | Contents |
+|---------|----------|
+| **Start here** | Earliest due item across all classes |
+| **Class summary** | Per class: Reading / Homework / Papers / Group Project flags; first item on the assignment list + due; first **major** (papers, exams, memos, certs) + due |
+| **Do First - {Month}** | All due items in the month of the global earliest due date, chronological |
+
+Class names link to their worksheet. Regenerated after each class pipeline run (run all classes so Overview stays complete).
 
 Excel **Open PDF** uses hosted URLs via `--link-base` (standalone download works).
 
