@@ -20,6 +20,86 @@
       "start_date": "2026-08-24",
       "due_date": "2026-12-04",
       "is_group_project": false,
+      "assignments": [
+        {
+          "name": "Research: Setup deadline (registration, prescreening, contacts)",
+          "start_date": "",
+          "due_date": "2026-09-25",
+          "notes": "Research Participation Guide"
+        },
+        {
+          "name": "Research: Employee contact surveys sent",
+          "start_date": "",
+          "due_date": "2026-10-26",
+          "notes": "Research Participation Guide"
+        },
+        {
+          "name": "Research: Complete 2.0 research credits",
+          "start_date": "",
+          "due_date": "2026-12-04",
+          "notes": "Research Participation Guide"
+        },
+        {
+          "name": "Connect: Sharpen Companion",
+          "start_date": "2026-07-06",
+          "due_date": "2026-09-04",
+          "notes": "Brightspace Connect module"
+        },
+        {
+          "name": "Research: SONA registration opens",
+          "start_date": "2026-08-24",
+          "due_date": "",
+          "notes": "Research Participation Guide"
+        },
+        {
+          "name": "Connect: Self-Assessment 11.01 - What is my",
+          "start_date": "2026-08-24",
+          "due_date": "2026-12-20",
+          "notes": "Assigned in class week of 2026-09-09; Connect window"
+        },
+        {
+          "name": "Connect: Self-Assessment 11.02 - What is my",
+          "start_date": "2026-08-24",
+          "due_date": "2026-12-20",
+          "notes": "Assigned in class week of 2026-09-09; Connect window"
+        },
+        {
+          "name": "Connect: Self-Assessment 12.02 - Which influence",
+          "start_date": "2026-08-24",
+          "due_date": "2026-12-20",
+          "notes": "Assigned in class week of 2026-08-24; Connect window"
+        },
+        {
+          "name": "Connect: Self-Assessment 3.01 - What is my Big thinking about your topics and",
+          "start_date": "2026-08-24",
+          "due_date": "2026-12-20",
+          "notes": "Assigned in class week of 2026-08-31; Connect window"
+        },
+        {
+          "name": "Connect: Self-Assessment 3.04 - What Is Your Level",
+          "start_date": "2026-08-24",
+          "due_date": "2026-12-20",
+          "notes": "Assigned in class week of 2026-08-31; Connect window"
+        },
+        {
+          "name": "Connect: Self-Assessment 5.01 - Assessing Your",
+          "start_date": "2026-08-24",
+          "due_date": "2026-12-20",
+          "notes": "Assigned in class week of 2026-09-02; Connect window"
+        },
+        {
+          "name": "Research: Prescreening questionnaire opens",
+          "start_date": "2026-09-11",
+          "due_date": "",
+          "notes": "Research Participation Guide"
+        },
+        {
+          "name": "Research: Study invitations begin (after setup)",
+          "start_date": "2026-09-26",
+          "due_date": "",
+          "notes": "Research Participation Guide"
+        }
+      ],
       "sections": {
         "Overview (Course Evaluation)": "Participation 15%",
         "Course Schedule (dated sessions)": [
@@ -99,14 +179,22 @@
       "start_date": "2026-08-24",
       "due_date": "2026-10-14",
       "is_group_project": false,
+      "assignments": [
+        {
+          "name": "Midterm Exam",
+          "start_date": "2026-08-24",
+          "due_date": "2026-10-14",
+          "notes": "Course Schedule due date"
+        }
+      ],
       "sections": {
         "Overview (Course Evaluation)": "Midterm Exam 15%",
         "Course Schedule (due dates)": [
-          "Due: 2026-10-14 | 10/7 M Team Project 10/12 Workshop I W Midterm 10/14 Exam 8 -- 8 of 16 -- M Teams Part 1 Textbook Reading: Ch. 8 Team project outline due 10/19 ARES Reading: • Coutu, D. (2009"
+          "Due: 2026-10-14 | 10/7 M Team Project 10/12 Workshop I W Midterm 10/14 Exam 8 -- 8 of 16 -- M Teams Part 1 Textbook Reading: Ch. 8 10/19 Team project outline due ARES Reading: • Coutu, D. (2009"
         ],
         "Course Schedule (dated sessions)": [
           "2026-10-12 | 10/12 Workshop I W Midterm",
-          "2026-10-14 | 10/14 Exam 8 -- 8 of 16 -- M Teams Part 1 Textbook Reading: Ch. 8 Team project outline due"
+          "2026-10-14 | 10/14 Exam 8 -- 8 of 16 -- M Teams Part 1 Textbook Reading: Ch. 8 10/19 Team project outline due ARES Reading: • Coutu, D. (2009). Why teams don’t work. • Duhigg, C. (2016). What Google Learned from its Quest to Build the Perfect Team."
         ],
         "Related Mentions": [
           "Midterm Exam. I will give an exam at the midpoint of the course to assess your understanding of material",
@@ -114,13 +202,13 @@
           "Please refer to the exam study guide posted to Brightspace for information on the topics covered, the format",
           "of the questions, and sample questions. Make-up exams are not permitted. I expect this exam to be",
           "administered in person.",
-          "Due: 2026-10-14 | 10/7 M Team Project 10/12 Workshop I W Midterm 10/14 Exam 8 -- 8 of 16 -- M Teams Part 1 Textbook Reading: Ch. 8 Team project outline due 10/19 ARES Reading: • Coutu, D. (2009",
-          "2026-10-14 | 10/14 Exam 8 -- 8 of 16 -- M Teams Part 1 Textbook Reading: Ch. 8 Team project outline due",
+          "2026-10-14 | 10/14 Exam 8 -- 8 of 16 -- M Teams Part 1 Textbook Reading: Ch. 8 10/19 Team project outline due ARES Reading: • Coutu, D. (2009). Why teams don’t work. • Duhigg, C. (2016). What Google Learned from its Quest to Build the Perfect Team.",
+          "Due: 2026-10-14 | 10/7 M Team Project 10/12 Workshop I W Midterm 10/14 Exam 8 -- 8 of 16 -- M Teams Part 1 Textbook Reading: Ch. 8 10/19 Team project outline due ARES Reading: • Coutu, D. (2009",
           "2026-10-12 | 10/12 Workshop I W Midterm",
           "Midterm Exam 15%"
         ]
       },
-      "extracted_text": "Midterm Exam. I will give an exam at the midpoint of the course to assess your understanding of material\npreviously covered. The exam will consist of multiple-choice, true/false and/or short-essay questions.\nPlease refer to the exam study guide posted to Brightspace for information on the topics covered, the format\nof the questions, and sample questions. Make-up exams are not permitted. I expect this exam to be\nadministered in person.\n\n---\n\nDue: 2026-10-14 | 10/7 M Team Project 10/12 Workshop I W Midterm 10/14 Exam 8 -- 8 of 16 -- M Teams Part 1 Textbook Reading: Ch. 8 Team project outline due 10/19 ARES Reading: • Coutu, D. (2009\n\n---\n\n2026-10-14 | 10/14 Exam 8 -- 8 of 16 -- M Teams Part 1 Textbook Reading: Ch. 8 Team project outline due\n\n---\n\n2026-10-12 | 10/12 Workshop I W Midterm\n\n---\n\nMidterm Exam 15%"
+      "extracted_text": "Midterm Exam. I will give an exam at the midpoint of the course to assess your understanding of material\npreviously covered. The exam will consist of multiple-choice, true/false and/or short-essay questions.\nPlease refer to the exam study guide posted to Brightspace for information on the topics covered, the format\nof the questions, and sample questions. Make-up exams are not permitted. I expect this exam to be\nadministered in person.\n\n---\n\n2026-10-14 | 10/14 Exam 8 -- 8 of 16 -- M Teams Part 1 Textbook Reading: Ch. 8 10/19 Team project outline due ARES Reading: • Coutu, D. (2009). Why teams don’t work. • Duhigg, C. (2016). What Google Learned from its Quest to Build the Perfect Team.\n\n---\n\nDue: 2026-10-14 | 10/7 M Team Project 10/12 Workshop I W Midterm 10/14 Exam 8 -- 8 of 16 -- M Teams Part 1 Textbook Reading: Ch. 8 10/19 Team project outline due ARES Reading: • Coutu, D. (2009\n\n---\n\n2026-10-12 | 10/12 Workshop I W Midterm\n\n---\n\nMidterm Exam 15%"
     },
     {
       "name": "Case Analysis Assignments",
@@ -129,6 +217,26 @@
       "start_date": "2026-08-26",
       "due_date": "2026-10-21",
       "is_group_project": false,
+      "assignments": [
+        {
+          "name": "Connect: Self-Assessment 12.01 - What kind of",
+          "start_date": "2026-08-24",
+          "due_date": "2026-12-20",
+          "notes": "Assigned in class week of 2026-09-16; Connect window"
+        },
+        {
+          "name": "Thomas Green Case Analysis Memo",
+          "start_date": "2026-08-26",
+          "due_date": "2026-09-16",
+          "notes": "Course Schedule due date"
+        },
+        {
+          "name": "SkillsForTomorrow Analysis Memo",
+          "start_date": "2026-08-26",
+          "due_date": "2026-10-21",
+          "notes": "Course Schedule due date"
+        }
+      ],
       "sections": {
         "Overview (Course Evaluation)": "Case Analysis Assignments 5%",
         "Course Schedule (due dates)": [
@@ -165,6 +273,26 @@
       "start_date": "2026-08-31",
       "due_date": "2026-12-02",
       "is_group_project": false,
+      "assignments": [
+        {
+          "name": "Connect: Self-Assessment 16.02 - What Is Your",
+          "start_date": "2026-08-24",
+          "due_date": "2026-12-20",
+          "notes": "Assigned in class week of 2026-11-30; Connect window"
+        },
+        {
+          "name": "Connect: Self-Assessment 16.03 - Assessing Your",
+          "start_date": "2026-08-24",
+          "due_date": "2026-12-20",
+          "notes": "Assigned in class week of 2026-11-30; Connect window"
+        },
+        {
+          "name": "Final Exam",
+          "start_date": "2026-08-31",
+          "due_date": "2026-12-02",
+          "notes": "Course Schedule due date"
+        }
+      ],
       "sections": {
         "Overview (Course Evaluation)": "Final Reflection Paper 10%",
         "Course Schedule (due dates)": [
@@ -196,6 +324,26 @@
       "start_date": "2026-08-31",
       "due_date": "2026-09-28",
       "is_group_project": true,
+      "assignments": [
+        {
+          "name": "Connect: Self-Assessment 10.5 - Preferred Conflict",
+          "start_date": "2026-08-24",
+          "due_date": "2026-12-20",
+          "notes": "Assigned in class week of 2026-09-28; Connect window"
+        },
+        {
+          "name": "Connect: Self-Assessment 9.01 - Assessing My",
+          "start_date": "2026-08-24",
+          "due_date": "2026-12-20",
+          "notes": "Assigned in class week of 2026-09-28; Connect window"
+        },
+        {
+          "name": "Team project proposal & team contract",
+          "start_date": "2026-08-31",
+          "due_date": "2026-09-28",
+          "notes": "Course Schedule due date"
+        }
+      ],
       "sections": {
         "Overview (Course Evaluation)": "Proposal & Team Contract 3%",
         "Course Schedule (due dates)": [
@@ -264,8 +412,35 @@
       "start_date": "2026-08-31",
       "due_date": "2026-11-09",
       "is_group_project": true,
+      "assignments": [
+        {
+          "name": "Connect: Self-Assessment 14.02 - What Type of Organizational Culture Do I",
+          "start_date": "2026-08-24",
+          "due_date": "2026-12-20",
+          "notes": "Assigned in class week of 2026-11-04; Connect window"
+        },
+        {
+          "name": "Connect: Self-Assessment 8.01 - Group",
+          "start_date": "2026-08-24",
+          "due_date": "2026-12-20",
+          "notes": "Assigned in class week of 2026-10-19; Connect window"
+        },
+        {
+          "name": "Team project outline",
+          "start_date": "2026-08-31",
+          "due_date": "2026-10-19",
+          "notes": "Course Schedule due date"
+        },
+        {
+          "name": "Team project paper",
+          "start_date": "2026-08-31",
+          "due_date": "2026-11-09",
+          "notes": "Course Schedule due date"
+        }
+      ],
       "sections": {
         "Course Schedule (due dates)": [
+          "Due: 2026-10-19 | M Teams Part 1 Textbook Reading: Ch. 8 10/19 Team project outline due ARES Reading: • Coutu, D. (2009). Why teams don’t work. • Duhigg, C. (2016). What Google Learned from its Quest to Buil",
           "Due: 2026-11-09 | refer? 9 -- 9 of 16 -- M Team Project Team project paper due (one 11/9 Presentations submission per team). Presentation slides are due on 11/9 before class. W Veteran's Day – No Class 11/11"
         ],
         "Course Schedule (dated sessions)": [
@@ -273,7 +448,7 @@
           "2026-09-23 | 9/23 Exercise: 12 Angry Men M Communica- Textbook Reading: Ch. 9 & 10.1-10.4 Team project proposal & team",
           "2026-10-07 | 10/7 M Team Project",
           "2026-10-12 | 10/12 Workshop I W Midterm",
-          "2026-10-14 | 10/14 Exam 8 -- 8 of 16 -- M Teams Part 1 Textbook Reading: Ch. 8 Team project outline due",
+          "2026-10-14 | 10/14 Exam 8 -- 8 of 16 -- M Teams Part 1 Textbook Reading: Ch. 8 10/19 Team project outline due ARES Reading: • Coutu, D. (2009). Why teams don’t work. • Duhigg, C. (2016). What Google Learned from its Quest to Build the Perfect Team.",
           "2026-10-28 | 10/28 Community Dimensions of Diversity E xercise Stereotypes and Attribution Processes Note: Class meets in the classroom M Team Project",
           "2026-11-02 | 11/2 Workshop II W Organiza- Textbook Reading: Ch. 14 & 15 In-class exercise: Map a",
           "2026-11-16 | 11/16 E xercise W Team Project Self and peer evaluation due 11/18 Presentations M In-class Video Assignment: Complete the video Before class, your team needs",
@@ -439,17 +614,18 @@
           "consideration of the information provided through your peer evaluations.",
           "2026-08-26 | 8/26 Attitudes & ARES Reading: Park, N. & Peterson, C. Character Strengths Ethics (2009) Character Strengths: Research and assessment in class. Practice Other: Watch the USC-CT and Case Analysis videos at this link. M Individual Textbook Re",
           "2026-11-30 | 11/30 -tional ARES Reading: Cummings, T. (1995). Change From Programmed Change to Self-Design: Learning How to Change Organizations. Assessment(s): • Self-Assessment 16.02: What Is Your Readiness for Change? • Self-Assessment 16.03: Assessi",
+          "2026-10-14 | 10/14 Exam 8 -- 8 of 16 -- M Teams Part 1 Textbook Reading: Ch. 8 10/19 Team project outline due ARES Reading: • Coutu, D. (2009). Why teams don’t work. • Duhigg, C. (2016). What Google Learned from its Quest to Build the Perfect Team.",
+          "Due: 2026-10-19 | M Teams Part 1 Textbook Reading: Ch. 8 10/19 Team project outline due ARES Reading: • Coutu, D. (2009). Why teams don’t work. • Duhigg, C. (2016). What Google Learned from its Quest to Buil",
           "Due: 2026-11-09 | refer? 9 -- 9 of 16 -- M Team Project Team project paper due (one 11/9 Presentations submission per team). Presentation slides are due on 11/9 before class. W Veteran's Day – No Class 11/11",
           "2026-11-16 | 11/16 E xercise W Team Project Self and peer evaluation due 11/18 Presentations M In-class Video Assignment: Complete the video Before class, your team needs",
           "2026-10-28 | 10/28 Community Dimensions of Diversity E xercise Stereotypes and Attribution Processes Note: Class meets in the classroom M Team Project",
           "2026-09-23 | 9/23 Exercise: 12 Angry Men M Communica- Textbook Reading: Ch. 9 & 10.1-10.4 Team project proposal & team",
-          "2026-10-14 | 10/14 Exam 8 -- 8 of 16 -- M Teams Part 1 Textbook Reading: Ch. 8 Team project outline due",
           "2026-11-02 | 11/2 Workshop II W Organiza- Textbook Reading: Ch. 14 & 15 In-class exercise: Map a",
           "2026-10-12 | 10/12 Workshop I W Midterm",
           "2026-10-07 | 10/7 M Team Project"
         ]
       },
-      "extracted_text": "M Team Project Team project paper due (one\n11/9 Presentations submission per team).\nPresentation slides are due on\n1 1/9 before class.\nW Veteran's Day – No Class\n11/11\nM Meta-4 Note: Class meets in the ELC\n11/16 E xercise\nW Team Project Self and peer evaluation due\n11/18 Presentations\nM In-class Video Assignment: Complete the video Before class, your team needs\n11/23 Exercise: interviews of the Omega executives PRIOR to assign each team member to\nOmega to class using this link. interview several of the 9\nSystems Omega Systems executives.\nHave at least 2 people\ninterview each executive so\nyou do not miss any details.\nMake sure that everyone gets\ninterviewed. Bring your\ninterview notes to class to\nassist in the exercise.\nW Thanksgiving Break – No Class\n11/25\nM Organiza Textbook Reading: Ch. 16\n11/30 -tional ARES Reading: Cummings, T. (1995).\nChange From Programmed Change to Self-Design:\nLearning How to Change Organizations.\nAssessment(s):\n• Self-Assessment 16.02: What Is Your\nReadiness for Change?\n• Self-Assessment 16.03: Assessing Your\nResistance to Change\nW Final Review Bring questions to ask your professor Personal Reflection Paper due\n12/2 Question Course evaluations to be completed in class.\nSession\nFinal Exam MW 4:00 - 5:50pm section:\nWed., December 9; 4:30pm – 6:30pm\nMW 6:00 - 7:50pm section:\nWed., December 9; 7pm – 9pm\n10\n\n\n\nAdditional Information\nUSC Marshall Critical Thinking Initiative\nThe USC Marshall Critical Thinking Initiative is a school-wide effort to improve your critical thinking\nskills in order to be more successful problem solvers in class and ultimately in the workplace. This means\nthat you will engage in a variety of learning activities in your courses which are aimed at developing and\napplying your critical thinking skills in a disciplined manner so that you can outperform others to get your\ndesired job and to further excel in your career. Your ability to think critically is an important part of the\nevaluation/grading process in this course. The centerpiece of Marshall’s critical thinking knowledge is a\nwebsite that contains instructional materials and videos. We utilize these resources to prepare you to do the\ncase analysis assignments. Here is the link to the website.\nAcademic Integrity\nThe University of Southern California is foremost a learning community committed to fostering successful\nscholars and researchers dedicated to the pursuit of knowledge and the transmission of ideas. Academic\nmisconduct is contrary to this fundamental mission and includes any act of dishonesty in the submission of\nacademic work (either in draft or final form), as well as cheating, plagiarism, fabrication (e.g., falsifying\ndata), knowingly assisting others in acts of academic dishonesty, and any act that gains or is intended to\ngain an unfair academic advantage. Students are expected to uphold the highest standards of academic\nintegrity in all coursework. This course follows the expectations for academic integrity as stated in the USC\nStudent Handbook. All students are expected to submit assignments that are original work and prepared\nspecifically for the course/section in this academic term. Students may not submit work written by others\nor “recycle” work prepared for other courses without obtaining written permission from the instructor(s).\nStudents suspected of academic misconduct will be reported to the Office of Academic Integrity.\nAcademic dishonesty has a far-reaching impact and is considered a serious offense against the university.\nViolations will result in a grade penalty, such as a failing grade on the assignment or in the course, and\ndisciplinary action from the university, such as suspension or expulsion. For more information about\nacademic integrity see the Student Handbook, the Office of Academic Integrity’s website, and university\npolicies on Research and Scholarship Misconduct. Please ask your instructor if you are unsure what\nconstitutes unauthorized assistance on an exam or assignment or what information requires citation and/or\nattribution.\nInstructors determine whether and how generative AI tools (such as ChatGPT, Copilot, Claude, Gemini,\nand similar applications) and other external resources (such as English-language translation tools) may be\nused in this course. Expectations may vary from assignment to assignment. This includes AI tools that\nrecord, transcribe, or summarize class sessions, which may require express instructor permission. Review\nthe AI use guidance provided carefully, and direct any questions to your instructor before submitting work.\nStudents seeking general guidance may consult the following resources:\n• USC Student Handbook\n• Generative AI General Policy\n• Practical Tips for Using AI in Academic Work\n• Office of Academic Integrity\nStatement Around Use of AI Tools\nSince creating, analytical, and critical thinking skills are part of the learning outcomes of this course, all\nassignments should be prepared by the student working individually or in groups. Students may not have\nanother person or entity complete any substantive portion of the assignment. Developing strong\ncompetencies in these areas will prepare you for a competitive workplace. Additionally, adding copyrighted\ncase content to an LLM such as ChatGPT is a violation of our case publisher Harvard University’s terms\nof use and copyright. Therefore, using AI tools is prohibited in this course, will be identified as plagiarism,\nand will be reported to the Office of Academic Integrity.\n11\n\n\n\nAdd/Drop Process\nMost Marshall classes are open enrollment (R-clearance) through the Add deadline. If there is an open seat,\nyou can add the class using Web Registration. If the class is full, you will need to continue checking Web\nRegistration or the Schedule of Classes to see if a space becomes available. Students who do not attend the\nfirst two class sessions (for classes that meet twice per week) or the first class meeting (for classes that meet\nonce per week) may be dropped from the course. Therefore, let me know if you have any conflicts in Week\n1 like visa or health issues so you aren’t dropped. There are no formal wait lists for Marshall undergraduate\ncourses, and professors cannot add students or increase the course capacity. If all sections of the course are\nfull, you can add your name to an interest list by contacting the Office of Undergraduate Advising & Student\nAffairs; if new seats or sections are added, students on the interest list will be notified.\nStatement on Technology Use\nI expect you to be responsible in using technology in class. You will need to “be here and be present” so\nthat we can create an engaging learning community. It is far more important to participate in class than to\ntake detailed notes. Course powerpoint slides and class recordings will be posted to Brightspace. After\neach class session, you may want to take some time to reflect on the learning experience and type up\nwhatever notes seem useful.\nVideotaping faculty lectures is not permitted due to copyright infringement regulations. Audiotaping may\nbe permitted if approved by the professor. Use of any recorded or distributed material is reserved\nexclusively for the USC students registered in this class. Exceptions to this policy may be granted to\nindividual students with appropriate documentation on a case-by-case basis.\nUse of Recordings\nPursuant to the USC Student Handbook (https://policy.usc.edu/studenthandbook/, pages 16 and 59),\ndistribution or use of notes, recordings, exams, or other intellectual property, based on university classes or\nlectures without the express permission of the instructor for purposes other than individual or group study\nis prohibited. This includes but is not limited to providing materials for distribution by services publishing\ncourse materials. This restriction on unauthorized use also applies to any information, created by another,\ndistributed to students, or in any way had been displayed for use in relationship to the class, whether\nobtained in class, via email, on the internet, or via any other method. Distributing course material without\nthe instructor’s permission will be presumed to be an intentional act to facilitate or enable academic\ndishonesty and is strictly prohibited. Violations of this policy may subject an individual or entity to\n\n---\n\nTeam Project\nYou will work with your team throughout the semester to prepare for and complete the Team Project. The\ngoals of the team project are (1) to enrich your understanding of organizations and leadership; (2) to provide\nyou with an opportunity to apply what you have learned in the course; (3) to assess your ability to analyze\nan organization or organizations and come to insightful conclusions and (4) to help you develop critical\ninterpersonal and teamwork skills.\nYour team will have a choice of conducting either:\n1. A fieldwork study with a local organization such as a student organization, business unit on campus, or\nother local company. Your team will investigate and analyze some aspect of this organization that\nconnects with themes in the course such as the organization’s culture, rewards system or the structure\nand functioning of groups within the organization. You will identify best practices and make\nrecommendations based on your study.\n4\n\n\n\n2. An issue analysis of an issue/topic connected to the themes in the course and of importance to multiple\norganizations; this issue may be inspired by something in the headlines of the business press or\nsomething in your own experience. You will need to examine the nature of this issue and analyze in\ndetail how different companies have addressed and/or experienced the issue. You will identify best\npractices and make recommendations based on your study using archival sources (i.e. library research).\nYour “deliverable” for this project has five components:\n1. Project proposal with team contract\n2. Detailed outline of paper\n3. Project paper\n4. In-class presentation followed by Q&A\n5. Self & peer evaluation feedback (online assessment explained in class).\nSubmitted assignments should use 12-point, Times New Roman font, double-spaced, with 1-inch margins\non all sides.\nFeedback helps you learn and improve your performance as well as the quality of your output as a team.\nAs part of the team project, you will practice and develop skills in providing and receiving effective\nfeedback through in-class exercises and a more formal peer evaluation survey. The criteria for the peer\nevaluation will be discussed in class and posted to Brightspace.\nThe final grade for this project is based on four components: the project proposal, the project paper, the\npresentation, and the self & peer evaluation. The team project will be evaluated based on the quality of the\nanalysis, the appropriate use of course concepts, principles and frameworks, the logic and substantiation of\nconclusions, the clarity, organization and style of the writing and the quality of your class presentation. The\ndetailed outline of the paper is not graded but you will receive feedback to help improve the final paper.\nFurther instructions and grading rubrics will be posted to Brightspace.\nGrades for individual student contributions to the team project are assigned by your Professor, based on\nmy observations of the team’s working dynamics, my assessment of the team project quality, and thoughtful\nconsideration of the information provided through your peer evaluations.\n\n---\n\n2026-08-26 | 8/26 Attitudes & ARES Reading: Park, N. & Peterson, C. Character Strengths Ethics (2009) Character Strengths: Research and assessment in class. Practice Other: Watch the USC-CT and Case Analysis videos at this link. M Individual Textbook Re\n\n---\n\n2026-11-30 | 11/30 -tional ARES Reading: Cummings, T. (1995). Change From Programmed Change to Self-Design: Learning How to Change Organizations. Assessment(s): • Self-Assessment 16.02: What Is Your Readiness for Change? • Self-Assessment 16.03: Assessi\n\n---\n\nDue: 2026-11-09 | refer? 9 -- 9 of 16 -- M Team Project Team project paper due (one 11/9 Presentations submission per team). Presentation slides are due on 11/9 before class. W Veteran's Day – No Class 11/11\n\n---\n\n2026-11-16 | 11/16 E xercise W Team Project Self and peer evaluation due 11/18 Presentations M In-class Video Assignment: Complete the video Before class, your team needs\n\n---\n\n2026-10-28 | 10/28 Community Dimensions of Diversity E xercise Stereotypes and Attribution Processes Note: Class meets in the classroom M Team Project\n\n---\n\n2026-09-23 | 9/23 Exercise: 12 Angry Men M Communica- Textbook Reading: Ch. 9 & 10.1-10.4 Team project proposal & team\n\n---\n\n2026-10-14 | 10/14 Exam 8 -- 8 of 16 -- M Teams Part 1 Textbook Reading: Ch. 8 Team project outline due\n\n---\n\n2026-11-02 | 11/2 Workshop II W Organiza- Textbook Reading: Ch. 14 & 15 In-class exercise: Map a\n\n---\n\n2026-10-12 | 10/12 Workshop I W Midterm\n\n---\n\n2026-10-07 | 10/7 M Team Project"
+      "extracted_text": "M Team Project Team project paper due (one\n11/9 Presentations submission per team).\nPresentation slides are due on\n1 1/9 before class.\nW Veteran's Day – No Class\n11/11\nM Meta-4 Note: Class meets in the ELC\n11/16 E xercise\nW Team Project Self and peer evaluation due\n11/18 Presentations\nM In-class Video Assignment: Complete the video Before class, your team needs\n11/23 Exercise: interviews of the Omega executives PRIOR to assign each team member to\nOmega to class using this link. interview several of the 9\nSystems Omega Systems executives.\nHave at least 2 people\ninterview each executive so\nyou do not miss any details.\nMake sure that everyone gets\ninterviewed. Bring your\ninterview notes to class to\nassist in the exercise.\nW Thanksgiving Break – No Class\n11/25\nM Organiza Textbook Reading: Ch. 16\n11/30 -tional ARES Reading: Cummings, T. (1995).\nChange From Programmed Change to Self-Design:\nLearning How to Change Organizations.\nAssessment(s):\n• Self-Assessment 16.02: What Is Your\nReadiness for Change?\n• Self-Assessment 16.03: Assessing Your\nResistance to Change\nW Final Review Bring questions to ask your professor Personal Reflection Paper due\n12/2 Question Course evaluations to be completed in class.\nSession\nFinal Exam MW 4:00 - 5:50pm section:\nWed., December 9; 4:30pm – 6:30pm\nMW 6:00 - 7:50pm section:\nWed., December 9; 7pm – 9pm\n10\n\n\n\nAdditional Information\nUSC Marshall Critical Thinking Initiative\nThe USC Marshall Critical Thinking Initiative is a school-wide effort to improve your critical thinking\nskills in order to be more successful problem solvers in class and ultimately in the workplace. This means\nthat you will engage in a variety of learning activities in your courses which are aimed at developing and\napplying your critical thinking skills in a disciplined manner so that you can outperform others to get your\ndesired job and to further excel in your career. Your ability to think critically is an important part of the\nevaluation/grading process in this course. The centerpiece of Marshall’s critical thinking knowledge is a\nwebsite that contains instructional materials and videos. We utilize these resources to prepare you to do the\ncase analysis assignments. Here is the link to the website.\nAcademic Integrity\nThe University of Southern California is foremost a learning community committed to fostering successful\nscholars and researchers dedicated to the pursuit of knowledge and the transmission of ideas. Academic\nmisconduct is contrary to this fundamental mission and includes any act of dishonesty in the submission of\nacademic work (either in draft or final form), as well as cheating, plagiarism, fabrication (e.g., falsifying\ndata), knowingly assisting others in acts of academic dishonesty, and any act that gains or is intended to\ngain an unfair academic advantage. Students are expected to uphold the highest standards of academic\nintegrity in all coursework. This course follows the expectations for academic integrity as stated in the USC\nStudent Handbook. All students are expected to submit assignments that are original work and prepared\nspecifically for the course/section in this academic term. Students may not submit work written by others\nor “recycle” work prepared for other courses without obtaining written permission from the instructor(s).\nStudents suspected of academic misconduct will be reported to the Office of Academic Integrity.\nAcademic dishonesty has a far-reaching impact and is considered a serious offense against the university.\nViolations will result in a grade penalty, such as a failing grade on the assignment or in the course, and\ndisciplinary action from the university, such as suspension or expulsion. For more information about\nacademic integrity see the Student Handbook, the Office of Academic Integrity’s website, and university\npolicies on Research and Scholarship Misconduct. Please ask your instructor if you are unsure what\nconstitutes unauthorized assistance on an exam or assignment or what information requires citation and/or\nattribution.\nInstructors determine whether and how generative AI tools (such as ChatGPT, Copilot, Claude, Gemini,\nand similar applications) and other external resources (such as English-language translation tools) may be\nused in this course. Expectations may vary from assignment to assignment. This includes AI tools that\nrecord, transcribe, or summarize class sessions, which may require express instructor permission. Review\nthe AI use guidance provided carefully, and direct any questions to your instructor before submitting work.\nStudents seeking general guidance may consult the following resources:\n• USC Student Handbook\n• Generative AI General Policy\n• Practical Tips for Using AI in Academic Work\n• Office of Academic Integrity\nStatement Around Use of AI Tools\nSince creating, analytical, and critical thinking skills are part of the learning outcomes of this course, all\nassignments should be prepared by the student working individually or in groups. Students may not have\nanother person or entity complete any substantive portion of the assignment. Developing strong\ncompetencies in these areas will prepare you for a competitive workplace. Additionally, adding copyrighted\ncase content to an LLM such as ChatGPT is a violation of our case publisher Harvard University’s terms\nof use and copyright. Therefore, using AI tools is prohibited in this course, will be identified as plagiarism,\nand will be reported to the Office of Academic Integrity.\n11\n\n\n\nAdd/Drop Process\nMost Marshall classes are open enrollment (R-clearance) through the Add deadline. If there is an open seat,\nyou can add the class using Web Registration. If the class is full, you will need to continue checking Web\nRegistration or the Schedule of Classes to see if a space becomes available. Students who do not attend the\nfirst two class sessions (for classes that meet twice per week) or the first class meeting (for classes that meet\nonce per week) may be dropped from the course. Therefore, let me know if you have any conflicts in Week\n1 like visa or health issues so you aren’t dropped. There are no formal wait lists for Marshall undergraduate\ncourses, and professors cannot add students or increase the course capacity. If all sections of the course are\nfull, you can add your name to an interest list by contacting the Office of Undergraduate Advising & Student\nAffairs; if new seats or sections are added, students on the interest list will be notified.\nStatement on Technology Use\nI expect you to be responsible in using technology in class. You will need to “be here and be present” so\nthat we can create an engaging learning community. It is far more important to participate in class than to\ntake detailed notes. Course powerpoint slides and class recordings will be posted to Brightspace. After\neach class session, you may want to take some time to reflect on the learning experience and type up\nwhatever notes seem useful.\nVideotaping faculty lectures is not permitted due to copyright infringement regulations. Audiotaping may\nbe permitted if approved by the professor. Use of any recorded or distributed material is reserved\nexclusively for the USC students registered in this class. Exceptions to this policy may be granted to\nindividual students with appropriate documentation on a case-by-case basis.\nUse of Recordings\nPursuant to the USC Student Handbook (https://policy.usc.edu/studenthandbook/, pages 16 and 59),\ndistribution or use of notes, recordings, exams, or other intellectual property, based on university classes or\nlectures without the express permission of the instructor for purposes other than individual or group study\nis prohibited. This includes but is not limited to providing materials for distribution by services publishing\ncourse materials. This restriction on unauthorized use also applies to any information, created by another,\ndistributed to students, or in any way had been displayed for use in relationship to the class, whether\nobtained in class, via email, on the internet, or via any other method. Distributing course material without\nthe instructor’s permission will be presumed to be an intentional act to facilitate or enable academic\ndishonesty and is strictly prohibited. Violations of this policy may subject an individual or entity to\n\n---\n\nTeam Project\nYou will work with your team throughout the semester to prepare for and complete the Team Project. The\ngoals of the team project are (1) to enrich your understanding of organizations and leadership; (2) to provide\nyou with an opportunity to apply what you have learned in the course; (3) to assess your ability to analyze\nan organization or organizations and come to insightful conclusions and (4) to help you develop critical\ninterpersonal and teamwork skills.\nYour team will have a choice of conducting either:\n1. A fieldwork study with a local organization such as a student organization, business unit on campus, or\nother local company. Your team will investigate and analyze some aspect of this organization that\nconnects with themes in the course such as the organization’s culture, rewards system or the structure\nand functioning of groups within the organization. You will identify best practices and make\nrecommendations based on your study.\n4\n\n\n\n2. An issue analysis of an issue/topic connected to the themes in the course and of importance to multiple\norganizations; this issue may be inspired by something in the headlines of the business press or\nsomething in your own experience. You will need to examine the nature of this issue and analyze in\ndetail how different companies have addressed and/or experienced the issue. You will identify best\npractices and make recommendations based on your study using archival sources (i.e. library research).\nYour “deliverable” for this project has five components:\n1. Project proposal with team contract\n2. Detailed outline of paper\n3. Project paper\n4. In-class presentation followed by Q&A\n5. Self & peer evaluation feedback (online assessment explained in class).\nSubmitted assignments should use 12-point, Times New Roman font, double-spaced, with 1-inch margins\non all sides.\nFeedback helps you learn and improve your performance as well as the quality of your output as a team.\nAs part of the team project, you will practice and develop skills in providing and receiving effective\nfeedback through in-class exercises and a more formal peer evaluation survey. The criteria for the peer\nevaluation will be discussed in class and posted to Brightspace.\nThe final grade for this project is based on four components: the project proposal, the project paper, the\npresentation, and the self & peer evaluation. The team project will be evaluated based on the quality of the\nanalysis, the appropriate use of course concepts, principles and frameworks, the logic and substantiation of\nconclusions, the clarity, organization and style of the writing and the quality of your class presentation. The\ndetailed outline of the paper is not graded but you will receive feedback to help improve the final paper.\nFurther instructions and grading rubrics will be posted to Brightspace.\nGrades for individual student contributions to the team project are assigned by your Professor, based on\nmy observations of the team’s working dynamics, my assessment of the team project quality, and thoughtful\nconsideration of the information provided through your peer evaluations.\n\n---\n\n2026-08-26 | 8/26 Attitudes & ARES Reading: Park, N. & Peterson, C. Character Strengths Ethics (2009) Character Strengths: Research and assessment in class. Practice Other: Watch the USC-CT and Case Analysis videos at this link. M Individual Textbook Re\n\n---\n\n2026-11-30 | 11/30 -tional ARES Reading: Cummings, T. (1995). Change From Programmed Change to Self-Design: Learning How to Change Organizations. Assessment(s): • Self-Assessment 16.02: What Is Your Readiness for Change? • Self-Assessment 16.03: Assessi\n\n---\n\n2026-10-14 | 10/14 Exam 8 -- 8 of 16 -- M Teams Part 1 Textbook Reading: Ch. 8 10/19 Team project outline due ARES Reading: • Coutu, D. (2009). Why teams don’t work. • Duhigg, C. (2016). What Google Learned from its Quest to Build the Perfect Team.\n\n---\n\nDue: 2026-10-19 | M Teams Part 1 Textbook Reading: Ch. 8 10/19 Team project outline due ARES Reading: • Coutu, D. (2009). Why teams don’t work. • Duhigg, C. (2016). What Google Learned from its Quest to Buil\n\n---\n\nDue: 2026-11-09 | refer? 9 -- 9 of 16 -- M Team Project Team project paper due (one 11/9 Presentations submission per team). Presentation slides are due on 11/9 before class. W Veteran's Day – No Class 11/11\n\n---\n\n2026-11-16 | 11/16 E xercise W Team Project Self and peer evaluation due 11/18 Presentations M In-class Video Assignment: Complete the video Before class, your team needs\n\n---\n\n2026-10-28 | 10/28 Community Dimensions of Diversity E xercise Stereotypes and Attribution Processes Note: Class meets in the classroom M Team Project\n\n---\n\n2026-09-23 | 9/23 Exercise: 12 Angry Men M Communica- Textbook Reading: Ch. 9 & 10.1-10.4 Team project proposal & team\n\n---\n\n2026-11-02 | 11/2 Workshop II W Organiza- Textbook Reading: Ch. 14 & 15 In-class exercise: Map a\n\n---\n\n2026-10-12 | 10/12 Workshop I W Midterm\n\n---\n\n2026-10-07 | 10/7 M Team Project"
     },
     {
       "name": "Presentation",
@@ -458,6 +634,14 @@
       "start_date": "2026-08-31",
       "due_date": "2026-11-09",
       "is_group_project": true,
+      "assignments": [
+        {
+          "name": "Presentation slides",
+          "start_date": "2026-08-31",
+          "due_date": "2026-11-09",
+          "notes": "Course Schedule due date"
+        }
+      ],
       "sections": {
         "Overview (Course Evaluation)": "Presentation 10%",
         "Course Schedule (due dates)": [
@@ -638,6 +822,14 @@
       "start_date": "2026-08-31",
       "due_date": "2026-11-18",
       "is_group_project": true,
+      "assignments": [
+        {
+          "name": "Self & peer evaluation",
+          "start_date": "2026-08-31",
+          "due_date": "2026-11-18",
+          "notes": "Course Schedule due date"
+        }
+      ],
       "sections": {
         "Overview (Course Evaluation)": "Self & Peer Evaluation 2%",
         "Course Schedule (due dates)": [
@@ -700,6 +892,14 @@
       "start_date": "2026-08-24",
       "due_date": "2026-12-09",
       "is_group_project": false,
+      "assignments": [
+        {
+          "name": "Final Exam",
+          "start_date": "2026-08-24",
+          "due_date": "2026-12-09",
+          "notes": "Course Schedule due date"
+        }
+      ],
       "sections": {
         "Overview (Course Evaluation)": "Final Exam 25%",
         "Course Schedule (due dates)": [

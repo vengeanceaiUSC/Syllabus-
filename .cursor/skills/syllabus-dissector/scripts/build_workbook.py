@@ -252,23 +252,50 @@ def build(
         else:
             target = ""
 
-        values = [
+        def write_row(
+            name: str,
+            weight: str,
+            start: str,
+            due: str,
+            group: str,
+            details: str,
+            *,
+            is_sub: bool = False,
+        ) -> None:
+            nonlocal row
+            display_name = f"  ↳ {name}" if is_sub else name
+            values = [display_name, weight, start, due, group, details]
+            band = band_light if i % 2 == 0 else band_lighter
+            sub_fill = PatternFill("solid", fgColor=tint(base_color, 0.96)) if is_sub else band
+            for col, value in enumerate(values, start=1):
+                c = ws.cell(row=row, column=col, value=value)
+                c.fill = sub_fill
+                c.border = BORDER
+                c.alignment = Alignment(vertical="center", wrap_text=(col == 1))
+                if col == 1 and is_sub:
+                    c.font = Font(size=10, color="404040")
+                if col == ncols and value and value.startswith("=HYPERLINK"):
+                    c.font = Font(color="0563C1", underline="single")
+            row += 1
+
+        write_row(
             cat.get("name", ""),
             format_weight(cat),
             cat.get("start_date") or "",
             cat.get("due_date") or "",
             "Yes" if cat.get("is_group_project") else "No",
             pdf_hyperlink(target) if target else "",
-        ]
-        band = band_light if i % 2 == 0 else band_lighter
-        for col, value in enumerate(values, start=1):
-            c = ws.cell(row=row, column=col, value=value)
-            c.fill = band
-            c.border = BORDER
-            c.alignment = Alignment(vertical="center", wrap_text=(col == 1))
-            if col == ncols and target:
-                c.font = Font(color="0563C1", underline="single")
-        row += 1
+        )
+        for sub in cat.get("assignments") or []:
+            write_row(
+                sub.get("name", "Assignment"),
+                "",
+                sub.get("start_date") or "",
+                sub.get("due_date") or "",
+                "",
+                sub.get("notes") or "",
+                is_sub=True,
+            )
 
     total = sum(float(c["weight"]) for c in categories if c.get("weight") is not None)
     if any(c.get("weight") is not None for c in categories):

@@ -149,6 +149,20 @@ MARSHALL_SCHEDULE_RULES: list[tuple[str, list[str]]] = [
     ("Final Exam", [r"Wed\.?,?\s*December\s+(\d{1,2})", r"Final Exam[^\n]{0,200}December\s+(\d{1,2})"]),
 ]
 # Inferred start dates from schedule prose (earliest milestone before a due date)
+MARSHALL_CONNECT_START = "8/24"
+MARSHALL_CONNECT_DUE = "12/20"
+MARSHALL_SHARPEN_START = "7/6"
+MARSHALL_SHARPEN_DUE = "9/4"
+CONNECT_WEEK_CATEGORY: list[tuple[str, str]] = [
+    (r"\b8/31\b", "Participation"),
+    (r"\b9/2\b", "Participation"),
+    (r"\b9/9\b", "Participation"),
+    (r"\b9/16\b", "Case Analysis Assignments"),
+    (r"\b9/28\b", "Proposal & Team Contract"),
+    (r"\b10/19\b", "Team Project Paper"),
+    (r"\b11/4\b", "Team Project Paper"),
+    (r"\b11/30\b", "Final Reflection Paper"),
+]
 MARSHALL_INFERRED_STARTS: list[tuple[str, str, str]] = [
     ("Participation", r"8/24", r"\b8/24\b"),
     ("Case Analysis Assignments", r"8/26", r"USC-CT and Case\s*\n?\s*Analysis videos"),
@@ -419,8 +433,8 @@ def _normalize_schedule_text(schedule: str) -> str:
         text,
     )
     text = re.sub(
-        r"(M Teams Part 1[^\n]*)\n(\d{1,2}/\d{1,2})[^\n]*outline due",
-        lambda m: re.sub(r"\s+", " ", m.group(0).replace("\n", " ")),
+        r"([Tt]eam project outline due)\s*\n\s*(\d{1,2}/\d{1,2})",
+        r"\2 \1",
         text,
         flags=re.I,
     )
@@ -575,6 +589,229 @@ def research_dates_for_participation(milestones: list[dict]) -> tuple[str, str]:
     start = min(starts) if starts else ""
     due = max(dues) if dues else ""
     return start, due
+
+
+def _connect_category_for_class_date(class_md: str) -> str:
+    for pattern, cat in CONNECT_WEEK_CATEGORY:
+        if re.search(pattern, class_md):
+            return cat
+    return "Participation"
+
+
+def _nearest_class_date_before(schedule: str, pos: int) -> str:
+    lookback = schedule[max(0, pos - 400) : pos]
+    dates = re.findall(r"\b(\d{1,2}/\d{1,2})\b", lookback)
+    return dates[-1] if dates else ""
+
+
+def parse_marshall_connect_assessments(schedule: str, year: int) -> list[dict]:
+    """McGraw-Hill Connect self-assessments listed in the Course Schedule."""
+    if not schedule:
+        return []
+    schedule = _normalize_schedule_text(schedule)
+    connect_start = _normalize_md_date(MARSHALL_CONNECT_START, year)
+    connect_due = _normalize_md_date(MARSHALL_CONNECT_DUE, year)
+    seen: set[str] = set()
+    items: list[dict] = []
+    pat = re.compile(
+        r"Self[- ]Assessment\s+(\d+\.\d+)\s*:?\s*([^\n]{3,90}?)(?:\s+on Connect|$|\n)",
+        re.I,
+    )
+    for m in pat.finditer(schedule):
+        code = m.group(1)
+        if code in seen:
+            continue
+        seen.add(code)
+        title = re.sub(r"\s+", " ", m.group(2)).strip(" :-")
+        class_md = _nearest_class_date_before(schedule, m.start())
+        class_iso = _normalize_md_date(class_md, year) if class_md else connect_start
+        cat = _connect_category_for_class_date(class_md) if class_md else "Participation"
+        items.append(
+            {
+                "name": f"Connect: Self-Assessment {code} - {title}",
+                "start_date": connect_start,
+                "due_date": connect_due,
+                "category": cat,
+                "notes": f"Assigned in class week of {class_iso}; Connect window",
+            }
+        )
+    return items
+
+
+def _deliverable_assignment_name(raw: str, category: str) -> str:
+    raw = re.sub(r"\s+", " ", raw).strip()
+    patterns = [
+        (r"Midterm[^\n]{0,30}Exam", "Midterm Exam"),
+        (r"Final Exam[^\n]{0,40}December", "Final Exam"),
+        (r"Thomas Green|Case Analysis[^\n]{0,40}Memo due", "Thomas Green Case Analysis Memo"),
+        (r"SkillsForTomorrow|Analysis Memo Due", "SkillsForTomorrow Analysis Memo"),
+        (r"proposal[^\n]{0,120}contract due", "Team project proposal & team contract"),
+        (r"outline due", "Team project outline"),
+        (r"[Tt]eam project paper due", "Team project paper"),
+        (r"Presentation slides", "Presentation slides"),
+        (r"peer evaluation due", "Self & peer evaluation"),
+        (r"Personal Reflection Paper due", "Personal Reflection Paper"),
+    ]
+    for pat, label in patterns:
+        if re.search(pat, raw, re.I):
+            return label
+    return raw[:80] or category
+
+
+def build_marshall_assignments_by_category(
+    text: str,
+    year: int,
+    research_guide: str,
+    categories: list[Category],
+) -> dict[str, list[dict]]:
+    """Daily homework / deliverable rows keyed by graded category name."""
+    out: dict[str, list[dict]] = {c.name: [] for c in categories}
+    schedule = find_course_schedule_section(text)
+    inferred = marshall_inferred_start_dates(schedule, year)
+
+    # Graded deliverables from schedule
+    for d in parse_marshall_schedule_deliverables(schedule, year):
+        cat_key = d["category"]
+        cat_name = next((c.name for c in categories if marshall_category_key(c.name) == cat_key), cat_key)
+        if cat_name not in out:
+            out[cat_name] = []
+        start = inferred.get(cat_key, d["date_iso"])
+        out[cat_name].append(
+            {
+                "name": _deliverable_assignment_name(d["raw"], cat_key),
+                "start_date": min(start, d["date_iso"]) if start else d["date_iso"],
+                "due_date": d["date_iso"],
+                "notes": "Course Schedule due date",
+            }
+        )
+
+    # Connect self-assessments (McGraw-Hill daily prep)
+    for item in parse_marshall_connect_assessments(schedule, year):
+        cat_name = next(
+            (c.name for c in categories if marshall_category_key(c.name) == item["category"]),
+            "Participation",
+        )
+        if cat_name not in out:
+            out[cat_name] = []
+        out[cat_name].append(
+            {k: v for k, v in item.items() if k != "category"}
+        )
+
+    # Connect platform extras (Brightspace defaults for BUAD 304)
+    if re.search(r"McGraw-Hill Connect|Connect module", text, re.I):
+        part_name = next((c.name for c in categories if "participation" in c.name.lower()), None)
+        if part_name:
+            out[part_name].append(
+                {
+                    "name": "Connect: Sharpen Companion",
+                    "start_date": _normalize_md_date(MARSHALL_SHARPEN_START, year),
+                    "due_date": _normalize_md_date(MARSHALL_SHARPEN_DUE, year),
+                    "notes": "Brightspace Connect module",
+                }
+            )
+
+    # Research participation milestones
+    if research_guide:
+        part_name = next((c.name for c in categories if "participation" in c.name.lower()), None)
+        if part_name:
+            for m in parse_research_participation_milestones(research_guide, year):
+                out[part_name].append(
+                    {
+                        "name": f"Research: {m['label']}",
+                        "start_date": m["date_iso"] if m["kind"] == "start" else "",
+                        "due_date": m["date_iso"] if m["kind"] == "due" else "",
+                        "notes": "Research Participation Guide",
+                    }
+                )
+
+    # Deduplicate by name within each category
+    for cat_name, items in out.items():
+        seen_names: set[str] = set()
+        unique: list[dict] = []
+        for item in sorted(items, key=lambda x: (x.get("start_date") or "", x.get("due_date") or "", x["name"])):
+            key = item["name"].lower()
+            if key in seen_names:
+                continue
+            seen_names.add(key)
+            unique.append(item)
+        out[cat_name] = unique
+    return out
+
+
+def calendar_homework_assignments(rows: list[dict], year: int) -> list[dict]:
+    """One assignment row per graded homework problem set (BUAD-281 style)."""
+    items: list[dict] = []
+    for row in rows:
+        if not row_has_homework_points(row):
+            continue
+        iso = md_to_iso(calendar_row_date(row), year)
+        if not iso:
+            continue
+        hw = (row.get("homework") or "").replace(" / ", "; ")
+        topic = (row.get("topic") or "").replace(" / ", "; ")
+        cls = row.get("class") or ""
+        name = f"Class {cls} homework" if cls else "Homework"
+        if hw:
+            name += f" ({hw[:60]})"
+        items.append(
+            {
+                "name": name,
+                "start_date": iso,
+                "due_date": iso,
+                "notes": topic[:80] if topic else "Course Calendar",
+            }
+        )
+    return items
+
+
+def build_calendar_assignments_by_category(
+    text: str, year: int, categories: list[Category]
+) -> dict[str, list[dict]]:
+    out: dict[str, list[dict]] = {c.name: [] for c in categories}
+    rows = parse_embedded_calendar_table(text)
+    if not rows:
+        return out
+    exams = calendar_exam_snippets(text)
+    for cat in categories:
+        low = cat.name.lower()
+        if "homework" in low:
+            out[cat.name] = calendar_homework_assignments(rows, year)
+        elif "midterm 1" in low and exams.get("Midterm 1"):
+            iso = parse_calendar_dates(text, cat, year)
+            out[cat.name] = [
+                {"name": line[:100], "start_date": iso[0] or iso[1], "due_date": iso[1], "notes": "Exam"}
+                for line in exams["Midterm 1"]
+            ]
+        elif "midterm 2" in low and exams.get("Midterm 2"):
+            iso = parse_calendar_dates(text, cat, year)
+            out[cat.name] = [
+                {"name": line[:100], "start_date": iso[0] or iso[1], "due_date": iso[1], "notes": "Exam"}
+                for line in exams["Midterm 2"]
+            ]
+        elif "final" in low and "exam" in low:
+            merged = build_merged_final_exam_block(text, rows, year)
+            if merged:
+                iso = parse_calendar_dates(text, cat, year)
+                out[cat.name] = [
+                    {
+                        "name": "Final Exam",
+                        "start_date": iso[0] or iso[1],
+                        "due_date": iso[1],
+                        "notes": merged[:120],
+                    }
+                ]
+        elif "linkedin" in low or "stukent" in low:
+            cert = "linkedin" if "linkedin" in low else "stukent"
+            start, due = calendar_cert_dates(rows, cert, year)
+            out[cat.name] = [
+                {
+                    "name": cat.name,
+                    "start_date": start,
+                    "due_date": due,
+                    "notes": "Certification (Course Calendar)",
+                }
+            ]
+    return out
 
 
 def find_marshall_evaluation_line(text: str, cat: Category) -> str:
@@ -1596,6 +1833,13 @@ def dissect(
         grading_scale["raw_scale"] = f"Total graded points in calendar: {total_pts:g} (letter scale not in document)"
     year = infer_year(term)
     research_guide = parse_research_guide_text(text)
+    assignment_map: dict[str, list[dict]] = {}
+    if marshall_mode:
+        assignment_map = build_marshall_assignments_by_category(
+            text, year, research_guide, categories
+        )
+    elif calendar_mode:
+        assignment_map = build_calendar_assignments_by_category(text, year, categories)
     result_categories = []
     for cat in categories:
         if calendar_mode:
@@ -1631,6 +1875,7 @@ def dissect(
                 "start_date": start,
                 "due_date": due,
                 "is_group_project": infer_group_project(cat, verbatim),
+                "assignments": assignment_map.get(cat.name, []),
                 "sections": sections,
                 "extracted_text": verbatim,
             }
