@@ -131,7 +131,11 @@ MARSHALL_SCHEDULE_RULES: list[tuple[str, list[str]]] = [
     ("Proposal & Team Contract", [r"(\d{1,2}/\d{1,2})[^\n]{0,200}contract due"]),
     (
         "Team Project Paper",
-        [r"[Tt]eam project paper due[^0-9\n]{0,40}(\d{1,2}/\d{1,2})"],
+        [
+            r"[Tt]eam project paper due[^0-9\n]{0,40}(\d{1,2}/\d{1,2})",
+            r"[Tt]eam project outline due[^0-9\n]{0,40}(\d{1,2}/\d{1,2})",
+            r"(\d{1,2}/\d{1,2})[^\n]{0,120}[Tt]eam project outline due",
+        ],
     ),
     ("Presentation", [r"Presentation slides are due on\s*\n?\s*(\d{1,2}/\d{1,2})"]),
     (
@@ -143,6 +147,19 @@ MARSHALL_SCHEDULE_RULES: list[tuple[str, list[str]]] = [
         [r"Personal Reflection Paper due\s*\n?\s*(\d{1,2}/\d{1,2})"],
     ),
     ("Final Exam", [r"Wed\.?,?\s*December\s+(\d{1,2})", r"Final Exam[^\n]{0,200}December\s+(\d{1,2})"]),
+]
+# Inferred start dates from schedule prose (earliest milestone before a due date)
+MARSHALL_INFERRED_STARTS: list[tuple[str, str, str]] = [
+    ("Participation", r"8/24", r"\b8/24\b"),
+    ("Case Analysis Assignments", r"8/26", r"USC-CT and Case\s*\n?\s*Analysis videos"),
+    ("Proposal & Team Contract", r"8/31", r"Team project will be explained"),
+    ("Proposal & Team Contract", r"9/9", r"forming teams this week"),
+    ("Team Project Paper", r"8/31", r"Team project will be explained"),
+    ("Presentation", r"8/31", r"Team project will be explained"),
+    ("Self & Peer Evaluation", r"8/31", r"Team project will be explained"),
+    ("Final Reflection Paper", r"8/31", r"Team project will be explained"),
+    ("Midterm Exam", r"8/24", r"\b8/24\b"),
+    ("Final Exam", r"8/24", r"\b8/24\b"),
 ]
 RESEARCH_MILESTONES: list[tuple[str, str, str, str]] = [
     ("SONA registration opens", r"Opens Aug(?:ust)?\s+24|August 24", "2026-08-24", "start"),
@@ -401,6 +418,12 @@ def _normalize_schedule_text(schedule: str) -> str:
         r"\1 \2",
         text,
     )
+    text = re.sub(
+        r"(M Teams Part 1[^\n]*)\n(\d{1,2}/\d{1,2})[^\n]*outline due",
+        lambda m: re.sub(r"\s+", " ", m.group(0).replace("\n", " ")),
+        text,
+        flags=re.I,
+    )
     return text
 
 
@@ -428,10 +451,88 @@ def parse_marshall_schedule_deliverables(schedule: str, year: int) -> list[dict]
                     {
                         "category": cat_label,
                         "date_iso": iso,
+                        "kind": "due" if re.search(r"due|exam", schedule[ctx_start:ctx_end], re.I) else "milestone",
                         "raw": re.sub(r"\s+", " ", schedule[ctx_start:ctx_end]).strip(),
                     }
                 )
     return sorted(entries, key=lambda e: e["date_iso"])
+
+
+def marshall_inferred_start_dates(schedule: str, year: int) -> dict[str, str]:
+    """Map category -> earliest inferred ISO start from schedule language."""
+    out: dict[str, list[str]] = {}
+    for cat_key, md, pattern in MARSHALL_INFERRED_STARTS:
+        if re.search(pattern, schedule, re.I | re.S):
+            iso = _normalize_md_date(md, year)
+            if iso:
+                out.setdefault(cat_key, []).append(iso)
+    return {k: min(v) for k, v in out.items()}
+
+
+def marshall_dates_for_category(
+    cat: Category, deliverables: list[dict], schedule: str, year: int
+) -> tuple[str, str]:
+    key = marshall_category_key(cat.name)
+    inferred = marshall_inferred_start_dates(schedule, year)
+    due_dates = sorted(
+        {
+            d["date_iso"]
+            for d in deliverables
+            if d["category"] == key and d.get("kind", "due") == "due"
+        }
+    )
+    milestone_dates = sorted(
+        {
+            d["date_iso"]
+            for d in deliverables
+            if d["category"] == key and d.get("kind") == "milestone"
+        }
+    )
+    all_dates = sorted({d["date_iso"] for d in deliverables if d["category"] == key})
+    start = inferred.get(key, "")
+    if all_dates and not start:
+        start = all_dates[0]
+    elif all_dates and start:
+        start = min(start, all_dates[0])
+    due = due_dates[-1] if due_dates else (all_dates[-1] if all_dates else "")
+    if not due and milestone_dates:
+        due = milestone_dates[-1]
+    # Single exam/event day: start = due when no earlier inferred start
+    if due and not start:
+        start = due
+    return start, due
+
+
+def schedule_lines_for_category(schedule: str, cat: Category, year: int) -> list[str]:
+    """All dated schedule rows relevant to a category (including page 7 sessions)."""
+    schedule = _normalize_schedule_text(schedule)
+    key = marshall_category_key(cat.name)
+    lines: list[str] = []
+    keywords: dict[str, list[str]] = {
+        "Participation": [r"\b8/24\b", r"VIA", r"Character Strengths", r"forming teams"],
+        "Case Analysis Assignments": [r"Case Analysis", r"Memo due", r"Analysis Memo Due", r"USC-CT"],
+        "Midterm Exam": [r"Midterm", r"10/14"],
+        "Proposal & Team Contract": [r"proposal", r"contract due", r"Team project will be explained"],
+        "Team Project Paper": [r"Team [Pp]roject", r"outline due", r"paper due", r"Workshop"],
+        "Presentation": [r"Presentation", r"slides are due"],
+        "Self & Peer Evaluation": [r"peer evaluation"],
+        "Final Reflection Paper": [r"Reflection Paper", r"Organiza.*Change"],
+        "Final Exam": [r"Final Exam", r"December 9"],
+    }
+    pats = keywords.get(key, [re.escape(cat.name)])
+    # Walk schedule in chunks anchored on M/W date lines
+    for m in re.finditer(
+        r"((?:[MW]\s+)?(?:\d{1,2}/\d{1,2})[^\n]*(?:\n(?!\s*(?:[MW]\s+)?\d{1,2}/)[^\n]*){0,8})",
+        schedule,
+        re.I,
+    ):
+        chunk = m.group(1)
+        if any(re.search(p, chunk, re.I) for p in pats):
+            dm = re.search(r"(\d{1,2}/\d{1,2})", chunk)
+            iso = _normalize_md_date(dm.group(1), year) if dm else ""
+            prefix = f"{iso} | " if iso else ""
+            lines.append(prefix + re.sub(r"\s+", " ", chunk).strip()[:240])
+    return lines
 
 
 def marshall_category_key(name: str) -> str:
@@ -453,16 +554,6 @@ def marshall_category_key(name: str) -> str:
     if "final" in low and "exam" in low:
         return "Final Exam"
     return name
-
-
-def marshall_dates_for_category(cat: Category, deliverables: list[dict]) -> tuple[str, str]:
-    key = marshall_category_key(cat.name)
-    dates = sorted({d["date_iso"] for d in deliverables if d["category"] == key})
-    if not dates:
-        return "", ""
-    if len(dates) == 1:
-        return "", dates[0]
-    return dates[0], dates[-1]
 
 
 def parse_research_participation_milestones(rg_text: str, year: int) -> list[dict]:
@@ -525,6 +616,10 @@ def gather_marshall_content(
     if sched_lines:
         sections["Course Schedule (due dates)"] = sched_lines
         matched.extend(sched_lines)
+    session_lines = schedule_lines_for_category(schedule, cat, year)
+    if session_lines:
+        sections["Course Schedule (dated sessions)"] = session_lines
+        matched.extend(session_lines)
 
     if "participation" in cat.name.lower() and research_guide:
         milestones = parse_research_participation_milestones(research_guide, year)
@@ -571,7 +666,7 @@ def gather_marshall_content(
             else:
                 sections[heading] = content
 
-    start, due = marshall_dates_for_category(cat, deliverables)
+    start, due = marshall_dates_for_category(cat, deliverables, schedule, year)
     if "participation" in cat.name.lower() and research_guide:
         rg_start, rg_due = research_dates_for_participation(
             parse_research_participation_milestones(research_guide, year)
