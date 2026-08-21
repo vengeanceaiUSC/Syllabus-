@@ -16,6 +16,7 @@ the syllabus mentions about that item — extracted automatically.
 3. **Assignment details** — start date, due date, group-project flag
 4. **PDF documents** — one per category; structured sections + verbatim extract
 5. **Excel hyperlinks** — **Open PDF** opens hosted PDF in browser
+6. **Sub-assignments** — indented rows under each category with individual start/due dates (Connect self-assessments, homework problem sets, schedule deliverables)
 
 ## Workflow (automatic — do NOT hand-write JSON)
 

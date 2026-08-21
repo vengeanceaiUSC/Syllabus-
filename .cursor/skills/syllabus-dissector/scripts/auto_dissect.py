@@ -1808,6 +1808,25 @@ def infer_year(term: str) -> int:
     return int(m.group(1)) if m else 2025
 
 
+def sanitize_start_date(iso: str, year: int) -> str:
+    """Replace start dates before August 1 of the term year with N/A."""
+    if not iso:
+        return ""
+    if iso.upper() == "N/A":
+        return "N/A"
+    cutoff = f"{year:04d}-08-01"
+    if iso < cutoff:
+        return "N/A"
+    return iso
+
+
+def apply_start_date_cutoff(categories: list[dict], year: int) -> None:
+    for cat in categories:
+        cat["start_date"] = sanitize_start_date(cat.get("start_date", ""), year)
+        for sub in cat.get("assignments") or []:
+            sub["start_date"] = sanitize_start_date(sub.get("start_date", ""), year)
+
+
 def dissect(
     text: str,
     class_code: str,
@@ -1889,6 +1908,7 @@ def dissect(
         cls["term"] = term
     if color:
         cls["color"] = color
+    apply_start_date_cutoff(result_categories, year)
     return {"class": cls, "grading_scale": grading_scale, "categories": result_categories}
 
 
