@@ -355,7 +355,9 @@ When `output/rmp.json` exists next to the workbook, Overview includes a **Profes
 | Quality (/5) | RMP overall quality |
 | Difficulty (/5) | RMP level of difficulty |
 | Would Take Again | RMP percentage |
-| Consensus | Short summary of recurring review themes (hand-curated or from `fetch_rmp.py`) |
+| Consensus (below stats table) | Multi-paragraph STRENGTHS / GRADING / BOTTOM LINE themes from reviews |
+
+Overview does **not** freeze panes — the full cover sheet scrolls normally.
 
 Refresh ratings: `python scripts/fetch_rmp.py --refresh-all` (writes `output/rmp.json`). Calendar-only classes may need a known instructor fallback (e.g. BUAD-281 → George Braunegg).
 

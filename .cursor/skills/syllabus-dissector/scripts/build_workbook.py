@@ -589,7 +589,6 @@ def build_overview_sheet(
             "Difficulty (/5)",
             "Would Take Again",
             "# Ratings",
-            "Consensus",
         ]
         for col, name in enumerate(rmp_headers, start=1):
             c = ws.cell(row=row, column=col, value=name)
@@ -598,6 +597,7 @@ def build_overview_sheet(
             c.border = BORDER
             c.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
         row += 1
+        rmp_stat_rows: list[tuple[int, dict, dict]] = []
         for i, s in enumerate(rmp_rows):
             rmp = s["rmp_entry"]
             band = PatternFill("solid", fgColor="F2F2F2" if i % 2 else "FFFFFF")
@@ -607,8 +607,6 @@ def build_overview_sheet(
             difficulty = rmp.get("difficulty")
             again = rmp.get("would_take_again_pct")
             num = rmp.get("num_ratings")
-            consensus = rmp.get("consensus") or ""
-            as_of_rmp = rmp.get("as_of") or ""
             values = [
                 sheet_link(sanitize_sheet_name(s["code"]), s["code"]),
                 instructor,
@@ -616,7 +614,6 @@ def build_overview_sheet(
                 f"{difficulty:g}" if difficulty is not None else "-",
                 f"{again:g}%" if again is not None else "-",
                 str(num) if num is not None else "-",
-                consensus[:120],
             ]
             for col, value in enumerate(values, start=1):
                 c = ws.cell(row=row, column=col, value=value)
@@ -630,7 +627,34 @@ def build_overview_sheet(
                     c.font = Font(color="0563C1", underline="single")
                 if col == 3 and quality is not None:
                     c.font = Font(bold=True, color="375623" if quality >= 4.0 else "C65911")
+            rmp_stat_rows.append((row, s, rmp))
             row += 1
+
+        row += 1
+        ws.merge_cells(f"A{row}:{last_col}{row}")
+        detail_hdr = ws.cell(row=row, column=1, value="Consensus - recurring student review themes")
+        detail_hdr.font = label_font
+        detail_hdr.fill = section_fill
+        row += 1
+        for i, (_stat_row, s, rmp) in enumerate(rmp_stat_rows):
+            band = PatternFill("solid", fgColor="F2F2F2" if i % 2 else "FFFFFF")
+            code = s["code"]
+            instructor = rmp.get("instructor") or s.get("instructor") or "-"
+            detail = (rmp.get("consensus") or "").strip()
+            ws.cell(row=row, column=1, value=code).fill = band
+            ws.cell(row=row, column=1).font = Font(bold=True)
+            ws.cell(row=row, column=1).border = BORDER
+            ws.cell(row=row, column=2, value=instructor).fill = band
+            ws.cell(row=row, column=2).border = BORDER
+            ws.merge_cells(start_row=row, start_column=3, end_row=row, end_column=ncols)
+            detail_cell = ws.cell(row=row, column=3, value=detail)
+            detail_cell.fill = band
+            detail_cell.border = BORDER
+            detail_cell.alignment = Alignment(wrap_text=True, vertical="top")
+            line_count = max(3, detail.count("\n") + 1, (len(detail) // 90) + 1)
+            ws.row_dimensions[row].height = min(180, 15 * line_count)
+            row += 1
+
         rmp_as_of = next(
             (s["rmp_entry"].get("as_of") for s in rmp_rows if s["rmp_entry"].get("as_of")),
             "",
@@ -815,7 +839,9 @@ def build_overview_sheet(
         ws.column_dimensions[get_column_letter(col)].width = width
     ws.column_dimensions["D"].width = 24
     ws.column_dimensions["I"].width = 32
-    ws.freeze_panes = ws.cell(row=hdr_row + 1, column=1)
+    ws.column_dimensions["C"].width = 36
+    # Cover sheet scrolls freely — do not freeze RMP / summary blocks at the top.
+    ws.freeze_panes = None
 
 
 def refresh_overview_sheet(wb: Workbook, workbook_path: Path, *, as_of: date | None = None) -> None:
