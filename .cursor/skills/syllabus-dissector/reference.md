@@ -41,13 +41,29 @@ When no Assignments block exists but `Course Calendar` is present:
 
 ### Step 3 — Structured verbatim (per category)
 
-Each PDF gets clean rows, not grep fragments:
+Each PDF gets clean rows with ISO due dates:
 
 ```
-Class 7 | Date: 9/16 | Topic: Activity Based Costing | Required Reading: Chapter 5- ONLY; LO 5.1, 2, 4 & 5 | Homework (due 8:00 am): 3-24, 3-28, 3-32; 15 Points
+Class 7 | Due: 2026-09-16 (8:00 am) | Topic: Activity Based Costing | Required Reading: Chapter 5 | Homework: 3-24, 3-28, 3-32; 15 Points
 ```
 
-Plus exam lines from plain text when table cells are empty (e.g. `9/30 Midterm 1: 250 Points Chapters 1, 2, 3, 4, 5, 8`).
+Certifications are **split** (not combined):
+
+```
+Class 9 | Mentioned: 2026-09-23 (in-class announcement) | Linked In Learning Excel - 75 Points
+Class 2 | Due: 2026-12-02 (11:59 PM) | Linked In Learning Excel Certification
+```
+
+Final exam is **one merged block**:
+
+```
+Final Exam: 250 Points | Wednesday, December 16th, 8:00 AM-10:00 AM PST | ISO: 2026-12-16 | Chapters 10, 11, 13, 14a
+```
+
+### Step 4 — Optional supplement syllabus
+
+Pass `--supplement full-syllabus.pdf` to merge prose instructions (rubrics, submission
+rules) into cert/homework PDFs via grep.
 
 ### Calendar section headings
 

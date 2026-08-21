@@ -101,6 +101,8 @@ def make_aliases(name: str) -> list[str]:
 COURSE_CALENDAR = re.compile(r"Course Calendar", re.I)
 CALENDAR_TABLE_START = "=== CALENDAR_TABLE_JSON ==="
 CALENDAR_TABLE_END = "=== END CALENDAR_TABLE ==="
+SUPPLEMENT_START = "=== SUPPLEMENT_SYLLABUS ==="
+SUPPLEMENT_END = "=== END SUPPLEMENT ==="
 MD_DATE = re.compile(r"\b(\d{1,2})/(\d{1,2})\b")
 CAL_EXAM = re.compile(
     r"(Midterm \d+|Final Exam)\s*:\s*(\d+)\s*Points?",
@@ -273,32 +275,189 @@ def parse_embedded_calendar_table(text: str) -> list[dict]:
 
 
 def calendar_plain_text(text: str) -> str:
-    """Strip embedded JSON table block; keep readable calendar prose."""
-    start = text.find(CALENDAR_TABLE_START)
-    if start == -1:
-        return text
-    return text[:start].strip()
+    """Strip embedded JSON table and supplement blocks; keep readable calendar prose."""
+    for marker in (CALENDAR_TABLE_START, SUPPLEMENT_START):
+        idx = text.find(marker)
+        if idx != -1:
+            text = text[:idx]
+    return text.strip()
+
+
+def parse_supplement_text(text: str) -> str:
+    """Optional full syllabus merged after the calendar for extra assignment detail."""
+    start = text.find(SUPPLEMENT_START)
+    end = text.find(SUPPLEMENT_END)
+    if start == -1 or end == -1:
+        return ""
+    return text[start + len(SUPPLEMENT_START) : end].strip()
+
+
+def md_to_iso(md: str, year: int) -> str:
+    m = re.match(r"(\d{1,2})/(\d{1,2})", (md or "").strip())
+    if not m:
+        return ""
+    return f"{year:04d}-{int(m.group(1)):02d}-{int(m.group(2)):02d}"
 
 
 def calendar_row_date(row: dict) -> str:
     return row.get("date_mon") or row.get("date_wed") or ""
 
 
-def format_calendar_row(row: dict) -> str:
-    """One clean verbatim line per calendar table row."""
+def format_calendar_row(row: dict, year: int = 2026, *, strip_certs: bool = False) -> str:
+    """One clean verbatim line per calendar table row, with ISO due date when known."""
     parts: list[str] = []
-    if row.get("class"):
+    if row.get("class") and not re.search(r"december|final exam", row["class"], re.I):
         parts.append(f"Class {row['class']}")
     date = calendar_row_date(row)
-    if date:
+    iso = md_to_iso(date, year)
+    if iso:
+        parts.append(f"Due: {iso} (8:00 am)")
+    elif date:
         parts.append(f"Date: {date}")
-    if row.get("topic"):
-        parts.append(f"Topic: {row['topic'].replace(' / ', '; ')}")
+    topic = row.get("topic") or ""
+    if strip_certs and topic:
+        topic = re.sub(r"\u2022?\s*Linked In Learning Excel[^\n/;]*75 Points\s*", "", topic, flags=re.I)
+        topic = re.sub(r"\u2022?\s*Stukent Simternship[^\n/;]*75 Points\s*", "", topic, flags=re.I)
+        topic = re.sub(r"\s+", " ", topic).strip(" ;/")
+    if topic:
+        parts.append(f"Topic: {topic.replace(' / ', '; ')}")
     if row.get("reading"):
         parts.append(f"Required Reading: {row['reading'].replace(' / ', '; ')}")
     if row.get("homework"):
-        parts.append(f"Homework (due 8:00 am): {row['homework'].replace(' / ', '; ')}")
+        parts.append(f"Homework: {row['homework'].replace(' / ', '; ')}")
     return " | ".join(parts)
+
+
+def extract_cert_phrase(blob: str, cert: str) -> str:
+    flat = re.sub(r"\s+", " ", blob.replace(" / ", " "))
+    patterns = {
+        "linkedin": [
+            r"Linked\s*In\s*Learning\s*Excel\s*Certification",
+            r"Linked\s*In\s*Learning\s*Excel\s*-\s*75\s*Points",
+        ],
+        "stukent": [
+            r"Stukent\s*Simternship\s*-\s*75\s*Points",
+            r"Stukent\s*Simternship",
+        ],
+    }
+    for pat in patterns.get(cert, []):
+        m = re.search(pat, flat, re.I)
+        if m:
+            return m.group(0).strip()
+    return ""
+
+
+def format_cert_line(row: dict, cert: str, year: int) -> str:
+    """Split combined calendar rows into one certification-specific line."""
+    blob = " ".join(str(v) for v in row.values() if v)
+    phrase = extract_cert_phrase(blob, cert)
+    if not phrase:
+        return ""
+    parts: list[str] = []
+    if row.get("class") and row["class"].isdigit():
+        parts.append(f"Class {row['class']}")
+    date = calendar_row_date(row)
+    iso = md_to_iso(date, year)
+    is_final_due = date == "12/2" or (iso and iso.endswith("-12-02"))
+    if is_final_due:
+        parts.append(f"Due: {iso or date} (11:59 PM)")
+        parts.append(phrase)
+        parts.append("Context: Final submission deadline (calendar footer)")
+    elif iso:
+        parts.append(f"Mentioned: {iso} (in-class announcement)")
+        parts.append(phrase)
+        parts.append("Context: Introduced during this session; submit by 12/2 11:59 PM")
+    else:
+        parts.append(phrase)
+    return " | ".join(parts)
+
+
+def build_merged_final_exam_block(text: str, rows: list[dict], year: int) -> str:
+    """Single exam block merging points, schedule, chapters, and prerequisites."""
+    plain = calendar_plain_text(text)
+    parts: list[str] = []
+
+    pts_m = re.search(r"Final Exam:\s*(\d+)\s*Points", plain, re.I)
+    if pts_m:
+        parts.append(f"Final Exam: {pts_m.group(1)} Points")
+
+    final_row = next((r for r in rows if "december" in (r.get("class") or "").lower()), None)
+    if final_row:
+        schedule = final_row["class"].replace(" / ", "; ")
+        parts.append(schedule)
+        day_m = re.search(r"December\s+(\d{1,2})", schedule, re.I)
+        if day_m:
+            parts.append(f"ISO date: {year:04d}-12-{int(day_m.group(1)):02d}")
+    else:
+        dt_m = re.search(
+            r"December\s+(\d{1,2})(?:st|nd|rd|th)?[^\n]*?(\d{1,2}:\d{2}\s*AM\s*-\s*\d{1,2}:\d{2}\s*AM\s*PST)",
+            plain,
+            re.I,
+        )
+        if dt_m:
+            parts.append(
+                f"Wednesday, December {dt_m.group(1)} | {dt_m.group(2)} | "
+                f"ISO: {year:04d}-12-{int(dt_m.group(1)):02d}"
+            )
+
+    ch_m = re.search(r"Chapters 10, 11, 13, 14[^\n]*", plain, re.I)
+    if ch_m:
+        parts.append(re.sub(r"\s+", " ", ch_m.group(0)).strip())
+
+    fn_m = re.search(
+        r"Knowledge of Cost Behavior \(Chapter 6\)[^\n]+",
+        plain,
+        re.I,
+    )
+    if fn_m:
+        parts.append(re.sub(r"\s+", " ", fn_m.group(0)).strip())
+
+    return " | ".join(parts)
+
+
+def calendar_cert_dates(rows: list[dict], cert: str, year: int) -> tuple[str, str]:
+    """Start = first in-class mention; due = footer deadline (12/2)."""
+    mentions: list[str] = []
+    due_dates: list[str] = []
+    cert_re = r"linked\s*in" if cert == "linkedin" else r"stukent"
+    for r in rows:
+        if not re.search(cert_re, " ".join(str(v) for v in r.values()), re.I):
+            continue
+        iso = md_to_iso(calendar_row_date(r), year)
+        if not iso:
+            continue
+        if iso.endswith("-12-02"):
+            due_dates.append(iso)
+        else:
+            mentions.append(iso)
+    start = min(mentions) if mentions else ""
+    due = max(due_dates) if due_dates else f"{year:04d}-12-02"
+    return start, due
+
+
+def calendar_homework_dates(rows: list[dict], year: int) -> tuple[str, str]:
+    isos = sorted(
+        md_to_iso(calendar_row_date(r), year)
+        for r in rows
+        if row_has_homework_points(r)
+    )
+    isos = [d for d in isos if d]
+    return (isos[0], isos[-1]) if isos else ("", "")
+
+
+def gather_supplement_passages(supplement: str, cat: Category) -> list[str]:
+    """Grep optional full syllabus supplement for category-specific instructions."""
+    if not supplement:
+        return []
+    matched: list[str] = []
+    seen: set[str] = set()
+    for chunk in split_chunks(supplement):
+        if chunk_matches_category(chunk, cat):
+            key = normalize(chunk)
+            if key not in seen:
+                seen.add(key)
+                matched.append(chunk)
+    return dedupe_passages(matched)
 
 
 def calendar_footnotes(text: str) -> list[str]:
@@ -350,29 +509,30 @@ def row_has_homework_points(row: dict) -> bool:
 
 
 def gather_calendar_content_from_table(
-    rows: list[dict], cat: Category, text: str
+    rows: list[dict], cat: Category, text: str, year: int
 ) -> tuple[dict, str]:
     """Build clean verbatim from structured PDF table rows."""
     low = cat.name.lower()
     matched: list[str] = []
     sections: dict[str, list[str] | str] = {}
     exams = calendar_exam_snippets(text)
+    supplement = parse_supplement_text(text)
 
     if "homework" in low:
         hw_rows = [r for r in rows if row_has_homework_points(r)]
-        items = [format_calendar_row(r) for r in hw_rows]
+        items = [format_calendar_row(r, year) for r in hw_rows]
         if items:
-            sections["Homework Assignments (by class date)"] = items
+            sections["Homework Assignments (by due date)"] = items
             matched.extend(items)
     elif "midterm 1" in low:
         if exams["Midterm 1"]:
             sections["Exam"] = exams["Midterm 1"]
             matched.extend(exams["Midterm 1"])
         review = [
-            format_calendar_row(r)
+            format_calendar_row(r, year, strip_certs=True)
             for r in rows
             if re.search(r"catchup|midterm review|practice midterm", r.get("topic", ""), re.I)
-            and not re.search(r"16-28, 16-40|midterm 2", format_calendar_row(r), re.I)
+            and not re.search(r"16-28, 16-40|midterm 2", format_calendar_row(r, year, strip_certs=True), re.I)
         ]
         if review:
             sections["Review & Practice"] = review
@@ -382,12 +542,12 @@ def gather_calendar_content_from_table(
             sections["Exam"] = exams["Midterm 2"]
             matched.extend(exams["Midterm 2"])
         review = [
-            format_calendar_row(r)
+            format_calendar_row(r, year)
             for r in rows
             if re.search(r"catchup|midterm review|practice midterm", r.get("topic", ""), re.I)
-            and not re.search(r"8-28, 8-29", format_calendar_row(r))
+            and not re.search(r"8-28, 8-29", format_calendar_row(r, year))
             and (
-                re.search(r"10/19|10/21|16-28", format_calendar_row(r))
+                re.search(r"10/19|10/21|16-28", format_calendar_row(r, year))
                 or "10/19" in r.get("date_mon", "")
                 or "10/21" in r.get("date_wed", "")
             )
@@ -396,44 +556,49 @@ def gather_calendar_content_from_table(
             sections["Review & Practice"] = review
             matched.extend(review)
     elif "final" in low and "exam" in low:
-        if exams["Final Exam"]:
-            sections["Exam"] = exams["Final Exam"]
-            matched.extend(exams["Final Exam"])
+        merged = build_merged_final_exam_block(text, rows, year)
+        if merged:
+            sections["Exam"] = merged
+            matched.append(merged)
         review = [
-            format_calendar_row(r)
+            format_calendar_row(r, year)
             for r in rows
             if re.search(r"catchup & final|practice final", r.get("topic", ""), re.I)
         ]
         if review:
             sections["Review & Practice"] = review
             matched.extend(review)
-        final_row = next((r for r in rows if "december 16" in r.get("class", "").lower()), None)
-        if final_row:
-            line = format_calendar_row(final_row)
-            sections["Exam Schedule"] = line
-            matched.append(line)
     elif "linkedin" in low:
-        mentions: list[str] = []
-        for r in rows:
-            blob = " ".join(r.values())
-            if re.search(r"linked\s*in\s*learning", blob, re.I):
-                mentions.append(format_calendar_row(r))
-        due_line = "Due: 12/2 by 11:59 PM (from calendar footer)"
+        mentions = [
+            line
+            for r in rows
+            if re.search(r"linked\s*in\s*learning", " ".join(r.values()), re.I)
+            for line in [format_cert_line(r, "linkedin", year)]
+            if line
+        ]
+        due_line = f"Due: {year:04d}-12-02 (11:59 PM) - Assignments listed below due by 11:59 PM"
         sections["Assignment Details"] = mentions or ["LinkedIn Learning Excel Certification - 75 Points"]
         sections["Due Date & Submission"] = due_line
         matched.extend(mentions)
         matched.append(due_line)
     elif "stukent" in low:
-        mentions: list[str] = []
-        for r in rows:
-            blob = " ".join(r.values())
-            if re.search(r"stukent", blob, re.I):
-                mentions.append(format_calendar_row(r))
-        due_line = "Due: 12/2 by 11:59 PM (from calendar footer)"
+        mentions = [
+            line
+            for r in rows
+            if re.search(r"stukent", " ".join(r.values()), re.I)
+            for line in [format_cert_line(r, "stukent", year)]
+            if line
+        ]
+        due_line = f"Due: {year:04d}-12-02 (11:59 PM) - Assignments listed below due by 11:59 PM"
         sections["Assignment Details"] = mentions or ["Stukent Simternship - 75 Points"]
         sections["Due Date & Submission"] = due_line
         matched.extend(mentions)
         matched.append(due_line)
+
+    sup_passages = gather_supplement_passages(supplement, cat)
+    if sup_passages:
+        sections["Additional Instructions (supplement syllabus)"] = sup_passages
+        matched.extend(sup_passages)
 
     footnotes = calendar_footnotes(text)
     relevant_notes = list(footnotes)
@@ -445,11 +610,11 @@ def gather_calendar_content_from_table(
     return sections, verbatim
 
 
-def gather_calendar_content(text: str, cat: Category) -> tuple[dict, str]:
+def gather_calendar_content(text: str, cat: Category, year: int = 2025) -> tuple[dict, str]:
     """Collect calendar rows and context for a course-calendar category."""
     rows = parse_embedded_calendar_table(text)
     if rows:
-        return gather_calendar_content_from_table(rows, cat, text)
+        return gather_calendar_content_from_table(rows, cat, text, year)
 
     # Fallback: legacy grep-window extraction (lower quality for table PDFs)
     low = cat.name.lower()
@@ -732,7 +897,7 @@ def find_dedicated_blocks(text: str, cat: Category) -> list[str]:
             (r"Identification Quizzes[\-\u2013]\s*\d+\s*%\n", [r"\nSleep Paper"]),
         ]
 
-    # Generic schedule due-line (skip Extra Credit  no stable end marker)
+    # Generic schedule due-line (skip Extra Credit - no stable end marker)
     if "extra credit" not in low:
         specs.append(
             (
@@ -914,10 +1079,25 @@ def dissect(
     result_categories = []
     for cat in categories:
         if calendar_mode:
-            sections, verbatim = gather_calendar_content(text, cat)
-            start, due = parse_calendar_dates(text, cat, year)
+            sections, verbatim = gather_calendar_content(text, cat, year)
+            rows = parse_embedded_calendar_table(text)
+            low = cat.name.lower()
+            if "homework" in low and rows:
+                start, due = calendar_homework_dates(rows, year)
+            elif "linkedin" in low and rows:
+                start, due = calendar_cert_dates(rows, "linkedin", year)
+            elif "stukent" in low and rows:
+                start, due = calendar_cert_dates(rows, "stukent", year)
+            else:
+                start, due = parse_calendar_dates(text, cat, year)
         else:
             sections, verbatim = gather_category_content(text, cat)
+            supplement = parse_supplement_text(text)
+            if supplement:
+                sup = gather_supplement_passages(supplement, cat)
+                if sup:
+                    sections["Additional Instructions (supplement syllabus)"] = sup
+                    verbatim = verbatim + "\n\n---\n\n" + "\n\n---\n\n".join(sup) if verbatim else "\n\n---\n\n".join(sup)
             start, due = parse_dates_from_text(verbatim, year)
         result_categories.append(
             {

@@ -37,6 +37,11 @@ def main() -> int:
     parser.add_argument("--workbook", default="output/syllabi.xlsx")
     parser.add_argument("--link-base", default="", help="Hosted PDF base URL for Excel links")
     parser.add_argument("--keep-json", default="", help="Save intermediate JSON to this path")
+    parser.add_argument(
+        "--supplement",
+        default="",
+        help="Optional full syllabus file to merge (adds instructions for calendar certs, etc.)",
+    )
     args = parser.parse_args()
 
     with tempfile.TemporaryDirectory() as tmp:
@@ -44,6 +49,25 @@ def main() -> int:
         json_path = Path(args.keep_json) if args.keep_json else Path(tmp) / "class.json"
 
         run([sys.executable, str(SCRIPTS / "extract_text.py"), args.syllabus, "--out", str(text_path)])
+
+        if args.supplement:
+            sup_path = Path(tmp) / "supplement.txt"
+            run(
+                [
+                    sys.executable,
+                    str(SCRIPTS / "extract_text.py"),
+                    args.supplement,
+                    "--out",
+                    str(sup_path),
+                ]
+            )
+            merged = (
+                text_path.read_text(encoding="utf-8")
+                + f"\n=== SUPPLEMENT_SYLLABUS ===\n"
+                + sup_path.read_text(encoding="utf-8")
+                + f"\n=== END SUPPLEMENT ===\n"
+            )
+            text_path.write_text(merged, encoding="utf-8")
 
         dissect_cmd = [
             sys.executable,

@@ -63,17 +63,21 @@ Uses the **Assignments section** + full-document grep:
 
 Point-based schedule tables — **no Assignments section**.
 
-1. **`extract_text.py`** parses PDF **tables** via pdfplumber and embeds
-   `=== CALENDAR_TABLE_JSON ===` rows (class, date, topic, reading, homework)
-2. **`auto_dissect.py`** detects `Course Calendar` and parses categories from
-   point lines (`Midterm 1: 250 Points`, homework rows, certifications)
-3. **Structured verbatim** — one clean line per calendar row:
-   `Class 5 | Date: 9/9 | Topic: … | Required Reading: … | Homework: …`
-4. Exam/review lines merged from table rows + plain-text grep (exams often sit
-   outside table cells)
-5. Grading scale → points total; A threshold = N/A if not in document
+1. **`extract_text.py`** parses PDF **tables** via pdfplumber → `CALENDAR_TABLE_JSON`
+2. **`auto_dissect.py`** detects `Course Calendar` → point-based categories
+3. **Structured verbatim** per row with **ISO due dates** (`Due: 2026-09-09 (8:00 am)`)
+4. **Split cert rows** — LinkedIn and Stukent get separate lines (not combined class-9 blob)
+5. **Merged final exam block** — points + December 16 time + chapters in one Exam section
+6. **Optional `--supplement`** — merge a full syllabus PDF for cert rubrics/instructions
 
-**Expected quality:** ~7/10 after table extraction (was ~4/10 with grep-only).
+```bash
+python scripts/dissect_syllabus.py "Course_Calendar.pdf" \
+  --class-code BUAD-281 \
+  --supplement "Full_Syllabus.pdf" \   # optional — boosts cert detail toward 9/10
+  ...
+```
+
+**Expected quality:** ~8/10 with calendar alone; ~9/10 if supplement syllabus provided.
 
 See [reference.md](reference.md) for past errors and quality checks.
 
