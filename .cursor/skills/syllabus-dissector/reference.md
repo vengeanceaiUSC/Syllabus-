@@ -262,7 +262,7 @@ Never use `CONNECT_WEEK_CATEGORY` or schedule-week routing to drop Connect under
 
 | Class | Homework rows | Reading rows | Notes |
 |-------|---------------|--------------|-------|
-| HIST-103 | 0 | 36 | Weekly schedule is all Reading |
+| HIST-103 | 0 | 23 | Weekly schedule is all Reading under Discussion Section |
 | BUAD-281 | 12 | 12 | 12 Reading+Homework pairs on homework dates only (due = class day, no start) |
 | BUAD-304 | 14 | 0 | All under **Personal Assessments (Connect)**, not Participation |
 
@@ -338,11 +338,32 @@ Built automatically whenever `build_workbook.py` runs. Scans every `output/*.jso
 
 | Section | Contents |
 |---------|----------|
-| **Start here** | Earliest **assignment** due across all classes (readings excluded) |
-| **Class summary** | Per class: Reading / Homework / Papers / Group Project / **External certs**; **first assignment** (not reading) + due; first **major** + due |
-| **Do First - {Month}** | Assignments only; always includes each class's first assignment even if due later, plus other assignments due that month |
+| **Start here (graded)** | Earliest **graded** assignment due (Connect prep excluded) |
+| **Class summary** | Per class: Reading / Homework / Papers / Group / **External certs** / **Connect prep**; first assignment + due; first major + due |
+| **Do First - {Month} (graded)** | Uses **`--as-of-date`** or today's calendar month; assignments only; **Graded?** = Yes; first assignment per class always listed |
+| **Do First - {Month} (Connect prep)** | Ungraded Connect self-assessments due this month — separate blue section, not mixed with graded work |
+| **Upcoming (45 days)** | Graded assignments due after this month (Connect excluded) |
 
 Class names link to their worksheet. Regenerated after each class pipeline run (run all classes so Overview stays complete).
+
+### Auto-detect metadata (`parse_syllabus_metadata`)
+
+| Field | Sources |
+|-------|---------|
+| **Class code** | `BUAD 304:` / `HIST-103:` in text; filename `buad-281-source.pdf` fallback |
+| **Course name** | Text after code; `Managerial Accounting` heuristic for calendars |
+| **Term** | `Syllabus - Fall 2026`; calendar Aug–Dec → `Fall {year}` via `infer_term()` |
+| **Year (ISO dates)** | Term year; any `20XX` in text; calendar PDFs default to current year — **not** hard-coded 2025 |
+| **Instructor** | `Professor:` / `Instructor:` lines; rejects `Course Calendar`, Brightspace noise; calendar-only PDFs often blank — use `--supplement` or `--instructor` |
+
+### HIST-103 past errors — do not repeat
+
+| Error | Fix |
+|-------|-----|
+| Week row under Sleep Paper / Mid-term | Week rows always `Discussion Section`; `_hist103_route()` on **due lines only** |
+| Week `(lecture topics)` under Identification Quizzes | Removed — lecture prep stays on the week Reading row in Discussion Section only |
+| `-- 13 of 33 --` in reading names | `PAGE_MARKER.sub()` + `_clean_hist103_reading_text()` |
+| Truncated `pas` / `Read Colu` titles | `_hist103_reading_title()` word-boundary trim |
 
 Excel **Open PDF** uses hosted URLs via `--link-base` (standalone download works).
 

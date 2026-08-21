@@ -27,7 +27,7 @@
           "notes": "Reading"
         },
         {
-          "name": "Week Aug 25-29: Intro & Black Death - Section reading 1: -- 13 of 33 -- Lizzie Wade, “From Black Death to fatal flu, pas",
+          "name": "Week Aug 25-29: Intro & Black Death - Section reading 1: Lizzie Wade, “From Black Death to fatal flu, past pandemics sho",
           "start_date": "2026-08-25",
           "due_date": "2026-08-29",
           "notes": "Reading"
@@ -51,9 +51,15 @@
           "notes": "Reading"
         },
         {
-          "name": "Week Sep 8-11: Renaissance - Section reading 1: -- 14 of 33 -- Kay Daly, “Diverting the Flood of History: Ada Palmer’s I",
+          "name": "Week Sep 8-11: Renaissance - Section reading 1: Kay Daly, “Diverting the Flood of History: Ada Palmer’s Inventing the Re",
           "start_date": "2026-09-08",
           "due_date": "2026-09-11",
+          "notes": "Reading"
+        },
+        {
+          "name": "Week Sep 15-18: Renaissance",
+          "start_date": "2026-09-15",
+          "due_date": "2026-09-18",
           "notes": "Reading"
         },
         {
@@ -78,6 +84,12 @@
           "name": "Week Sep 20-24: European Expansion - Section reading 2: Bernal Diaz del Castillo, The True History of the Conquest of Ne",
           "start_date": "2026-09-20",
           "due_date": "2026-09-24",
+          "notes": "Reading"
+        },
+        {
+          "name": "Week Oct 6-9: Midterm & Break",
+          "start_date": "2026-10-06",
+          "due_date": "2026-10-09",
           "notes": "Reading"
         },
         {
@@ -111,9 +123,15 @@
           "notes": "Reading"
         },
         {
-          "name": "Week Nov 3-6: Witches & Science - Section reading 1: Brian Levack, The Witchcraft Sourcebook, Chaps 36-44, 46-47 103.Lev",
+          "name": "Week Nov 3-6: Witches & Science - Section reading 1: Brian Levack, The Witchcraft Sourcebook, Chaps 36-44, 46-47",
           "start_date": "2026-11-03",
           "due_date": "2026-11-06",
+          "notes": "Reading"
+        },
+        {
+          "name": "Week Nov 10-13: Enlightenment",
+          "start_date": "2026-11-10",
+          "due_date": "2026-11-13",
           "notes": "Reading"
         },
         {
@@ -132,6 +150,12 @@
           "name": "Week Nov 17-20: Enlightenment - Section reading 1: Video: Africa & Britain, A Forgotten History, Episode 2: Freedom (50 ",
           "start_date": "2026-11-17",
           "due_date": "2026-11-20",
+          "notes": "Reading"
+        },
+        {
+          "name": "Week Dec 1-4: Modern Europe?",
+          "start_date": "2026-12-01",
+          "due_date": "2026-12-04",
           "notes": "Reading"
         }
       ],
@@ -333,86 +357,7 @@
       "start_date": "",
       "due_date": "2026-12-10",
       "is_group_project": false,
-      "assignments": [
-        {
-          "name": "Week Aug 25-29: Intro & Black Death (lecture topics)",
-          "start_date": "2026-08-25",
-          "due_date": "2026-08-29",
-          "notes": "Reading"
-        },
-        {
-          "name": "Week Sep 1-4: Everyday Life (lecture topics)",
-          "start_date": "2026-09-01",
-          "due_date": "2026-09-04",
-          "notes": "Reading"
-        },
-        {
-          "name": "Week Sep 8-11: Renaissance (lecture topics)",
-          "start_date": "2026-09-08",
-          "due_date": "2026-09-11",
-          "notes": "Reading"
-        },
-        {
-          "name": "Week Sep 15-18: Renaissance (lecture topics)",
-          "start_date": "2026-09-15",
-          "due_date": "2026-09-18",
-          "notes": "Reading"
-        },
-        {
-          "name": "Week Sep 20-24: European Expansion (lecture topics)",
-          "start_date": "2026-09-20",
-          "due_date": "2026-09-24",
-          "notes": "Reading"
-        },
-        {
-          "name": "Week Oct 6-9: Midterm & Break (lecture topics)",
-          "start_date": "2026-10-06",
-          "due_date": "2026-10-09",
-          "notes": "Reading"
-        },
-        {
-          "name": "Week Oct 13-16: The Reformation (lecture topics)",
-          "start_date": "2026-10-13",
-          "due_date": "2026-10-16",
-          "notes": "Reading"
-        },
-        {
-          "name": "Week Oct 20-23: The Reformation (lecture topics)",
-          "start_date": "2026-10-20",
-          "due_date": "2026-10-23",
-          "notes": "Reading"
-        },
-        {
-          "name": "Week Oct 27-30: Reformation (lecture topics)",
-          "start_date": "2026-10-27",
-          "due_date": "2026-10-30",
-          "notes": "Reading"
-        },
-        {
-          "name": "Week Nov 3-6: Witches & Science (lecture topics)",
-          "start_date": "2026-11-03",
-          "due_date": "2026-11-06",
-          "notes": "Reading"
-        },
-        {
-          "name": "Week Nov 10-13: Enlightenment (lecture topics)",
-          "start_date": "2026-11-10",
-          "due_date": "2026-11-13",
-          "notes": "Reading"
-        },
-        {
-          "name": "Week Nov 17-20: Enlightenment (lecture topics)",
-          "start_date": "2026-11-17",
-          "due_date": "2026-11-20",
-          "notes": "Reading"
-        },
-        {
-          "name": "Week Dec 1-4: Modern Europe? (lecture topics)",
-          "start_date": "2026-12-01",
-          "due_date": "2026-12-04",
-          "notes": "Reading"
-        }
-      ],
+      "assignments": [],
       "sections": {
         "Overview (Assignments section)": "After every lecture there will be three terms listed. Eleven times during the course of the semester there will be a quiz at the beginning of class that asks you to identify two of those terms. This exercise will prepare you for the exams, which will ask you",
         "Related Mentions": [
@@ -524,12 +469,6 @@
           "start_date": "",
           "due_date": "2026-09-15",
           "notes": "Assignment"
-        },
-        {
-          "name": "Week Sep 15-18: Renaissance",
-          "start_date": "2026-09-15",
-          "due_date": "2026-09-18",
-          "notes": "Reading"
         }
       ],
       "sections": {
@@ -650,12 +589,6 @@
           "start_date": "",
           "due_date": "2026-11-10",
           "notes": "Assignment"
-        },
-        {
-          "name": "Week Nov 10-13: Enlightenment",
-          "start_date": "2026-11-10",
-          "due_date": "2026-11-13",
-          "notes": "Reading"
         }
       ],
       "sections": {
@@ -889,18 +822,6 @@
           "start_date": "",
           "due_date": "2026-10-06",
           "notes": "Exam"
-        },
-        {
-          "name": "Week Oct 6-9: Midterm & Break",
-          "start_date": "2026-10-06",
-          "due_date": "2026-10-09",
-          "notes": "Reading"
-        },
-        {
-          "name": "Week Dec 1-4: Modern Europe?",
-          "start_date": "2026-12-01",
-          "due_date": "2026-12-04",
-          "notes": "Reading"
         }
       ],
       "sections": {

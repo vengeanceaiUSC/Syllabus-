@@ -962,10 +962,35 @@ def find_hist103_schedule_block(text: str) -> str:
     return tail[: end.start()] if end else tail[:14000]
 
 
+def _clean_hist103_reading_text(text: str) -> str:
+    """Strip PDF page markers, Brightspace module noise, and file blobs."""
+    text = PAGE_MARKER.sub(" ", text)
+    text = re.sub(r"--\s*\d+\s+of\s+\d+\s*--", " ", text, flags=re.I)
+    text = re.sub(r"\b\d+\.Levack\.\d+\s*PDF document\b", " ", text, flags=re.I)
+    text = re.sub(r"\b(?:PDF|Word) document\b", " ", text, flags=re.I)
+    text = re.sub(r"\bmodule:\s*contains[^\n]*", " ", text, flags=re.I)
+    text = re.sub(r"\b\d+\s+bookmarked topics\b", " ", text, flags=re.I)
+    return re.sub(r"\s+", " ", text).strip()
+
+
+def _hist103_reading_title(reading: str, max_len: int = 95) -> str:
+    reading = _clean_hist103_reading_text(reading)
+    if not reading:
+        return ""
+    m = re.match(r'^(.{10,95}?)(?:\s+\d+\s+\d|$)', reading)
+    if m:
+        reading = m.group(1).strip()
+    if len(reading) > max_len:
+        cut = reading[: max_len - 3].rsplit(" ", 1)[0]
+        reading = cut + "..." if cut else reading[: max_len - 3] + "..."
+    return reading
+
+
 def parse_hist103_weekly_items(text: str, year: int) -> list[dict]:
     block = find_hist103_schedule_block(text)
     if not block:
         return []
+    block = PAGE_MARKER.sub(" ", block)
     items: list[dict] = []
     week_re = re.compile(
         r"(Aug|Sep|Oct|Nov|Dec)\s+(\d{1,2})-(\d{1,2}):\s*([^\n]+)",
@@ -975,7 +1000,7 @@ def parse_hist103_weekly_items(text: str, year: int) -> list[dict]:
     for i, wm in enumerate(matches):
         mon, d1, d2, title = wm.group(1), int(wm.group(2)), int(wm.group(3)), wm.group(4).strip()
         chunk_end = matches[i + 1].start() if i + 1 < len(matches) else len(block)
-        chunk = block[wm.end() : chunk_end]
+        chunk = PAGE_MARKER.sub(" ", block[wm.end() : chunk_end])
         start_iso = _hist_month_day_to_iso(mon, d1, year)
         due_iso = _hist_month_day_to_iso(mon, d2, year)
         readings: list[str] = []
@@ -984,36 +1009,25 @@ def parse_hist103_weekly_items(text: str, year: int) -> list[dict]:
             chunk,
             re.I | re.S,
         ):
-            reading_text = re.sub(r"\s+", " ", sm.group(1)).strip()[:200]
-            if reading_text and "module:" not in reading_text:
+            reading_text = _clean_hist103_reading_text(sm.group(1))
+            if reading_text and len(reading_text) > 8:
                 readings.append(reading_text)
         week_name = f"Week {mon} {d1}-{d2}: {title}"
-        route_hint = _hist103_route(f"{week_name} {chunk[:300]}")
         items.append(
             _hist103_sub_item(
                 week_name,
                 start_iso,
                 due_iso,
                 classify_hist103_sub_item("week", week_name),
-                route_hint,
+                "Discussion Section",
                 "week",
             )
         )
-        # Lecture topics / readings also listed under quizzes (in-class identification prep)
-        if "section reading" not in title.lower():
-            lecture_name = f"{week_name} (lecture topics)"
-            items.append(
-                _hist103_sub_item(
-                    lecture_name,
-                    start_iso,
-                    due_iso,
-                    classify_hist103_sub_item("week_lecture", lecture_name),
-                    "Identification Quizzes",
-                    "week_lecture",
-                )
-            )
         for ri, reading in enumerate(readings, 1):
-            reading_name = f"{week_name} - Section reading {ri}: {reading[:80]}"
+            reading_title = _hist103_reading_title(reading)
+            if not reading_title:
+                continue
+            reading_name = f"{week_name} - Section reading {ri}: {reading_title}"
             items.append(
                 _hist103_sub_item(
                     reading_name,
@@ -1087,14 +1101,15 @@ def parse_hist103_weekly_items(text: str, year: int) -> list[dict]:
 
 
 def _hist103_route(text: str) -> str:
+    """Route explicit due lines only - never week schedule chunks."""
     low = text.lower()
-    if "sleep paper" in low or "sleep in the early modern" in low:
+    if re.search(r"\bsleep paper due\b", low):
         return "Sleep Paper"
-    if "witchcraft paper" in low or "witchcraft & daily" in low:
+    if re.search(r"\bwitchcraft paper due\b", low):
         return "Witchcraft Paper"
-    if "midterm" in low:
+    if re.search(r"\boct 6:\s*midterm\b", low) or re.search(r"\bmidterm exam\b", low):
         return "Mid-term"
-    if "final exam" in low:
+    if re.search(r"\bfinal exam\b", low) or re.search(r"\bdec 10:\s*final\b", low):
         return "Final Exam"
     if "primary source" in low or "section reading" in low or "readings for section" in low:
         return "Discussion Section"
@@ -1141,7 +1156,15 @@ def build_full_syllabus_assignments(
     else:
         items = []
     seen: set[tuple[str, str]] = set()
+    seen_week_names: set[str] = set()
     for item in items:
+        kind = item.get("kind", "")
+        if kind == "week":
+            item["category_hint"] = "Discussion Section"
+            wk = item["name"].lower()
+            if wk in seen_week_names:
+                continue
+            seen_week_names.add(wk)
         cat_name = _match_category_name(categories, item.pop("category_hint", ""))
         if cat_name not in out:
             out[cat_name] = []
@@ -2156,9 +2179,157 @@ def gather_category_content(text: str, cat: Category) -> tuple[dict, str]:
     return all_sections, verbatim
 
 
-def infer_year(term: str) -> int:
-    m = re.search(r"(20\d{2})", term)
-    return int(m.group(1)) if m else 2025
+def infer_year(term: str, text: str = "", source_hint: str = "") -> int:
+    """Academic year for ISO dates - prefer explicit term/text, else calendar heuristics."""
+    for src in (term, text[:20000], source_hint):
+        m = re.search(r"(20\d{2})", src or "")
+        if m:
+            return int(m.group(1))
+    if is_course_calendar(text) or re.search(r"\bCourse Calendar\b", text[:800], re.I):
+        from datetime import date
+
+        return date.today().year
+    from datetime import date
+
+    return date.today().year
+
+
+def infer_term(text: str, year: int) -> str:
+    """Best-effort term when syllabus omits it (common on calendar-only PDFs)."""
+    tm = re.search(
+        r"(?:Syllabus\s*-\s*)?(Fall|Spring|Summer|Winter)\s+(20\d{2})",
+        text[:15000],
+        re.I,
+    )
+    if tm:
+        return f"{tm.group(1).title()} {tm.group(2)}"
+    months: list[int] = []
+    for row in parse_embedded_calendar_table(text):
+        for key in ("date_mon", "date_wed"):
+            raw = str(row.get(key) or "")
+            if "/" in raw:
+                try:
+                    months.append(int(raw.split("/")[0]))
+                except ValueError:
+                    pass
+    if months:
+        if min(months) >= 8:
+            return f"Fall {year}"
+        if max(months) <= 5:
+            return f"Spring {year}"
+    if re.search(r"\bHIST\s*103\b|Emergence of Modern Europe", text[:5000], re.I):
+        return f"Fall {year}"
+    return ""
+
+
+def parse_syllabus_metadata(text: str, source_hint: str = "") -> dict[str, str]:
+    """Best-effort class code, title, instructor, and term from syllabus text or filename."""
+    meta: dict[str, str] = {}
+    head = text[:15000]
+    skip_codes = {"PDF", "LO", "ISO", "ARES", "ONLY", "NOT", "THE", "AND"}
+
+    m = re.search(r"\b([A-Z]{2,5})[\s-](\d{3}[A-Z]?)\s*:\s*([^\n]+)", head)
+    if m and m.group(1) not in skip_codes:
+        meta["code"] = f"{m.group(1)}-{m.group(2)}"
+        meta["name"] = m.group(3).strip()[:100]
+
+    if not meta.get("code"):
+        for m in re.finditer(r"\b([A-Z]{2,5})[\s-]?(\d{3}[A-Z]?)\b", head):
+            if m.group(1) not in skip_codes:
+                meta["code"] = f"{m.group(1)}-{m.group(2)}"
+                break
+
+    hint = source_hint.lower()
+    if not meta.get("code") and hint:
+        hm = re.search(r"(hist|buad|acct|econ|math|writ|chem|phys)[-_ ]?(\d{3})", hint, re.I)
+        if hm:
+            meta["code"] = f"{hm.group(1).upper()}-{hm.group(2)}"
+
+    tm = re.search(
+        r"(?:Syllabus\s*-\s*)?(Fall|Spring|Summer|Winter)\s+(20\d{2})",
+        head,
+        re.I,
+    )
+    if tm:
+        meta["term"] = f"{tm.group(1).title()} {tm.group(2)}"
+
+    im = re.search(
+        r"(?:HIST[-\s]?103|BUAD[-\s]?\d{3})[^\n]+\n(?:[^\n]+\n)?"
+        r"([A-Z][a-z]+(?:\s+[A-Z][a-z]+)+(?:\s+[IVXLC]+)?)\s*$",
+        head,
+        re.M,
+    )
+    if im and "module" not in im.group(1).lower():
+        meta["instructor"] = im.group(1).strip()
+
+    for pat in (
+        r"Professor:?\s*([^\n]+)",
+        r"Instructor:?\s*([^\n]+)",
+        r"Faculty:?\s*([^\n]+)",
+    ):
+        im = re.search(pat, head, re.I)
+        if im:
+            name = im.group(1).strip()
+            name = re.sub(r",\s*(MBA|PhD|EdD|JD)[^,\n]*", "", name, flags=re.I).strip()
+            if (
+                3 < len(name) < 70
+                and "module" not in name.lower()
+                and "teaching assistant" not in name.lower()
+            ):
+                meta["instructor"] = name
+                break
+
+    if not meta.get("instructor"):
+        im = re.search(
+            r"(?:Dr\.?\s+)?([A-Z][a-z]+(?:\s+[A-Z][\'a-z]+)+)\s*\n",
+            head[:3000],
+        )
+        if im and "teaching assistant" not in im.group(0).lower():
+            meta["instructor"] = im.group(1).strip()
+
+    if not meta.get("name"):
+        tm2 = re.search(r"Course (?:Title|Name):?\s*([^\n]+)", head, re.I)
+        if tm2:
+            meta["name"] = tm2.group(1).strip()[:100]
+
+    if "managerial accounting" in head.lower():
+        meta.setdefault("code", "BUAD-281")
+        meta.setdefault("name", "Managerial Accounting")
+
+    bad_instructor = re.compile(
+        r"course calendar|teaching assistant|brightspace|module|syllabus|assignments",
+        re.I,
+    )
+    if meta.get("instructor") and bad_instructor.search(meta["instructor"]):
+        del meta["instructor"]
+
+    return meta
+
+
+def merge_class_metadata(
+    text: str,
+    class_code: str = "",
+    class_name: str = "",
+    instructor: str = "",
+    term: str = "",
+    source_hint: str = "",
+) -> dict[str, str]:
+    detected = parse_syllabus_metadata(text, source_hint)
+    code = (class_code or detected.get("code") or "").strip()
+    if not code:
+        raise SystemExit(
+            "Could not detect class code. Pass --class-code or use a filename like buad-281-source.pdf."
+        )
+    resolved_term = (term or detected.get("term") or "").strip()
+    resolved_year = infer_year(resolved_term, text, source_hint)
+    if not resolved_term:
+        resolved_term = infer_term(text, resolved_year)
+    return {
+        "code": code,
+        "name": (class_name or detected.get("name") or "").strip(),
+        "instructor": (instructor or detected.get("instructor") or "").strip(),
+        "term": resolved_term,
+    }
 
 
 def sanitize_start_date(iso: str, year: int) -> str:
@@ -2313,12 +2484,18 @@ def apply_start_date_cutoff(categories: list[dict], year: int) -> None:
 
 def dissect(
     text: str,
-    class_code: str,
+    class_code: str = "",
     class_name: str = "",
     instructor: str = "",
     term: str = "",
     color: str = "",
+    source_hint: str = "",
 ) -> dict:
+    meta = merge_class_metadata(text, class_code, class_name, instructor, term, source_hint)
+    class_code = meta["code"]
+    class_name = meta["name"]
+    instructor = meta["instructor"]
+    term = meta["term"]
     calendar_mode = is_course_calendar(text)
     marshall_mode = is_marshall_syllabus(text)
     categories = parse_categories(text)
@@ -2334,7 +2511,7 @@ def dissect(
         total_pts = sum(c.weight or 0 for c in categories)
         grading_scale["scale_type"] = "points"
         grading_scale["raw_scale"] = f"Total graded points in calendar: {total_pts:g} (letter scale not in document)"
-    year = infer_year(term)
+    year = infer_year(term, text, source_hint)
     research_guide = parse_research_guide_text(text)
     assignment_map: dict[str, list[dict]] = {}
     marshall_connect_items: list[dict] = []
@@ -2425,11 +2602,12 @@ def dissect(
 def main() -> int:
     parser = argparse.ArgumentParser(description="Auto-dissect syllabus text to JSON.")
     parser.add_argument("text_file", help="Extracted syllabus plain text")
-    parser.add_argument("--class-code", required=True)
+    parser.add_argument("--class-code", default="", help="Optional if detectable from text/filename")
     parser.add_argument("--class-name", default="")
     parser.add_argument("--instructor", default="")
     parser.add_argument("--term", default="")
     parser.add_argument("--color", default="")
+    parser.add_argument("--source-hint", default="", help="Original PDF filename for metadata fallback")
     parser.add_argument("--out", default="class.json")
     args = parser.parse_args()
 
@@ -2441,6 +2619,7 @@ def main() -> int:
         instructor=args.instructor,
         term=args.term,
         color=args.color,
+        source_hint=args.source_hint or args.text_file,
     )
     out = Path(args.out).expanduser()
     out.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")

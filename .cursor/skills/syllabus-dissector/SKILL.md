@@ -16,7 +16,7 @@ the syllabus mentions about that item — extracted automatically.
 3. **Assignment details** — start date (only when syllabus-verified), due date, group-project flag
 4. **PDF documents** — one per category; structured sections + verbatim extract
 5. **Excel hyperlinks** — **Open PDF** opens hosted PDF in browser
-6. **Overview cover sheet** — first tab summarizes all classes (Reading/Homework/Papers/Group/External certs flags, first due item, first major due, monthly do-first list)
+6. **Overview cover sheet** — first tab summarizes all classes (Reading/Homework/Papers/Group/External certs; **Start here (graded)** excludes Connect prep; **Do First** split into graded vs Connect prep sections; focus month = `--as-of-date` or today)
 7. **Sub-assignments** — indented schedule rows under each graded category. Sub-rows are **grouped by type** (Reading, then Homework, etc.) and sorted by date. Each sub-row uses:
 
 | Column | Parent category row | Sub-row |
@@ -64,17 +64,17 @@ the syllabus mentions about that item — extracted automatically.
 
 ### One-command pipeline
 
+Metadata (`--class-code`, `--class-name`, `--instructor`, `--term`) is **auto-detected** from syllabus text and the PDF filename when omitted. Calendar-only PDFs infer **Fall YYYY** from Aug–Dec dates and use the current year for ISO dates when no year appears in the file. Override only when detection is wrong (Brightspace HIST-103 exports often need `--instructor`).
+
 ```bash
 python scripts/dissect_syllabus.py "<path-to-syllabus>" \
-  --class-code HIST-103 \
-  --class-name "The Emergence of Modern Europe" \
-  --instructor "Dr. Lindsay O'Neill" \
-  --term "Fall 2026" \
   --workbook output/syllabi.xlsx \
   --link-base "https://raw.githubusercontent.com/<owner>/<repo>/<branch>/output/documents" \
   --source-link-base "https://raw.githubusercontent.com/<owner>/<repo>/<branch>/output/sources" \
   --keep-json output/hist103.json
 ```
+
+Optional overrides: `--class-code HIST-103 --class-name "..." --instructor "..." --term "Fall 2026" --as-of-date 2026-08-21`
 
 This runs, in order:
 
@@ -96,6 +96,8 @@ Uses the **Assignments section** + full-document grep:
 6. Archive all matching text verbatim in `extracted_text`
 
 **Expected quality:** ~7–9/10 detail. Verbatim blocks are full syllabus paragraphs.
+
+**HIST-103 schedule rules:** All `Week Mon D-D:` rows are **Reading** under **Discussion Section** only. Do **not** duplicate week rows under Identification Quizzes (no `(lecture topics)` sub-rows). Never call `_hist103_route()` on week chunks. Strip `PAGE_MARKER` / Brightspace noise from section reading titles.
 
 ### B. Course Calendar (e.g. BUAD-281)
 
@@ -241,8 +243,11 @@ failed and you are patching a known gap.
 
 ### Manual steps the agent still provides
 
-- `--class-code`, `--class-name`, `--instructor`, `--term` (from syllabus header)
 - `--link-base` URL for hosted PDF links (required for standalone xlsx download)
+- `--research-guide` for Marshall SONA PDFs when applicable
+- `--supplement` for calendar + full syllabus merge when applicable (also supplies instructor/term for calendar-only PDFs)
+- `--as-of-date YYYY-MM-DD` when Overview focus month should not use the VM clock
+- Override `--class-code` / `--instructor` / `--term` only if auto-detect is wrong
 
 ### Publish
 

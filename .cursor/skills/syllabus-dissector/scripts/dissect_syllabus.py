@@ -34,7 +34,7 @@ def run(cmd: list[str]) -> None:
 def main() -> int:
     parser = argparse.ArgumentParser(description="Full syllabus dissection pipeline.")
     parser.add_argument("syllabus", help="Path to syllabus file (.pdf, .docx, etc.)")
-    parser.add_argument("--class-code", required=True)
+    parser.add_argument("--class-code", default="", help="Optional if detectable from syllabus text/filename")
     parser.add_argument("--class-name", default="")
     parser.add_argument("--instructor", default="")
     parser.add_argument("--term", default="")
@@ -57,13 +57,18 @@ def main() -> int:
         default="",
         help="Marshall research participation guide PDF (e.g. BUAD-304 SONA guide)",
     )
+    parser.add_argument(
+        "--as-of-date",
+        default="",
+        help="Overview focus month (YYYY-MM-DD). Defaults to system date.",
+    )
     args = parser.parse_args()
 
     workbook_path = Path(args.workbook).expanduser()
     sources_dir = workbook_path.parent / "sources"
     sources_dir.mkdir(parents=True, exist_ok=True)
 
-    source_slug = f"{slugify(args.class_code)}-source.pdf"
+    source_slug = f"{slugify(args.class_code or Path(args.syllabus).stem.replace('-source', ''))}-source.pdf"
     source_dest = sources_dir / source_slug
     syllabus_path = Path(args.syllabus).expanduser().resolve()
     if syllabus_path != source_dest.resolve():
@@ -109,7 +114,7 @@ def main() -> int:
                     str(rg_path),
                 ]
             )
-            rg_slug = f"{slugify(args.class_code)}-research-guide.pdf"
+            rg_slug = f"{slugify(args.class_code or syllabus_path.stem.replace('-source', ''))}-research-guide.pdf"
             rg_dest = sources_dir / rg_slug
             rg_src = Path(args.research_guide).expanduser().resolve()
             if rg_src != rg_dest.resolve():
@@ -128,11 +133,13 @@ def main() -> int:
             sys.executable,
             str(SCRIPTS / "auto_dissect.py"),
             str(text_path),
-            "--class-code",
-            args.class_code,
             "--out",
             str(json_path),
+            "--source-hint",
+            syllabus_path.name,
         ]
+        if args.class_code:
+            dissect_cmd.extend(["--class-code", args.class_code])
         for flag, val in [
             ("--class-name", args.class_name),
             ("--instructor", args.instructor),
@@ -159,13 +166,15 @@ def main() -> int:
         ]
         if args.link_base:
             build_cmd.extend(["--link-base", args.link_base])
+        if args.as_of_date:
+            build_cmd.extend(["--as-of-date", args.as_of_date])
         run(build_cmd)
 
     print(f"\nDone. Workbook: {workbook_path}")
     if source_url:
         print(f"Source PDF: {source_dest}")
     if args.research_guide:
-        print(f"Research guide PDF: {sources_dir / f'{slugify(args.class_code)}-research-guide.pdf'}")
+        print(f"Research guide PDF: {rg_dest}")
     if args.keep_json:
         print(f"JSON: {args.keep_json}")
     return 0

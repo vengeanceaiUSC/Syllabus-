@@ -21,6 +21,7 @@ import argparse
 import json
 import re
 import sys
+from datetime import date, timedelta
 from pathlib import Path
 
 from openpyxl import Workbook, load_workbook
@@ -44,6 +45,8 @@ THIN = Side(style="thin", color="D9D9D9")
 BORDER = Border(left=THIN, right=THIN, top=THIN, bottom=THIN)
 
 OVERVIEW_SHEET = "Overview"
+CONNECT_PREP_MARK = "Personal Assessments (Connect)"
+OVERVIEW_AS_OF: date | None = None
 TODO_LABELS = frozenset({"Homework", "Assignment", "Exam", "Certification", "Research"})
 MAJOR_LABELS = frozenset({"Assignment", "Exam", "Certification"})
 MAJOR_NAME = re.compile(
@@ -289,25 +292,56 @@ def first_todo_by_class(all_due: list[dict]) -> list[dict]:
     return out
 
 
-def build_do_first_items(all_due: list[dict], focus_month: str) -> list[dict]:
-    """Assignments only: first per class always included, plus others due in focus month."""
+def build_do_first_items(all_due: list[dict], focus_month: str) -> tuple[list[dict], list[dict]]:
+    """Graded assignments + Connect prep: first per class always included, plus focus-month items."""
     todos = [x for x in all_due if is_todo_item(x)]
-    month_todos = [x for x in todos if _month_key(x["due_date"]) == focus_month]
-    merged: list[dict] = []
-    seen: set[tuple[str, str, str]] = set()
+    graded = [x for x in todos if not x.get("is_connect_prep")]
+    connect = [x for x in todos if x.get("is_connect_prep")]
+    month_graded = [x for x in graded if _month_key(x["due_date"]) == focus_month]
+    month_connect = [x for x in connect if _month_key(x["due_date"]) == focus_month]
 
-    def add(item: dict) -> None:
-        key = (item["class_code"], item["due_date"], item["name"])
-        if key not in seen:
-            seen.add(key)
-            merged.append(item)
+    def merge(first_pool: list[dict], month_pool: list[dict]) -> list[dict]:
+        merged: list[dict] = []
+        seen: set[tuple[str, str, str]] = set()
 
-    for item in first_todo_by_class(all_due):
-        add(item)
-    for item in month_todos:
-        add(item)
-    merged.sort(key=_todo_sort_key)
-    return merged
+        def add(item: dict) -> None:
+            key = (item["class_code"], item["due_date"], item["name"])
+            if key not in seen:
+                seen.add(key)
+                merged.append(item)
+
+        for item in first_pool:
+            add(item)
+        for item in month_pool:
+            add(item)
+        merged.sort(key=_todo_sort_key)
+        return merged
+
+    first_graded = [x for x in first_todo_by_class(all_due) if not x.get("is_connect_prep")]
+    first_connect = [x for x in first_todo_by_class(all_due) if x.get("is_connect_prep")]
+    return merge(first_graded, month_graded), merge(first_connect, month_connect)
+
+
+def upcoming_todo_items(all_due: list[dict], after_month: str, days: int = 45, *, as_of: date | None = None) -> list[dict]:
+    """Graded assignments due after focus month within the next N days."""
+    todos = [x for x in all_due if is_todo_item(x) and x.get("is_graded", True) and not x.get("is_connect_prep")]
+    if not todos:
+        return []
+    start = as_of or date.today()
+    end = start + timedelta(days=days)
+    out: list[dict] = []
+    for item in todos:
+        iso = item.get("due_date") or ""
+        if not iso or _month_key(iso) == after_month:
+            continue
+        try:
+            d = date.fromisoformat(iso)
+        except ValueError:
+            continue
+        if start <= d <= end:
+            out.append(item)
+    out.sort(key=_todo_sort_key)
+    return out
 
 
 def _is_major_category(cat: dict) -> bool:
@@ -346,6 +380,11 @@ def iter_due_items(data: dict) -> list[dict]:
     items: list[dict] = []
     for cat in data.get("categories") or []:
         cat_name = cat.get("name") or ""
+        cat_weight = cat.get("weight")
+        is_connect_prep = cat_name == CONNECT_PREP_MARK or (
+            "connect" in cat_name.lower() and cat_weight is None
+        )
+        is_graded_cat = cat_weight is not None and not is_connect_prep
         due = cat.get("due_date") or ""
         if due:
             items.append(
@@ -357,6 +396,8 @@ def iter_due_items(data: dict) -> list[dict]:
                     "label": "",
                     "is_major": _is_major_category(cat),
                     "is_sub": False,
+                    "is_graded": is_graded_cat,
+                    "is_connect_prep": is_connect_prep,
                 }
             )
         for sub in cat.get("assignments") or []:
@@ -377,6 +418,8 @@ def iter_due_items(data: dict) -> list[dict]:
                     "label": label,
                     "is_major": is_major,
                     "is_sub": True,
+                    "is_graded": is_graded_cat,
+                    "is_connect_prep": is_connect_prep,
                 }
             )
     return items
@@ -388,6 +431,14 @@ def class_has_label(data: dict, label: str) -> bool:
             if sub.get("notes") == label:
                 return True
     return False
+
+
+def class_has_connect_prep(categories: list[dict]) -> bool:
+    return any(
+        (c.get("name") or "") == CONNECT_PREP_MARK
+        or ("connect" in (c.get("name") or "").lower() and c.get("weight") is None)
+        for c in categories
+    )
 
 
 def summarize_class(data: dict) -> dict:
@@ -411,6 +462,7 @@ def summarize_class(data: dict) -> dict:
         "has_homework": class_has_label(data, "Homework"),
         "papers": papers,
         "external_certs": external_certs,
+        "has_connect_prep": class_has_connect_prep(categories),
         "has_group_project": any(c.get("is_group_project") for c in categories),
         "first_todo": first_todo,
         "first_major": first_major,
@@ -429,7 +481,7 @@ def _month_heading(month_key: str) -> str:
     return f"Do First - {MONTH_NAMES[int(mon_s)]} {year_s}"
 
 
-def build_overview_sheet(wb: Workbook, all_data: list[dict]) -> None:
+def build_overview_sheet(wb: Workbook, all_data: list[dict], *, as_of: date | None = None) -> None:
     """Cover-page stats: workload flags, first due items, monthly priority list."""
     if OVERVIEW_SHEET in wb.sheetnames:
         wb.remove(wb[OVERVIEW_SHEET])
@@ -445,8 +497,12 @@ def build_overview_sheet(wb: Workbook, all_data: list[dict]) -> None:
     all_due.sort(key=lambda x: _due_sort_key(x["due_date"], x["label"], x["name"], x["is_sub"]))
 
     todo_due = sorted([x for x in all_due if is_todo_item(x)], key=_todo_sort_key)
-    focus_month = _month_key(todo_due[0]["due_date"]) if todo_due else ""
-    do_first_items = build_do_first_items(all_due, focus_month)
+    graded_todo = [x for x in todo_due if not x.get("is_connect_prep")]
+    today = as_of or OVERVIEW_AS_OF or date.today()
+    focus_month = today.strftime("%Y-%m")
+    do_first_graded, do_first_connect = build_do_first_items(all_due, focus_month)
+    upcoming_items = upcoming_todo_items(all_due, focus_month, as_of=today)
+    any_connect = any(s["has_connect_prep"] for s in summaries)
 
     title_fill = PatternFill("solid", fgColor="203764")
     header_fill = PatternFill("solid", fgColor="4472C4")
@@ -454,7 +510,7 @@ def build_overview_sheet(wb: Workbook, all_data: list[dict]) -> None:
     title_font = Font(bold=True, size=16, color="FFFFFF")
     header_font = Font(bold=True, color="FFFFFF")
     label_font = Font(bold=True)
-    ncols = 10
+    ncols = 11
     last_col = get_column_letter(ncols)
 
     row = 1
@@ -472,11 +528,31 @@ def build_overview_sheet(wb: Workbook, all_data: list[dict]) -> None:
         ws.cell(row=row, column=1, value=f"Term: {', '.join(terms)}").font = Font(italic=True)
         row += 1
 
-    if todo_due:
-        start = todo_due[0]
+    ws.merge_cells(f"A{row}:{last_col}{row}")
+    ws.cell(row=row, column=1, value=f"Today: {today.isoformat()}").font = Font(italic=True, color="404040")
+    row += 1
+
+    if any_connect:
+        ws.merge_cells(f"A{row}:{last_col}{row}")
+        note = ws.cell(
+            row=row,
+            column=1,
+            value=(
+                "Connect prep (e.g. BUAD-304 Personal Assessments) is ungraded class prep - "
+                "not part of Participation or other graded categories."
+            ),
+        )
+        note.font = Font(italic=True, color="0070C0")
+        note.fill = PatternFill("solid", fgColor="DDEBF7")
+        note.alignment = Alignment(wrap_text=True)
+        ws.row_dimensions[row].height = 28
+        row += 1
+
+    if graded_todo:
+        start = graded_todo[0]
         ws.merge_cells(f"A{row}:{last_col}{row}")
         lead = (
-            f"Start here: {start['due_date']} - {start['class_code']} - "
+            f"Start here (graded): {start['due_date']} - {start['class_code']} - "
             f"{start['label'] or 'Category'}: {start['name'][:70]}"
         )
         cell = ws.cell(row=row, column=1, value=lead)
@@ -494,6 +570,7 @@ def build_overview_sheet(wb: Workbook, all_data: list[dict]) -> None:
         "Papers",
         "Group Project",
         "External certs",
+        "Connect prep",
         "First assignment",
         "Assign due",
         "First major",
@@ -514,6 +591,7 @@ def build_overview_sheet(wb: Workbook, all_data: list[dict]) -> None:
         fm = s["first_major"]
         papers_text = ", ".join(s["papers"]) if s["papers"] else "-"
         certs_text = ", ".join(s["external_certs"]) if s["external_certs"] else "-"
+        connect_text = "Ungraded prep" if s["has_connect_prep"] else "-"
         values = [
             sheet_link(sanitize_sheet_name(s["code"]), s["code"]),
             "Yes" if s["has_reading"] else "-",
@@ -521,6 +599,7 @@ def build_overview_sheet(wb: Workbook, all_data: list[dict]) -> None:
             papers_text,
             "Yes" if s["has_group_project"] else "-",
             certs_text,
+            connect_text,
             (fa["name"][:55] if fa else "-"),
             (fa["due_date"] if fa else "-"),
             (fm["name"][:55] if fm else "-"),
@@ -535,6 +614,8 @@ def build_overview_sheet(wb: Workbook, all_data: list[dict]) -> None:
                 c.font = Font(bold=True, color="0563C1", underline="single")
             elif col == 6 and value != "-":
                 c.font = Font(bold=True, color=SUB_LABEL_COLORS.get("Certification", "0070C0"))
+            elif col == 7 and value != "-":
+                c.font = Font(bold=True, italic=True, color="0070C0")
         row += 1
 
     row += 1
@@ -542,13 +623,13 @@ def build_overview_sheet(wb: Workbook, all_data: list[dict]) -> None:
     sec = ws.cell(
         row=row,
         column=1,
-        value=f"{_month_heading(focus_month)} (assignments only; first per class included)",
+        value=f"{_month_heading(focus_month)} - graded assignments (first per class always listed)",
     )
     sec.font = label_font
     sec.fill = section_fill
     row += 1
 
-    month_headers = ["Due", "Class", "Type", "Item"]
+    month_headers = ["Due", "Class", "Type", "Graded?", "Item"]
     for col, name in enumerate(month_headers, start=1):
         c = ws.cell(row=row, column=col, value=name)
         c.font = header_font
@@ -556,11 +637,13 @@ def build_overview_sheet(wb: Workbook, all_data: list[dict]) -> None:
         c.border = BORDER
     row += 1
 
-    for i, item in enumerate(do_first_items[:40]):
+    def write_todo_row(item: dict, i: int, *, connect_row: bool = False) -> None:
+        nonlocal row
         band = PatternFill("solid", fgColor="F2F2F2" if i % 2 else "FFFFFF")
         label = item["label"] or ("Assignment" if item.get("is_major") else "Category")
+        graded = "No" if item.get("is_connect_prep") else ("Yes" if item.get("is_graded", True) else "No")
         for col, value in enumerate(
-            [item["due_date"], item["class_code"], label, item["name"][:80]],
+            [item["due_date"], item["class_code"], label, graded, item["name"][:80]],
             start=1,
         ):
             c = ws.cell(row=row, column=col, value=value)
@@ -569,19 +652,63 @@ def build_overview_sheet(wb: Workbook, all_data: list[dict]) -> None:
             c.alignment = Alignment(wrap_text=True, vertical="top")
             if col == 3 and label in SUB_LABEL_COLORS:
                 c.font = Font(bold=True, color=SUB_LABEL_COLORS[label])
+            if col == 4 and value == "No":
+                c.font = Font(italic=True, color="0070C0")
+            if connect_row:
+                c.fill = PatternFill("solid", fgColor="E8F4FC" if i % 2 else "F5FAFD")
         row += 1
 
-    widths = [14, 10, 10, 24, 12, 32, 32, 12, 32, 12]
+    for i, item in enumerate(do_first_graded[:60]):
+        write_todo_row(item, i)
+
+    if do_first_connect:
+        row += 1
+        ws.merge_cells(f"A{row}:{last_col}{row}")
+        conn_sec = ws.cell(
+            row=row,
+            column=1,
+            value=f"{_month_heading(focus_month)} - Connect prep only (ungraded, not Participation)",
+        )
+        conn_sec.font = label_font
+        conn_sec.fill = PatternFill("solid", fgColor="DDEBF7")
+        row += 1
+        for col, name in enumerate(month_headers, start=1):
+            c = ws.cell(row=row, column=col, value=name)
+            c.font = header_font
+            c.fill = PatternFill("solid", fgColor="5B9BD5")
+            c.border = BORDER
+        row += 1
+        for i, item in enumerate(do_first_connect[:40]):
+            write_todo_row(item, i, connect_row=True)
+
+    if upcoming_items:
+        row += 1
+        ws.merge_cells(f"A{row}:{last_col}{row}")
+        up = ws.cell(row=row, column=1, value="Upcoming graded assignments (next 45 days)")
+        up.font = label_font
+        up.fill = section_fill
+        row += 1
+        for col, name in enumerate(month_headers, start=1):
+            c = ws.cell(row=row, column=col, value=name)
+            c.font = header_font
+            c.fill = header_fill
+            c.border = BORDER
+        row += 1
+        for i, item in enumerate(upcoming_items[:40]):
+            write_todo_row(item, i)
+
+    widths = [14, 10, 10, 22, 12, 26, 12, 14, 28, 12, 28]
     for col, width in enumerate(widths, start=1):
         ws.column_dimensions[get_column_letter(col)].width = width
-    ws.column_dimensions["D"].width = 28
+    ws.column_dimensions["D"].width = 24
+    ws.column_dimensions["I"].width = 32
     ws.freeze_panes = ws.cell(row=hdr_row + 1, column=1)
 
 
-def refresh_overview_sheet(wb: Workbook, workbook_path: Path) -> None:
+def refresh_overview_sheet(wb: Workbook, workbook_path: Path, *, as_of: date | None = None) -> None:
     all_data = collect_class_json_files(workbook_path)
     if len(all_data) >= 1:
-        build_overview_sheet(wb, all_data)
+        build_overview_sheet(wb, all_data, as_of=as_of)
 
 
 def build(
@@ -589,6 +716,7 @@ def build(
     workbook_path: Path,
     template_path: Path | None = None,
     link_base: str | None = None,
+    as_of: date | None = None,
 ) -> None:
     cls = data.get("class", {})
     class_code = str(cls.get("code") or cls.get("name") or "Class").strip()
@@ -690,6 +818,20 @@ def build(
         ws.row_dimensions[row].height = 48
         row += 1
 
+    if any((c.get("name") or "") == CONNECT_PREP_MARK for c in categories):
+        ws.cell(row=row, column=1, value="Connect prep").font = label_font
+        ws.merge_cells(start_row=row, start_column=2, end_row=row, end_column=ncols)
+        conn_cell = ws.cell(
+            row=row,
+            column=2,
+            value="Ungraded - Connect self-assessments are class prep, not part of Participation or other grades.",
+        )
+        conn_cell.alignment = Alignment(wrap_text=True, vertical="top")
+        conn_cell.fill = PatternFill("solid", fgColor="DDEBF7")
+        conn_cell.font = Font(italic=True, color="0070C0")
+        ws.row_dimensions[row].height = 36
+        row += 1
+
     row += 1
 
     header_row = row
@@ -785,7 +927,7 @@ def build(
     ws.freeze_panes = ws.cell(row=header_row + 1, column=1)
 
     remove_blank_template_sheet(wb)
-    refresh_overview_sheet(wb, workbook_path)
+    refresh_overview_sheet(wb, workbook_path, as_of=as_of)
     wb.save(str(workbook_path))
     print(f"Updated sheet '{sheet_name}' in {workbook_path}")
     print(f"Wrote {len(pdf_paths)} PDF document(s) to {docs_dir}")
@@ -805,11 +947,20 @@ def main() -> int:
             "downloaded workbook opens PDFs in the browser — no zip needed."
         ),
     )
+    parser.add_argument(
+        "--as-of-date",
+        default="",
+        help="Overview 'today' and focus month (YYYY-MM-DD). Defaults to system date.",
+    )
     args = parser.parse_args()
+
+    as_of: date | None = None
+    if args.as_of_date:
+        as_of = date.fromisoformat(args.as_of_date)
 
     data = json.loads(Path(args.json).expanduser().read_text(encoding="utf-8"))
     template = Path(args.template).expanduser() if args.template else None
-    build(data, Path(args.workbook).expanduser(), template, args.link_base)
+    build(data, Path(args.workbook).expanduser(), template, args.link_base, as_of=as_of)
     return 0
 
 
