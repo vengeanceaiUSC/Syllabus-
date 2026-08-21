@@ -357,7 +357,7 @@ When `output/rmp.json` exists next to the workbook, Overview includes a **Profes
 | Would Take Again | RMP percentage |
 | Consensus (below stats table) | Multi-paragraph STRENGTHS / GRADING / BOTTOM LINE themes from reviews |
 
-Overview does **not** freeze panes — the full cover sheet scrolls normally.
+Overview does **not** freeze panes — the full cover sheet scrolls normally. Professor ratings use Excel **row grouping** (click **+/-** at the row margin to expand/collapse); collapsed by default so assignments stay in view.
 
 Refresh ratings: `python scripts/fetch_rmp.py --refresh-all` (writes `output/rmp.json`). Calendar-only classes may need a known instructor fallback (e.g. BUAD-281 → George Braunegg).
 

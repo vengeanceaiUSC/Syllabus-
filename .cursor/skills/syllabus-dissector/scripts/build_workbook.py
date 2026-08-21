@@ -514,6 +514,21 @@ def _month_heading(month_key: str) -> str:
     return f"Do First - {MONTH_NAMES[int(mon_s)]} {year_s}"
 
 
+def group_outline_rows(
+    ws,
+    start_row: int,
+    end_row: int,
+    *,
+    outline_level: int = 1,
+    collapsed: bool = False,
+) -> None:
+    """Excel row outline so a block collapses with +/- controls (summary row stays above)."""
+    if start_row > end_row:
+        return
+    ws.row_dimensions.group(start_row, end_row, outline_level=outline_level, hidden=collapsed)
+    ws.sheet_properties.outlinePr.summaryBelow = False
+
+
 def build_overview_sheet(
     wb: Workbook,
     all_data: list[dict],
@@ -578,10 +593,15 @@ def build_overview_sheet(
     rmp_rows = [s for s in summaries if s.get("rmp_entry")]
     if rmp_rows:
         ws.merge_cells(f"A{row}:{last_col}{row}")
-        rmp_title = ws.cell(row=row, column=1, value="Professor Ratings (Rate My Professors)")
+        rmp_title = ws.cell(
+            row=row,
+            column=1,
+            value="Professor Ratings (Rate My Professors) - click +/- at left to expand/collapse",
+        )
         rmp_title.font = label_font
         rmp_title.fill = section_fill
         row += 1
+        rmp_group_start = row
         rmp_headers = [
             "Class",
             "Instructor",
@@ -667,6 +687,8 @@ def build_overview_sheet(
                 value=f"RMP data as of {rmp_as_of}. Source: ratemyprofessors.com",
             ).font = Font(italic=True, size=9, color="808080")
             row += 1
+        rmp_group_end = row - 1
+        group_outline_rows(ws, rmp_group_start, rmp_group_end, collapsed=True)
         row += 1
 
     if any_connect:
