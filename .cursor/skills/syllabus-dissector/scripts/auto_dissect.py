@@ -815,35 +815,72 @@ def gather_marshall_connect_content(text: str) -> tuple[dict, str]:
     return sections, verbatim
 
 
-def calendar_week_assignments(rows: list[dict], year: int) -> list[dict]:
-    """One row per class session; split Reading vs Homework when both appear."""
+def calendar_homework_assignments(rows: list[dict], year: int) -> list[dict]:
+    """BUAD-281 Homework category: Reading + Homework pairs by class date, earliest first.
+
+    The calendar PDF lists one session date per row ('due by 8:00 am')  -  no separate start date.
+    """
     items: list[dict] = []
+    dated_rows: list[tuple[str, dict]] = []
     for row in rows:
-        date = calendar_row_date(row)
-        iso = md_to_iso(date, year)
-        if not iso:
+        iso = md_to_iso(calendar_row_date(row), year)
+        if iso:
+            dated_rows.append((iso, row))
+    dated_rows.sort(key=lambda x: x[0])
+
+    for iso, row in dated_rows:
+        if not row_has_homework_points(row):
             continue
+        reading = (row.get("reading") or "").replace(" / ", "; ").strip()
+        hw = (row.get("homework") or "").replace(" / ", "; ").strip()
+        topic = (row.get("topic") or "").replace(" / ", "; ").strip()
+        cls = row.get("class") or ""
+        date = calendar_row_date(row)
+        prefix = f"Class {cls} ({date})" if cls else str(date)
+        if reading:
+            name = f"{prefix} - {topic[:40]}: {reading[:70]}" if topic else f"{prefix} - {reading[:90]}"
+            items.append(sub_assignment(name, "", iso, LABEL_READING))
+        elif topic:
+            items.append(sub_assignment(f"{prefix} - {topic[:90]}", "", iso, LABEL_READING))
+        if hw:
+            hw_main = re.split(
+                r"/\s*(?:Assignments listed|Linked\s*In|Stukent|Certification|Simternship)",
+                hw,
+                maxsplit=1,
+                flags=re.I,
+            )[0].strip()
+            items.append(sub_assignment(f"{prefix} - {hw_main[:90]}", "", iso, LABEL_HOMEWORK))
+    return items
+
+
+def calendar_week_assignments(rows: list[dict], year: int) -> list[dict]:
+    """All calendar session rows (reading/topic); due date only  -  no inferred start."""
+    items: list[dict] = []
+    dated_rows: list[tuple[str, dict]] = []
+    for row in rows:
+        iso = md_to_iso(calendar_row_date(row), year)
+        if iso:
+            dated_rows.append((iso, row))
+    dated_rows.sort(key=lambda x: x[0])
+
+    for iso, row in dated_rows:
         reading = (row.get("reading") or "").replace(" / ", "; ").strip()
         hw = (row.get("homework") or "").replace(" / ", "; ").strip()
         topic = (row.get("topic") or "").replace(" / ", "; ").strip()
         has_hw = row_has_homework_points(row)
         cls = row.get("class") or ""
+        date = calendar_row_date(row)
         prefix = f"Class {cls} ({date})" if cls else str(date)
         if reading:
             name = f"{prefix} - {reading[:90]}"
             if topic:
                 name = f"{prefix} - {topic[:40]}: {reading[:70]}"
-            items.append(sub_assignment(name, iso, iso, LABEL_READING))
+            items.append(sub_assignment(name, "", iso, LABEL_READING))
         if has_hw and hw:
-            items.append(sub_assignment(f"{prefix} - {hw[:90]}", iso, iso, LABEL_HOMEWORK))
+            items.append(sub_assignment(f"{prefix} - {hw[:90]}", "", iso, LABEL_HOMEWORK))
         elif topic and not reading and not has_hw:
-            items.append(sub_assignment(f"{prefix} - {topic[:90]}", iso, iso, LABEL_READING))
+            items.append(sub_assignment(f"{prefix} - {topic[:90]}", "", iso, LABEL_READING))
     return items
-
-
-def calendar_homework_assignments(rows: list[dict], year: int) -> list[dict]:
-    """One assignment row per graded homework problem set (BUAD-281 style)."""
-    return calendar_week_assignments(rows, year)
 
 
 def build_calendar_assignments_by_category(
@@ -1443,9 +1480,19 @@ def calendar_exam_snippets(text: str) -> dict[str, list[str]]:
 
 def row_has_homework_points(row: dict) -> bool:
     hw = row.get("homework") or ""
-    if re.search(r"linked\s*in|stukent|certification|simternship", hw, re.I):
+    # Problem sets may share a cell with cert footer text (e.g. Class 2 / 12/2)
+    hw_main = re.split(
+        r"/\s*(?:Assignments listed|Linked\s*In|Stukent|Certification|Simternship)",
+        hw,
+        maxsplit=1,
+        flags=re.I,
+    )[0]
+    if re.search(r"linked\s*in|stukent|certification|simternship", hw_main, re.I):
         return False
-    return bool(re.search(r"\d+\s*[\-\u2013]?\s*Points?", hw, re.I))
+    return bool(
+        re.search(r"\d+\s*[\-\u2013]?\s*Points?", hw_main, re.I)
+        or re.search(r"\d-\d+", hw_main)
+    )
 
 
 def gather_calendar_content_from_table(

@@ -236,7 +236,9 @@ Implemented in `auto_dissect.py` (label assignment) and `build_workbook.py` (`so
 
 **HIST-103 example:** Category = **Reading**, Details = `Week Sep 15-18: Renaissance`.
 
-**BUAD-281 example:** under Homework (170 pts), Class 5 (9/9) **Reading** row then **Homework** row on the same date.
+**BUAD-281 example:** Homework category lists **Reading then Homework** per graded problem-set date, chronological from earliest. Calendar PDF has **due by 8:00 am** on the class date only — Start Date stays blank.
+
+**Chronological pairing (all tabs):** Sub-rows sort by due date (earliest first); Reading immediately before Homework on the same date.
 
 **BUAD-304 example:** Connect items under **`Personal Assessments (Connect)`** (unweighted); **Research** only under Participation; **Assignment** for team deliverables.
 
@@ -255,7 +257,7 @@ Never use `CONNECT_WEEK_CATEGORY` or schedule-week routing to drop Connect under
 | Class | Homework rows | Reading rows | Notes |
 |-------|---------------|--------------|-------|
 | HIST-103 | 0 | 36 | Weekly schedule is all Reading |
-| BUAD-281 | 12 | 25 | 12 graded problem sets (paired with Reading by date) |
+| BUAD-281 | 12 | 12 | 12 Reading+Homework pairs on homework dates only (due = class day, no start) |
 | BUAD-304 | 14 | 0 | All under **Personal Assessments (Connect)**, not Participation |
 
 Only **BUAD-281** and **BUAD-304** have Homework sub-rows; HIST-103 has none (readings only).
@@ -265,9 +267,9 @@ Only **BUAD-281** and **BUAD-304** have Homework sub-rows; HIST-103 has none (re
 Populate **Start Date** only when the syllabus explicitly states when work begins. Otherwise leave the cell **blank** (not `N/A`, not the due date).
 
 **Verified sources:**
-- HIST-103 / calendar **Reading** sub-rows: week range or class-session date from the schedule table
-- BUAD-281 calendar rows: class date from `CALENDAR_TABLE_JSON`
-- BUAD-304 Connect/Sharpen: explicit Connect window dates from syllabus (`8/24`–`12/20`)
+- HIST-103 weekly **Reading** sub-rows: week-range start + end from schedule block (`Sep 1-4`)
+- BUAD-281 calendar rows: **due date only** (class session, `due by 8:00 am`) — Start Date blank
+- BUAD-304 Connect session rows: schedule session date as due when listed; Connect window end as fallback
 - Marshall categories: `MARSHALL_INFERRED_STARTS` prose matches only (not earliest deliverable due)
 - Research guide: milestones with `kind: start` (*opens*, *registration opens*)
 

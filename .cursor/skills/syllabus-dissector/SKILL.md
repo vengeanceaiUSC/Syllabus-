@@ -26,7 +26,7 @@ the syllabus mentions about that item — extracted automatically.
 
 | Label | Use for |
 |-------|---------|
-| **Reading** | Weekly readings, section readings, textbook/chapter prep, lecture topics, calendar required reading |
+| **Reading** | Weekly readings, section readings, textbook/chapter prep, lecture topics, calendar required reading (paired before Homework on same due date) |
 | **Homework** | Connect self-assessments, problem sets, quizzes, primary source activities, Sharpen |
 | **Assignment** | Major graded work: papers, memos, proposals, outlines, presentations, peer eval |
 | **Exam** | Midterm, final |

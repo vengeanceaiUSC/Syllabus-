@@ -146,230 +146,164 @@
       "weight": 170.0,
       "weight_unit": "points",
       "start_date": "2026-09-09",
-      "due_date": "2026-11-16",
+      "due_date": "2026-12-02",
       "is_group_project": false,
       "assignments": [
         {
-          "name": "Class 1 (8/24) - Course Overview & Introductions",
-          "start_date": "2026-08-24",
-          "due_date": "2026-08-24",
-          "notes": "Reading"
-        },
-        {
-          "name": "Class 2 (8/26) - Role of Managerial accounting: Chapter 1",
-          "start_date": "2026-08-26",
-          "due_date": "2026-08-26",
-          "notes": "Reading"
-        },
-        {
-          "name": "Class 3 (8/31) - Basic Cost Mgt Concepts: Chapter 2",
-          "start_date": "2026-08-31",
-          "due_date": "2026-08-31",
-          "notes": "Reading"
-        },
-        {
-          "name": "Class 4 (9/2) - Basic Cost Mgt Concepts: Chapter 2",
-          "start_date": "2026-09-02",
-          "due_date": "2026-09-02",
-          "notes": "Reading"
-        },
-        {
-          "name": "9/7 - No Class Labor Day Holiday",
-          "start_date": "2026-09-07",
-          "due_date": "2026-09-07",
-          "notes": "Reading"
-        },
-        {
           "name": "Class 5 (9/9) - Product Cost Accumulation: Job; Order Co: Chapter 3",
-          "start_date": "2026-09-09",
+          "start_date": "",
           "due_date": "2026-09-09",
           "notes": "Reading"
         },
         {
           "name": "Class 5 (9/9) - 2-29, 2-30, 2-40; 15 Points",
-          "start_date": "2026-09-09",
+          "start_date": "",
           "due_date": "2026-09-09",
           "notes": "Homework"
         },
         {
-          "name": "Class 6 (9/14) - Manufacturing Overhead Normal; Costing: Chapter 3",
-          "start_date": "2026-09-14",
-          "due_date": "2026-09-14",
-          "notes": "Reading"
-        },
-        {
           "name": "Class 7 (9/16) - Activity Based Costing: Chapter 5- ONLY; LO 5.1, 2, 4 & 5",
-          "start_date": "2026-09-16",
+          "start_date": "",
           "due_date": "2026-09-16",
           "notes": "Reading"
         },
         {
           "name": "Class 7 (9/16) - 3-24, 3-28, 3-32; 15 Points",
-          "start_date": "2026-09-16",
+          "start_date": "",
           "due_date": "2026-09-16",
           "notes": "Homework"
         },
         {
           "name": "Class 8 (9/21) - Product Cost Accumulation: Pro-; cess Co: Chapter 4- ONLY; LO 4.1, 3, 4, & 5",
-          "start_date": "2026-09-21",
+          "start_date": "",
           "due_date": "2026-09-21",
           "notes": "Reading"
         },
         {
           "name": "Class 8 (9/21) - 5-27 5-46; 10 Points",
-          "start_date": "2026-09-21",
+          "start_date": "",
           "due_date": "2026-09-21",
           "notes": "Homework"
         },
         {
           "name": "Class 9 (9/23) - Cost of Quality & ESG &; Overview of; • : Chapter 8 - ONLY; LO 8.7, 8, 9",
-          "start_date": "2026-09-23",
+          "start_date": "",
           "due_date": "2026-09-23",
           "notes": "Reading"
         },
         {
           "name": "Class 9 (9/23) - 4-21, 4-22; 10 Points",
-          "start_date": "2026-09-23",
+          "start_date": "",
           "due_date": "2026-09-23",
           "notes": "Homework"
         },
         {
+          "name": "Class 10 (9/28) - Catchup & Midterm Review",
+          "start_date": "",
+          "due_date": "2026-09-28",
+          "notes": "Reading"
+        },
+        {
           "name": "Class 10 (9/28) - 8-28, 8-29; 10 Points",
-          "start_date": "2026-09-28",
+          "start_date": "",
           "due_date": "2026-09-28",
           "notes": "Homework"
         },
         {
-          "name": "Class 11 (10/5) - Cost Estimation: Chapter 6",
-          "start_date": "2026-10-05",
-          "due_date": "2026-10-05",
-          "notes": "Reading"
-        },
-        {
           "name": "Class 12 (10/7) - Cost volume profit analysis: Chapter 7",
-          "start_date": "2026-10-07",
+          "start_date": "",
           "due_date": "2026-10-07",
           "notes": "Reading"
         },
         {
           "name": "Class 12 (10/7) - 6-24, 6-25, 6-34; 15 Points",
-          "start_date": "2026-10-07",
+          "start_date": "",
           "due_date": "2026-10-07",
           "notes": "Homework"
         },
         {
-          "name": "Class 13 (10/12) - Cost volume profit analysis &: Chapter 7",
-          "start_date": "2026-10-12",
-          "due_date": "2026-10-12",
-          "notes": "Reading"
-        },
-        {
           "name": "Class 14 (10/14) - Financial planning and analysis:; Static: Chapter 9",
-          "start_date": "2026-10-14",
+          "start_date": "",
           "due_date": "2026-10-14",
           "notes": "Reading"
         },
         {
           "name": "Class 14 (10/14) - 7-29, 7-33, 7-40; 15 Points",
-          "start_date": "2026-10-14",
+          "start_date": "",
           "due_date": "2026-10-14",
           "notes": "Homework"
         },
         {
           "name": "Class 15 (10/19) - Capital Budgeting; Practice Midterm Ques: Chapter 16- ONLY; LO 16.1, 2, 3",
-          "start_date": "2026-10-19",
+          "start_date": "",
           "due_date": "2026-10-19",
           "notes": "Reading"
         },
         {
           "name": "Class 15 (10/19) - 9-25, 9-28, 9-37; 15 - Points",
-          "start_date": "2026-10-19",
+          "start_date": "",
           "due_date": "2026-10-19",
           "notes": "Homework"
         },
         {
+          "name": "Class 16 (10/21) - Catchup & Midterm Review",
+          "start_date": "",
+          "due_date": "2026-10-21",
+          "notes": "Reading"
+        },
+        {
           "name": "Class 16 (10/21) - 16-28, 16-40; 10 Points",
-          "start_date": "2026-10-21",
+          "start_date": "",
           "due_date": "2026-10-21",
           "notes": "Homework"
         },
         {
-          "name": "Class 17 (10/28) - Guest Speaker",
-          "start_date": "2026-10-28",
-          "due_date": "2026-10-28",
-          "notes": "Reading"
-        },
-        {
-          "name": "Class 19 (11/2) - Standard Costing & Direct Cost; Variance: Chapter 10 – ONLY; LO 10.1 thru 8",
-          "start_date": "2026-11-02",
-          "due_date": "2026-11-02",
-          "notes": "Reading"
-        },
-        {
           "name": "Class 19 (11/4) - Sales Variance Analysis; Flexible Budget: Chapter 11 - ONLY; LO 11.1, 11.2 &; Appendix B",
-          "start_date": "2026-11-04",
+          "start_date": "",
           "due_date": "2026-11-04",
           "notes": "Reading"
         },
         {
           "name": "Class 19 (11/4) - 10-26, 10-30; 10 Points",
-          "start_date": "2026-11-04",
+          "start_date": "",
           "due_date": "2026-11-04",
           "notes": "Homework"
         },
         {
           "name": "Class 20 (11/9) - Investment Centers: Chapter 13- ONLY; LO 13-1, 2, 3, 4",
-          "start_date": "2026-11-09",
+          "start_date": "",
           "due_date": "2026-11-09",
           "notes": "Reading"
         },
         {
           "name": "Class 20 (11/9) - 11-31, 11-52; 10 Points",
-          "start_date": "2026-11-09",
+          "start_date": "",
           "due_date": "2026-11-09",
           "notes": "Homework"
         },
         {
-          "name": "11/11 - No Class Veterans Day",
-          "start_date": "2026-11-11",
-          "due_date": "2026-11-11",
+          "name": "Class 21 (11/16) - AI & FP&A",
+          "start_date": "",
+          "due_date": "2026-11-16",
           "notes": "Reading"
         },
         {
           "name": "Class 21 (11/16) - 13-29, 13-33; 10 Points",
-          "start_date": "2026-11-16",
+          "start_date": "",
           "due_date": "2026-11-16",
           "notes": "Homework"
         },
         {
-          "name": "Class 22 (11/18) - Decision-making: relevant costs; and ben: Chapter 14; (Part 1 of 3)",
-          "start_date": "2026-11-18",
-          "due_date": "2026-11-18",
-          "notes": "Reading"
-        },
-        {
-          "name": "Class 23 (11/23) - Decision-making: relevant costs; and ben: Chapter 14; (Part 2 of 3)",
-          "start_date": "2026-11-23",
-          "due_date": "2026-11-23",
-          "notes": "Reading"
-        },
-        {
-          "name": "11/25 - No Class Thanksgiving Holiday",
-          "start_date": "2026-11-25",
-          "due_date": "2026-11-25",
-          "notes": "Reading"
-        },
-        {
-          "name": "Class 24 (11/30) - Decision-making: relevant costs; and ben: Chapter 14; (Part 3 of 3)",
-          "start_date": "2026-11-30",
-          "due_date": "2026-11-30",
-          "notes": "Reading"
-        },
-        {
           "name": "Class 2 (12/2) - Catchup & Final Review; Practice Final Questions Posted to Brightspace at; 5:00 PM",
-          "start_date": "2026-12-02",
+          "start_date": "",
           "due_date": "2026-12-02",
           "notes": "Reading"
+        },
+        {
+          "name": "Class 2 (12/2) - 14-35, 14-41; 10 Points; Assignments listed Be-; low Due by11:59 PM; Linked In Learning; E",
+          "start_date": "",
+          "due_date": "2026-12-02",
+          "notes": "Homework"
         }
       ],
       "sections": {
@@ -385,14 +319,15 @@
           "Class 16 | Due: 2026-10-21 (8:00 am) | Topic: Catchup & Midterm Review | Homework: 16-28, 16-40; 10 Points",
           "Class 19 | Due: 2026-11-04 (8:00 am) | Topic: Sales Variance Analysis; Flexible Budgeting | Required Reading: Chapter 11 - ONLY; LO 11.1, 11.2 &; Appendix B | Homework: 10-26, 10-30; 10 Points",
           "Class 20 | Due: 2026-11-09 (8:00 am) | Topic: Investment Centers | Required Reading: Chapter 13- ONLY; LO 13-1, 2, 3, 4 | Homework: 11-31, 11-52; 10 Points",
-          "Class 21 | Due: 2026-11-16 (8:00 am) | Topic: AI & FP&A | Homework: 13-29, 13-33; 10 Points"
+          "Class 21 | Due: 2026-11-16 (8:00 am) | Topic: AI & FP&A | Homework: 13-29, 13-33; 10 Points",
+          "Class 2 | Due: 2026-12-02 (8:00 am) | Topic: Catchup & Final Review; Practice Final Questions Posted to Brightspace at; 5:00 PM | Homework: 14-35, 14-41; 10 Points; Assignments listed Be-; low Due by11:59 PM; Linked In Learning; Excel Certification; 75 Points; Stukent Simternship; 75 Points"
         ],
         "Calendar Footnotes": [
           "Unless specifically Identified, Chapter Appendices ARE NOT included as Required Reading",
           "Knowledge of Cost Behavior (Chapter 6) & Contribution Margin (Chapter 7) are essential to cor-"
         ]
       },
-      "extracted_text": "Class 9 | Due: 2026-09-23 (8:00 am) | Topic: Cost of Quality & ESG &; Overview of; • Linked In Learning Excel - 75 Points; • Stukent Simternship - 75 Points; Practice Midterm Questions will be Posted by 5:00 PM | Required Reading: Chapter 8 - ONLY; LO 8.7, 8, 9 | Homework: 4-21, 4-22; 10 Points\n\nClass 15 | Due: 2026-10-19 (8:00 am) | Topic: Capital Budgeting; Practice Midterm Questions Posted to Brightspace by; 5:00 PM | Required Reading: Chapter 16- ONLY; LO 16.1, 2, 3 | Homework: 9-25, 9-28, 9-37; 15 - Points\n\nClass 19 | Due: 2026-11-04 (8:00 am) | Topic: Sales Variance Analysis; Flexible Budgeting | Required Reading: Chapter 11 - ONLY; LO 11.1, 11.2 &; Appendix B | Homework: 10-26, 10-30; 10 Points\n\nClass 8 | Due: 2026-09-21 (8:00 am) | Topic: Product Cost Accumulation: Pro-; cess Costing | Required Reading: Chapter 4- ONLY; LO 4.1, 3, 4, & 5 | Homework: 5-27 5-46; 10 Points\n\nClass 14 | Due: 2026-10-14 (8:00 am) | Topic: Financial planning and analysis:; Static Master Budget; | Required Reading: Chapter 9 | Homework: 7-29, 7-33, 7-40; 15 Points\n\nClass 7 | Due: 2026-09-16 (8:00 am) | Topic: Activity Based Costing | Required Reading: Chapter 5- ONLY; LO 5.1, 2, 4 & 5 | Homework: 3-24, 3-28, 3-32; 15 Points\n\nClass 5 | Due: 2026-09-09 (8:00 am) | Topic: Product Cost Accumulation: Job; Order Costing | Required Reading: Chapter 3 | Homework: 2-29, 2-30, 2-40; 15 Points\n\nClass 20 | Due: 2026-11-09 (8:00 am) | Topic: Investment Centers | Required Reading: Chapter 13- ONLY; LO 13-1, 2, 3, 4 | Homework: 11-31, 11-52; 10 Points\n\nClass 12 | Due: 2026-10-07 (8:00 am) | Topic: Cost volume profit analysis | Required Reading: Chapter 7 | Homework: 6-24, 6-25, 6-34; 15 Points\n\nClass 16 | Due: 2026-10-21 (8:00 am) | Topic: Catchup & Midterm Review | Homework: 16-28, 16-40; 10 Points\n\nClass 10 | Due: 2026-09-28 (8:00 am) | Topic: Catchup & Midterm Review | Homework: 8-28, 8-29; 10 Points\n\nKnowledge of Cost Behavior (Chapter 6) & Contribution Margin (Chapter 7) are essential to cor-\n\nClass 21 | Due: 2026-11-16 (8:00 am) | Topic: AI & FP&A | Homework: 13-29, 13-33; 10 Points\n\nUnless specifically Identified, Chapter Appendices ARE NOT included as Required Reading"
+      "extracted_text": "Class 9 | Due: 2026-09-23 (8:00 am) | Topic: Cost of Quality & ESG &; Overview of; • Linked In Learning Excel - 75 Points; • Stukent Simternship - 75 Points; Practice Midterm Questions will be Posted by 5:00 PM | Required Reading: Chapter 8 - ONLY; LO 8.7, 8, 9 | Homework: 4-21, 4-22; 10 Points\n\nClass 2 | Due: 2026-12-02 (8:00 am) | Topic: Catchup & Final Review; Practice Final Questions Posted to Brightspace at; 5:00 PM | Homework: 14-35, 14-41; 10 Points; Assignments listed Be-; low Due by11:59 PM; Linked In Learning; Excel Certification; 75 Points; Stukent Simternship; 75 Points\n\nClass 15 | Due: 2026-10-19 (8:00 am) | Topic: Capital Budgeting; Practice Midterm Questions Posted to Brightspace by; 5:00 PM | Required Reading: Chapter 16- ONLY; LO 16.1, 2, 3 | Homework: 9-25, 9-28, 9-37; 15 - Points\n\nClass 19 | Due: 2026-11-04 (8:00 am) | Topic: Sales Variance Analysis; Flexible Budgeting | Required Reading: Chapter 11 - ONLY; LO 11.1, 11.2 &; Appendix B | Homework: 10-26, 10-30; 10 Points\n\nClass 8 | Due: 2026-09-21 (8:00 am) | Topic: Product Cost Accumulation: Pro-; cess Costing | Required Reading: Chapter 4- ONLY; LO 4.1, 3, 4, & 5 | Homework: 5-27 5-46; 10 Points\n\nClass 14 | Due: 2026-10-14 (8:00 am) | Topic: Financial planning and analysis:; Static Master Budget; | Required Reading: Chapter 9 | Homework: 7-29, 7-33, 7-40; 15 Points\n\nClass 7 | Due: 2026-09-16 (8:00 am) | Topic: Activity Based Costing | Required Reading: Chapter 5- ONLY; LO 5.1, 2, 4 & 5 | Homework: 3-24, 3-28, 3-32; 15 Points\n\nClass 5 | Due: 2026-09-09 (8:00 am) | Topic: Product Cost Accumulation: Job; Order Costing | Required Reading: Chapter 3 | Homework: 2-29, 2-30, 2-40; 15 Points\n\nClass 20 | Due: 2026-11-09 (8:00 am) | Topic: Investment Centers | Required Reading: Chapter 13- ONLY; LO 13-1, 2, 3, 4 | Homework: 11-31, 11-52; 10 Points\n\nClass 12 | Due: 2026-10-07 (8:00 am) | Topic: Cost volume profit analysis | Required Reading: Chapter 7 | Homework: 6-24, 6-25, 6-34; 15 Points\n\nClass 16 | Due: 2026-10-21 (8:00 am) | Topic: Catchup & Midterm Review | Homework: 16-28, 16-40; 10 Points\n\nClass 10 | Due: 2026-09-28 (8:00 am) | Topic: Catchup & Midterm Review | Homework: 8-28, 8-29; 10 Points\n\nKnowledge of Cost Behavior (Chapter 6) & Contribution Margin (Chapter 7) are essential to cor-\n\nClass 21 | Due: 2026-11-16 (8:00 am) | Topic: AI & FP&A | Homework: 13-29, 13-33; 10 Points\n\nUnless specifically Identified, Chapter Appendices ARE NOT included as Required Reading"
     }
   ]
 }

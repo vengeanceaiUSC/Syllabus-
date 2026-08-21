@@ -89,11 +89,13 @@ def sanitize_sheet_name(name: str) -> str:
 
 
 def sort_sub_assignments(items: list[dict]) -> list[dict]:
-    """Pair Reading + Homework by date; Reading before Homework on the same day."""
+    """Chronological order (earliest first); Reading immediately before Homework on same due date."""
+    def session_date(item: dict) -> str:
+        return item.get("due_date") or item.get("start_date") or ""
+
     def key(item: dict) -> tuple:
         label = item.get("notes") or ""
-        session = item.get("due_date") or item.get("start_date") or ""
-        return (session, SUB_LABEL_ORDER.get(label, 99), item.get("name") or "")
+        return (session_date(item), SUB_LABEL_ORDER.get(label, 99), item.get("name") or "")
 
     return sorted(items, key=key)
 
