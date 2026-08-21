@@ -52,6 +52,11 @@ def main() -> int:
         default="",
         help="Optional full syllabus file to merge (adds instructions for calendar certs, etc.)",
     )
+    parser.add_argument(
+        "--research-guide",
+        default="",
+        help="Marshall research participation guide PDF (e.g. BUAD-304 SONA guide)",
+    )
     args = parser.parse_args()
 
     workbook_path = Path(args.workbook).expanduser()
@@ -60,7 +65,9 @@ def main() -> int:
 
     source_slug = f"{slugify(args.class_code)}-source.pdf"
     source_dest = sources_dir / source_slug
-    shutil.copy2(Path(args.syllabus).expanduser(), source_dest)
+    syllabus_path = Path(args.syllabus).expanduser().resolve()
+    if syllabus_path != source_dest.resolve():
+        shutil.copy2(syllabus_path, source_dest)
     source_url = ""
     if args.source_link_base:
         source_url = f"{args.source_link_base.rstrip('/')}/{source_slug}"
@@ -90,6 +97,33 @@ def main() -> int:
             )
             text_path.write_text(merged, encoding="utf-8")
 
+        research_guide_url = ""
+        if args.research_guide:
+            rg_path = Path(tmp) / "research_guide.txt"
+            run(
+                [
+                    sys.executable,
+                    str(SCRIPTS / "extract_text.py"),
+                    args.research_guide,
+                    "--out",
+                    str(rg_path),
+                ]
+            )
+            rg_slug = f"{slugify(args.class_code)}-research-guide.pdf"
+            rg_dest = sources_dir / rg_slug
+            rg_src = Path(args.research_guide).expanduser().resolve()
+            if rg_src != rg_dest.resolve():
+                shutil.copy2(rg_src, rg_dest)
+            if args.source_link_base:
+                research_guide_url = f"{args.source_link_base.rstrip('/')}/{rg_slug}"
+            merged = (
+                text_path.read_text(encoding="utf-8")
+                + f"\n=== RESEARCH_GUIDE ===\n"
+                + rg_path.read_text(encoding="utf-8")
+                + f"\n=== END RESEARCH_GUIDE ===\n"
+            )
+            text_path.write_text(merged, encoding="utf-8")
+
         dissect_cmd = [
             sys.executable,
             str(SCRIPTS / "auto_dissect.py"),
@@ -112,6 +146,8 @@ def main() -> int:
         if source_url:
             data = json.loads(json_path.read_text(encoding="utf-8"))
             data.setdefault("class", {})["source_url"] = source_url
+            if research_guide_url:
+                data["class"]["research_guide_url"] = research_guide_url
             json_path.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
         build_cmd = [
@@ -128,6 +164,8 @@ def main() -> int:
     print(f"\nDone. Workbook: {workbook_path}")
     if source_url:
         print(f"Source PDF: {source_dest}")
+    if args.research_guide:
+        print(f"Research guide PDF: {sources_dir / f'{slugify(args.class_code)}-research-guide.pdf'}")
     if args.keep_json:
         print(f"JSON: {args.keep_json}")
     return 0

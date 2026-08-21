@@ -117,6 +117,41 @@ CALENDAR_TABLE_START = "=== CALENDAR_TABLE_JSON ==="
 CALENDAR_TABLE_END = "=== END CALENDAR_TABLE ==="
 SUPPLEMENT_START = "=== SUPPLEMENT_SYLLABUS ==="
 SUPPLEMENT_END = "=== END SUPPLEMENT ==="
+RESEARCH_GUIDE_START = "=== RESEARCH_GUIDE ==="
+RESEARCH_GUIDE_END = "=== END RESEARCH_GUIDE ==="
+MARSHALL_SCHEDULE_RULES: list[tuple[str, list[str]]] = [
+    ("Midterm Exam", [r"Midterm\s*\n\s*(\d{1,2}/\d{1,2})\s*Exam"]),
+    (
+        "Case Analysis Assignments",
+        [
+            r"(\d{1,2}/\d{1,2})[^\n]{0,160}Memo due",
+            r"(\d{1,2}/\d{1,2})[^\n]{0,160}Analysis Memo Due",
+        ],
+    ),
+    ("Proposal & Team Contract", [r"(\d{1,2}/\d{1,2})[^\n]{0,200}contract due"]),
+    (
+        "Team Project Paper",
+        [r"[Tt]eam project paper due[^0-9\n]{0,40}(\d{1,2}/\d{1,2})"],
+    ),
+    ("Presentation", [r"Presentation slides are due on\s*\n?\s*(\d{1,2}/\d{1,2})"]),
+    (
+        "Self & Peer Evaluation",
+        [r"[Ss]elf and peer evaluation due\s*\n?\s*(\d{1,2}/\d{1,2})"],
+    ),
+    (
+        "Final Reflection Paper",
+        [r"Personal Reflection Paper due\s*\n?\s*(\d{1,2}/\d{1,2})"],
+    ),
+    ("Final Exam", [r"Wed\.?,?\s*December\s+(\d{1,2})", r"Final Exam[^\n]{0,200}December\s+(\d{1,2})"]),
+]
+RESEARCH_MILESTONES: list[tuple[str, str, str, str]] = [
+    ("SONA registration opens", r"Opens Aug(?:ust)?\s+24|August 24", "2026-08-24", "start"),
+    ("Prescreening questionnaire opens", r"Opens Sep(?:tember)?\s+11|Available Sep(?:tember)?\s+11|starting September 11", "2026-09-11", "start"),
+    ("Setup deadline (registration, prescreening, contacts)", r"Deadline Sep(?:tember)?\s+25|September 25, 2026", "2026-09-25", "due"),
+    ("Study invitations begin (after setup)", r"Opens Sep(?:tember)?\s+25|Unlocks Step 3|Completes setup", "2026-09-26", "start"),
+    ("Employee contact surveys sent", r"surveys in late October|sent in late October", "2026-10-26", "due"),
+    ("Complete 2.0 research credits", r"Deadline Dec(?:ember)?\s+4|December 4", "2026-12-04", "due"),
+]
 MD_DATE = re.compile(r"\b(\d{1,2})/(\d{1,2})\b")
 CAL_EXAM = re.compile(
     r"(Midterm \d+|Final Exam)\s*:\s*(\d+)\s*Points?",
@@ -304,6 +339,267 @@ def parse_supplement_text(text: str) -> str:
     if start == -1 or end == -1:
         return ""
     return text[start + len(SUPPLEMENT_START) : end].strip()
+
+
+def parse_research_guide_text(text: str) -> str:
+    """Optional Marshall research participation guide merged into syllabus text."""
+    start = text.find(RESEARCH_GUIDE_START)
+    end = text.find(RESEARCH_GUIDE_END)
+    if start == -1 or end == -1:
+        return ""
+    return text[start + len(RESEARCH_GUIDE_START) : end].strip()
+
+
+def is_marshall_syllabus(text: str) -> bool:
+    """Percentage-weight Marshall OB syllabi with Course Evaluation (not point calendars)."""
+    return bool(find_course_evaluation_block(text)) and not is_course_calendar(text)
+
+
+def find_course_schedule_section(text: str) -> str:
+    m = re.search(r"Course Schedule\s*\n", text, re.I)
+    if not m:
+        return ""
+    snippet = text[m.end() :]
+    end = re.search(r"\nAdditional Information\b", snippet, re.I)
+    return snippet[: end.start()] if end else snippet[:8000]
+
+
+def _normalize_md_date(raw: str, year: int) -> str:
+    cleaned = re.sub(r"\s+", "", raw.strip())
+    m = re.match(r"(\d{1,2})/(\d{1,2})", cleaned)
+    if m:
+        return f"{year:04d}-{int(m.group(1)):02d}-{int(m.group(2)):02d}"
+    m = re.match(r"(\d{1,2})", cleaned)
+    if m:
+        return f"{year:04d}-12-{int(m.group(1)):02d}"
+    return ""
+
+
+def _normalize_schedule_text(schedule: str) -> str:
+    """Fix common PDF/OCR line breaks before regex matching."""
+    text = schedule
+    text = re.sub(r"1\s+1/9", "11/9", text)
+    text = re.sub(
+        r"(\d{1,2}/\d{1,2})\s*\n\s*([^\n]{0,120}(?:due|Due|Exam))",
+        r"\1 \2",
+        text,
+        flags=re.I,
+    )
+    text = re.sub(
+        r"(Personal Reflection Paper due)\s*\n\s*(\d{1,2}/\d{1,2})",
+        r"\1 \2",
+        text,
+        flags=re.I,
+    )
+    text = re.sub(
+        r"([Tt]eam project paper due \(one)\s*\n\s*(\d{1,2}/\d{1,2})",
+        r"\1 \2",
+        text,
+    )
+    text = re.sub(
+        r"([Ss]elf and peer evaluation due)\s*\n\s*(\d{1,2}/\d{1,2})",
+        r"\1 \2",
+        text,
+    )
+    return text
+
+
+def parse_marshall_schedule_deliverables(schedule: str, year: int) -> list[dict]:
+    """Extract dated deliverables from a Marshall Course Schedule section."""
+    if not schedule:
+        return []
+    schedule = _normalize_schedule_text(schedule)
+    entries: list[dict] = []
+    seen: set[tuple[str, str]] = set()
+    for cat_label, patterns in MARSHALL_SCHEDULE_RULES:
+        for pat in patterns:
+            for m in re.finditer(pat, schedule, re.I | re.S):
+                raw_date = m.group(1)
+                iso = _normalize_md_date(raw_date, year)
+                if not iso:
+                    continue
+                key = (cat_label, iso)
+                if key in seen:
+                    continue
+                seen.add(key)
+                ctx_start = max(0, m.start() - 40)
+                ctx_end = min(len(schedule), m.end() + 120)
+                entries.append(
+                    {
+                        "category": cat_label,
+                        "date_iso": iso,
+                        "raw": re.sub(r"\s+", " ", schedule[ctx_start:ctx_end]).strip(),
+                    }
+                )
+    return sorted(entries, key=lambda e: e["date_iso"])
+
+
+def marshall_category_key(name: str) -> str:
+    low = name.lower()
+    if "case analysis" in low:
+        return "Case Analysis Assignments"
+    if "proposal" in low and "contract" in low:
+        return "Proposal & Team Contract"
+    if "team project" in low and "paper" in low:
+        return "Team Project Paper"
+    if "presentation" in low:
+        return "Presentation"
+    if "peer evaluation" in low or "self & peer" in low:
+        return "Self & Peer Evaluation"
+    if "reflection" in low:
+        return "Final Reflection Paper"
+    if "midterm" in low:
+        return "Midterm Exam"
+    if "final" in low and "exam" in low:
+        return "Final Exam"
+    return name
+
+
+def marshall_dates_for_category(cat: Category, deliverables: list[dict]) -> tuple[str, str]:
+    key = marshall_category_key(cat.name)
+    dates = sorted({d["date_iso"] for d in deliverables if d["category"] == key})
+    if not dates:
+        return "", ""
+    if len(dates) == 1:
+        return "", dates[0]
+    return dates[0], dates[-1]
+
+
+def parse_research_participation_milestones(rg_text: str, year: int) -> list[dict]:
+    """Key Fall research-participation dates from the Marshall guide."""
+    if not rg_text:
+        return []
+    milestones: list[dict] = []
+    for label, pattern, default_iso, kind in RESEARCH_MILESTONES:
+        if not re.search(pattern, rg_text, re.I):
+            continue
+        iso = default_iso.replace("2026", str(year)) if year != 2026 else default_iso
+        milestones.append({"label": label, "date_iso": iso, "kind": kind})
+    return milestones
+
+
+def research_dates_for_participation(milestones: list[dict]) -> tuple[str, str]:
+    starts = [m["date_iso"] for m in milestones if m["kind"] == "start"]
+    dues = [m["date_iso"] for m in milestones if m["kind"] == "due"]
+    start = min(starts) if starts else ""
+    due = max(dues) if dues else ""
+    return start, due
+
+
+def find_marshall_evaluation_line(text: str, cat: Category) -> str:
+    block = find_course_evaluation_block(text)
+    if not block:
+        return ""
+    target = cat.name.lower()
+    for line in block.splitlines():
+        line = line.strip()
+        if not line or line.lower() == "total":
+            continue
+        if line.lower().startswith(target):
+            return line
+    return ""
+
+
+def gather_marshall_content(
+    text: str, cat: Category, year: int, research_guide: str = ""
+) -> tuple[dict, str, tuple[str, str]]:
+    """Targeted extraction for Marshall percentage syllabi (BUAD-304 style)."""
+    matched: list[str] = []
+    sections: dict[str, list[str] | str] = {}
+    eval_line = find_marshall_evaluation_line(text, cat)
+    if eval_line:
+        sections["Overview (Course Evaluation)"] = eval_line
+        matched.append(eval_line)
+
+    for block in find_dedicated_blocks(text, cat):
+        matched.append(block)
+
+    schedule = find_course_schedule_section(text)
+    deliverables = parse_marshall_schedule_deliverables(schedule, year)
+    key = marshall_category_key(cat.name)
+    sched_lines = [
+        f"Due: {d['date_iso']} | {d['raw'][:200]}"
+        for d in deliverables
+        if d["category"] == key
+    ]
+    if sched_lines:
+        sections["Course Schedule (due dates)"] = sched_lines
+        matched.extend(sched_lines)
+
+    if "participation" in cat.name.lower() and research_guide:
+        milestones = parse_research_participation_milestones(research_guide, year)
+        if milestones:
+            items = [f"{m['date_iso']} ({m['kind']}): {m['label']}" for m in milestones]
+            sections["Research Participation Guide (key dates)"] = items
+            matched.extend(items)
+        contacts = []
+        if re.search(r"mor\.sona@marshall\.usc\.edu", research_guide, re.I):
+            contacts.append("Marshall Behavioral Research Lab: mor.sona@marshall.usc.edu")
+        if re.search(r"bit\.ly/MOR-BUAD", research_guide, re.I):
+            contacts.append("Guide online: bit.ly/MOR-BUAD")
+        if re.search(r"bit\.ly/SONA-BUAD304", research_guide, re.I):
+            contacts.append("SONA registration walkthrough (3 min): bit.ly/SONA-BUAD304")
+        if re.search(r"marshall-mor\.sona-systems\.com", research_guide, re.I):
+            contacts.append("SONA registration: marshall-mor.sona-systems.com")
+        if contacts:
+            sections["Research Participation Guide (contacts)"] = contacts
+            matched.extend(contacts)
+        quick = re.search(
+            r"QUICK REFERENCE(.+?)(?:Page \d+ of \d+|\Z)",
+            research_guide,
+            re.I | re.S,
+        )
+        if quick:
+            snippet = re.sub(r"\s+", " ", quick.group(1)).strip()[:1200]
+            sections["Research Participation Guide (quick reference excerpt)"] = snippet
+            matched.append(snippet)
+
+    matched = dedupe_passages(matched)
+    verbatim = "\n\n---\n\n".join(matched)
+    for block in matched:
+        for heading, content in structure_block(block).items():
+            if heading in sections:
+                prev = sections[heading]
+                if isinstance(prev, list) and isinstance(content, list):
+                    prev.extend(content)
+                elif isinstance(content, list):
+                    sections[heading] = (
+                        ([prev] if not isinstance(prev, list) else prev) + content
+                    )
+                else:
+                    sections[heading] = content
+            else:
+                sections[heading] = content
+
+    start, due = marshall_dates_for_category(cat, deliverables)
+    if "participation" in cat.name.lower() and research_guide:
+        rg_start, rg_due = research_dates_for_participation(
+            parse_research_participation_milestones(research_guide, year)
+        )
+        start = rg_start or start
+        due = rg_due or due
+
+    return sections, verbatim, (start, due)
+
+
+def infer_group_project(cat: Category, verbatim: str) -> bool:
+    low = cat.name.lower()
+    if "participation" in low:
+        return False
+    if any(
+        x in low
+        for x in (
+            "team project",
+            "proposal",
+            "presentation",
+            "peer evaluation",
+            "self & peer",
+        )
+    ):
+        return True
+    if any(x in low for x in ("case analysis", "midterm", "final exam", "reflection")):
+        return False
+    return bool(GROUP_RE.search(verbatim))
 
 
 def md_to_iso(md: str, year: int) -> str:
@@ -999,13 +1295,29 @@ def find_dedicated_blocks(text: str, cat: Category) -> list[str]:
         specs += [
             (r"Team Project\s*\n", [r"\nFinal Exam", r"\nOnline Class Expectations"]),
         ]
-    if "participation" in low and "15" not in low:
+    if "participation" in low:
         specs += [
             (r"Participation\s*\nAttendance Policy", [r"\nIndividual Assignments", r"\n4\n"]),
         ]
     if "mid" in low and "term" in low and "hist" not in low:
         specs += [
             (r"Midterm Exam\.", [r"\nCase Analysis", r"\nTeam Project"]),
+        ]
+    if "proposal" in low and "contract" in low:
+        specs += [
+            (r"Team Project\s*\n", [r"\nFinal Exam", r"\nOnline Class Expectations"]),
+        ]
+    if low == "presentation":
+        specs += [
+            (r"Team Project\s*\n", [r"\nFinal Exam", r"\nOnline Class Expectations"]),
+        ]
+    if "peer evaluation" in low or "self & peer" in low:
+        specs += [
+            (r"Team Project\s*\n", [r"\nFinal Exam", r"\nOnline Class Expectations"]),
+        ]
+    if "final" in low and "exam" in low and "hist" not in low:
+        specs += [
+            (r"Final Exam\s*\n", [r"\nOnline Class Expectations", r"\nCourse Notes"]),
         ]
 
     # Generic schedule due-line (skip Extra Credit - no stable end marker)
@@ -1173,6 +1485,7 @@ def dissect(
     color: str = "",
 ) -> dict:
     calendar_mode = is_course_calendar(text)
+    marshall_mode = is_marshall_syllabus(text)
     categories = parse_categories(text)
     if not categories and calendar_mode:
         categories = parse_course_calendar_categories(text)
@@ -1187,6 +1500,7 @@ def dissect(
         grading_scale["scale_type"] = "points"
         grading_scale["raw_scale"] = f"Total graded points in calendar: {total_pts:g} (letter scale not in document)"
     year = infer_year(term)
+    research_guide = parse_research_guide_text(text)
     result_categories = []
     for cat in categories:
         if calendar_mode:
@@ -1201,6 +1515,10 @@ def dissect(
                 start, due = calendar_cert_dates(rows, "stukent", year)
             else:
                 start, due = parse_calendar_dates(text, cat, year)
+        elif marshall_mode:
+            sections, verbatim, (start, due) = gather_marshall_content(
+                text, cat, year, research_guide=research_guide
+            )
         else:
             sections, verbatim = gather_category_content(text, cat)
             supplement = parse_supplement_text(text)
@@ -1217,7 +1535,7 @@ def dissect(
                 "weight_unit": cat.weight_unit,
                 "start_date": start,
                 "due_date": due,
-                "is_group_project": bool(GROUP_RE.search(verbatim)),
+                "is_group_project": infer_group_project(cat, verbatim),
                 "sections": sections,
                 "extracted_text": verbatim,
             }

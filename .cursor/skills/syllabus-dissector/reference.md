@@ -190,6 +190,61 @@ Two shapes depending on document type. Golden references:
 
 **With `--supplement`:** adds `"Additional Instructions (supplement syllabus)"` section when a full syllabus is merged.
 
+## Path C: Marshall percentage syllabus + Course Schedule (BUAD-304)
+
+When `Course Evaluation` is present (and document is **not** a point-based Course Calendar):
+
+| Step | Behavior |
+|------|----------|
+| Category detection | `Participation 15%`, `Midterm Exam 15%`, etc.; drop parent rows when children sum to parent |
+| Verbatim | Dedicated assignment blocks only (no whole-syllabus grep) |
+| Due dates | Parse **Course Schedule** deliverable lines → ISO dates on each category row |
+| Research guide | `--research-guide` PDF → Participation sections + `research_guide_url` in JSON |
+
+### BUAD-304 Fall 2026 schedule dates (from syllabus Course Schedule)
+
+| Category | Due date(s) |
+|----------|-------------|
+| Case Analysis Assignments | 2026-09-16 (Thomas Green memo), 2026-10-21 (SkillsForTomorrow memo) |
+| Midterm Exam | 2026-10-14 |
+| Proposal & Team Contract | 2026-09-28 |
+| Team Project Paper | 2026-11-09 |
+| Presentation | 2026-11-09 (slides before class) |
+| Self & Peer Evaluation | 2026-11-18 |
+| Final Reflection Paper | 2026-12-02 |
+| Final Exam | 2026-12-09 |
+
+### Research participation dates (from guide — use `--research-guide`)
+
+| Date | Milestone |
+|------|-----------|
+| 2026-08-24 | SONA registration opens |
+| 2026-09-11 | Prescreening questionnaire opens |
+| 2026-09-25 | Setup deadline; study invitations after |
+| ~2026-10-26 | Employee contact surveys sent (late October, after fall recess) |
+| 2026-12-04 | Complete 2.0 research credits |
+
+Participation PDF sections: `Research Participation Guide (key dates)`, `(contacts)`, `(quick reference excerpt)`.
+
+### Marshall schedule parsing notes
+
+- Join split lines: date on one line, `due` on the next
+- OCR fix: `1 1/9` → `11/9` for presentation slides
+- `is_group_project`: false for Participation (research credits are individual); true for team deliverables
+
+---
+
+## Past errors (BUAD-304) — do not repeat
+
+| Error | What happened | Fix |
+|-------|---------------|-----|
+| **Whole-syllabus grep** | Every category got Course Evaluation + all assignment blurbs | Marshall mode: dedicated blocks + schedule lines only |
+| **Missing schedule dates** | Course Schedule table JSON misparsed columns | Regex on prose schedule section with line-join heuristics |
+| **Participation flagged group** | `team` in participation blurb triggered group flag | `infer_group_project()` excludes Participation |
+| **Research credits missing** | Syllabus only says "see Brightspace" | Merge `--research-guide` PDF for SONA milestones |
+
+---
+
 ## Category detection (full syllabus)
 
 Looks for the **real** Assignments section (skips TOC duplicates) with lines like:

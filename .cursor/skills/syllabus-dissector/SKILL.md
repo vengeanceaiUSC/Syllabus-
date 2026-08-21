@@ -80,6 +80,36 @@ python scripts/dissect_syllabus.py "Course_Calendar.pdf" \
 
 **Expected quality:** ~8/10 with calendar alone; ~9/10 if supplement syllabus provided.
 
+### C. Marshall percentage syllabus + Course Schedule (e.g. BUAD-304)
+
+Uses **Course Evaluation** (not an Assignments block) + a **Course Schedule** table:
+
+1. **`auto_dissect.py`** detects `Course Evaluation` → percentage categories (drops aggregate parents like `Team Project 30%` when children sum to parent)
+2. **Dedicated blocks** per category (Participation policy, Midterm blurb, Team Project, etc.) — avoids grep noise from the whole syllabus
+3. **Course Schedule parser** extracts ISO due dates from deliverable lines (handles split PDF lines and OCR like `1 1/9` → `11/9`)
+4. **`--research-guide`** merges the Marshall Research Participation Guide PDF into **Participation** (SONA milestones, contacts, quick reference)
+
+```bash
+python scripts/dissect_syllabus.py "BUAD304_Syllabus.pdf" \
+  --class-code BUAD-304 \
+  --research-guide "Research_Participation_Guide.pdf" \
+  ...
+```
+
+**Fall 2026 research participation dates** (from guide — attach with `--research-guide`):
+
+| Date | Milestone |
+|------|-----------|
+| Aug 24 | SONA registration opens (first day of classes) |
+| Sep 11 | Prescreening questionnaire opens |
+| Sep 25 | Setup deadline (registration, prescreening, employee contacts); study invitations begin after |
+| Late October | Surveys sent to employee contacts (after fall recess) |
+| Dec 4 | Deadline to complete 2.0 research credits (last day of classes) |
+
+Contact: **mor.sona@marshall.usc.edu** (not the instructor). Guide: bit.ly/MOR-BUAD · SONA walkthrough: bit.ly/SONA-BUAD304
+
+**Expected quality:** ~7–8/10 with syllabus + research guide; schedule dates populate Excel start/due columns.
+
 See [reference.md](reference.md) for past errors and quality checks.
 
 ## Quality review (Step 2)
@@ -140,7 +170,7 @@ pip install -r requirements.txt
 | `extract_text.py` | Syllabus file → plain text + calendar table JSON |
 | `auto_dissect.py` | Plain text → JSON (syllabus grep or calendar tables) |
 | `build_workbook.py` | JSON → Excel + PDFs |
-| `dissect_syllabus.py` | All three in one command |
+| `dissect_syllabus.py` | All three in one command (`--supplement`, `--research-guide`) |
 | `generate_pdfs.py` | PDF rendering (called by build_workbook) |
 
 See [reference.md](reference.md) for JSON schema and calendar lessons learned.
