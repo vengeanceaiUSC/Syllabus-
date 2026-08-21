@@ -16,7 +16,7 @@ the syllabus mentions about that item — extracted automatically.
 3. **Assignment details** — start date (only when syllabus-verified), due date, group-project flag
 4. **PDF documents** — one per category; structured sections + verbatim extract
 5. **Excel hyperlinks** — **Open PDF** opens hosted PDF in browser
-6. **Overview cover sheet** — first tab summarizes all classes (Reading/Homework/Papers/Group/External certs; **Start here (graded)** excludes Connect prep; **Do First** split into graded vs Connect prep sections; focus month = `--as-of-date` or today)
+6. **Overview cover sheet** — first tab summarizes all classes plus **Rate My Professors** ratings when `output/rmp.json` is present
 7. **Sub-assignments** — indented schedule rows under each graded category. Sub-rows are **grouped by type** (Reading, then Homework, etc.) and sorted by date. Each sub-row uses:
 
 | Column | Parent category row | Sub-row |
@@ -274,6 +274,7 @@ pip install -r requirements.txt
 | `auto_dissect.py` | Plain text → JSON (syllabus grep or calendar tables) |
 | `build_workbook.py` | JSON → Excel + PDFs |
 | `dissect_syllabus.py` | All three in one command (`--supplement`, `--research-guide`) |
+| `fetch_rmp.py` | Refresh Rate My Professors stats into `output/rmp.json` |
 | `generate_pdfs.py` | PDF rendering (called by build_workbook) |
 
 See [reference.md](reference.md) for JSON schema and calendar lessons learned.

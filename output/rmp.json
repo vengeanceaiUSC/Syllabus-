@@ -1,0 +1,35 @@
+{
+  "HIST-103": {
+    "instructor": "Lindsay O'Neill",
+    "quality": 4.3,
+    "difficulty": 2.6,
+    "would_take_again_pct": 78.6,
+    "num_ratings": 53,
+    "consensus": "Passionate, engaging lectures (multimedia, humor); discussion- and reading-heavy. Mixed on grading strictness; occasional low-weight pop quizzes.",
+    "url": "https://www.ratemyprofessors.com/professor/1642149",
+    "source": "Rate My Professors",
+    "as_of": "2026-08-21"
+  },
+  "BUAD-281": {
+    "instructor": "George Braunegg",
+    "quality": 4.3,
+    "difficulty": 3.3,
+    "would_take_again_pct": 81.0,
+    "num_ratings": 255,
+    "consensus": "Warm, funny, and supportive outside class; strong career advice. Lectures and exams are polarizing—some find exams misaligned with material.",
+    "url": "https://www.ratemyprofessors.com/professor/2462056",
+    "source": "Rate My Professors",
+    "as_of": "2026-08-21"
+  },
+  "BUAD-304": {
+    "instructor": "Christine El Haddad",
+    "quality": 4.5,
+    "difficulty": 2.7,
+    "would_take_again_pct": 79.0,
+    "num_ratings": 50,
+    "consensus": "Highly supportive and organized; standout Marshall teacher (negotiations, OB). Caring environment with group work and generous extra credit.",
+    "url": "https://www.ratemyprofessors.com/professor/1808480",
+    "source": "Rate My Professors",
+    "as_of": "2026-08-21"
+  }
+}

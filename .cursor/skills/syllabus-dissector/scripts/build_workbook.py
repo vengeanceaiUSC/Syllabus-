@@ -233,6 +233,8 @@ def collect_class_json_files(workbook_path: Path) -> list[dict]:
     json_dir = workbook_path.parent
     out: list[dict] = []
     for path in sorted(json_dir.glob("*.json")):
+        if path.name == "rmp.json":
+            continue
         try:
             data = json.loads(path.read_text(encoding="utf-8"))
         except (json.JSONDecodeError, OSError):
@@ -240,6 +242,35 @@ def collect_class_json_files(workbook_path: Path) -> list[dict]:
         if data.get("class", {}).get("code") and data.get("categories") is not None:
             out.append(data)
     return out
+
+
+def load_rmp_ratings(workbook_path: Path) -> dict[str, dict]:
+    """Load Rate My Professors data from output/rmp.json (keyed by class code)."""
+    rmp_path = workbook_path.parent / "rmp.json"
+    if not rmp_path.exists():
+        return {}
+    try:
+        raw = json.loads(rmp_path.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError):
+        return {}
+    return raw if isinstance(raw, dict) else {}
+
+
+def rmp_for_class(
+    class_code: str,
+    instructor: str,
+    rmp_table: dict[str, dict],
+    class_rmp: dict | None = None,
+) -> dict | None:
+    """Merge class-level rmp block with shared rmp.json lookup."""
+    entry = dict(rmp_table.get(class_code) or {})
+    if class_rmp:
+        entry.update(class_rmp)
+    if not entry:
+        return None
+    if instructor and not entry.get("instructor"):
+        entry["instructor"] = instructor
+    return entry if entry.get("quality") is not None else None
 
 
 def _due_sort_key(due: str, label: str, name: str, is_sub: bool = False) -> tuple:
@@ -458,6 +489,8 @@ def summarize_class(data: dict) -> dict:
         "code": code,
         "name": cls.get("name") or "",
         "term": cls.get("term") or "",
+        "instructor": cls.get("instructor") or "",
+        "rmp": cls.get("rmp") or data.get("rmp"),
         "has_reading": class_has_label(data, "Reading"),
         "has_homework": class_has_label(data, "Homework"),
         "papers": papers,
@@ -481,15 +514,25 @@ def _month_heading(month_key: str) -> str:
     return f"Do First - {MONTH_NAMES[int(mon_s)]} {year_s}"
 
 
-def build_overview_sheet(wb: Workbook, all_data: list[dict], *, as_of: date | None = None) -> None:
+def build_overview_sheet(
+    wb: Workbook,
+    all_data: list[dict],
+    *,
+    as_of: date | None = None,
+    workbook_path: Path | None = None,
+) -> None:
     """Cover-page stats: workload flags, first due items, monthly priority list."""
     if OVERVIEW_SHEET in wb.sheetnames:
         wb.remove(wb[OVERVIEW_SHEET])
     ws = wb.create_sheet(title=OVERVIEW_SHEET, index=0)
     ws.sheet_properties.tabColor = "203764"
 
+    rmp_table = load_rmp_ratings(workbook_path) if workbook_path else {}
+
     summaries = [summarize_class(d) for d in all_data]
     summaries.sort(key=lambda s: s["code"])
+    for s in summaries:
+        s["rmp_entry"] = rmp_for_class(s["code"], s.get("instructor", ""), rmp_table, s.get("rmp"))
 
     all_due: list[dict] = []
     for s in summaries:
@@ -531,6 +574,76 @@ def build_overview_sheet(wb: Workbook, all_data: list[dict], *, as_of: date | No
     ws.merge_cells(f"A{row}:{last_col}{row}")
     ws.cell(row=row, column=1, value=f"Today: {today.isoformat()}").font = Font(italic=True, color="404040")
     row += 1
+
+    rmp_rows = [s for s in summaries if s.get("rmp_entry")]
+    if rmp_rows:
+        ws.merge_cells(f"A{row}:{last_col}{row}")
+        rmp_title = ws.cell(row=row, column=1, value="Professor Ratings (Rate My Professors)")
+        rmp_title.font = label_font
+        rmp_title.fill = section_fill
+        row += 1
+        rmp_headers = [
+            "Class",
+            "Instructor",
+            "Quality (/5)",
+            "Difficulty (/5)",
+            "Would Take Again",
+            "# Ratings",
+            "Consensus",
+        ]
+        for col, name in enumerate(rmp_headers, start=1):
+            c = ws.cell(row=row, column=col, value=name)
+            c.font = header_font
+            c.fill = header_fill
+            c.border = BORDER
+            c.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
+        row += 1
+        for i, s in enumerate(rmp_rows):
+            rmp = s["rmp_entry"]
+            band = PatternFill("solid", fgColor="F2F2F2" if i % 2 else "FFFFFF")
+            instructor = rmp.get("instructor") or s.get("instructor") or "-"
+            url = rmp.get("url") or ""
+            quality = rmp.get("quality")
+            difficulty = rmp.get("difficulty")
+            again = rmp.get("would_take_again_pct")
+            num = rmp.get("num_ratings")
+            consensus = rmp.get("consensus") or ""
+            as_of_rmp = rmp.get("as_of") or ""
+            values = [
+                sheet_link(sanitize_sheet_name(s["code"]), s["code"]),
+                instructor,
+                f"{quality:g}" if quality is not None else "-",
+                f"{difficulty:g}" if difficulty is not None else "-",
+                f"{again:g}%" if again is not None else "-",
+                str(num) if num is not None else "-",
+                consensus[:120],
+            ]
+            for col, value in enumerate(values, start=1):
+                c = ws.cell(row=row, column=col, value=value)
+                c.fill = band
+                c.border = BORDER
+                c.alignment = Alignment(wrap_text=True, vertical="top")
+                if col == 1 and str(value).startswith("=HYPERLINK"):
+                    c.font = Font(bold=True, color="0563C1", underline="single")
+                if col == 2 and url:
+                    c.hyperlink = url
+                    c.font = Font(color="0563C1", underline="single")
+                if col == 3 and quality is not None:
+                    c.font = Font(bold=True, color="375623" if quality >= 4.0 else "C65911")
+            row += 1
+        rmp_as_of = next(
+            (s["rmp_entry"].get("as_of") for s in rmp_rows if s["rmp_entry"].get("as_of")),
+            "",
+        )
+        if rmp_as_of:
+            ws.merge_cells(f"A{row}:{last_col}{row}")
+            ws.cell(
+                row=row,
+                column=1,
+                value=f"RMP data as of {rmp_as_of}. Source: ratemyprofessors.com",
+            ).font = Font(italic=True, size=9, color="808080")
+            row += 1
+        row += 1
 
     if any_connect:
         ws.merge_cells(f"A{row}:{last_col}{row}")
@@ -708,7 +821,7 @@ def build_overview_sheet(wb: Workbook, all_data: list[dict], *, as_of: date | No
 def refresh_overview_sheet(wb: Workbook, workbook_path: Path, *, as_of: date | None = None) -> None:
     all_data = collect_class_json_files(workbook_path)
     if len(all_data) >= 1:
-        build_overview_sheet(wb, all_data, as_of=as_of)
+        build_overview_sheet(wb, all_data, as_of=as_of, workbook_path=workbook_path)
 
 
 def build(

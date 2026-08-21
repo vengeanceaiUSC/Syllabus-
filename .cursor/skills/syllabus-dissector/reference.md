@@ -346,6 +346,19 @@ Built automatically whenever `build_workbook.py` runs. Scans every `output/*.jso
 
 Class names link to their worksheet. Regenerated after each class pipeline run (run all classes so Overview stays complete).
 
+### Professor ratings (Rate My Professors)
+
+When `output/rmp.json` exists next to the workbook, Overview includes a **Professor Ratings** block:
+
+| Column | Source |
+|--------|--------|
+| Quality (/5) | RMP overall quality |
+| Difficulty (/5) | RMP level of difficulty |
+| Would Take Again | RMP percentage |
+| Consensus | Short summary of recurring review themes (hand-curated or from `fetch_rmp.py`) |
+
+Refresh ratings: `python scripts/fetch_rmp.py --refresh-all` (writes `output/rmp.json`). Calendar-only classes may need a known instructor fallback (e.g. BUAD-281 → George Braunegg).
+
 ### Auto-detect metadata (`parse_syllabus_metadata`)
 
 | Field | Sources |

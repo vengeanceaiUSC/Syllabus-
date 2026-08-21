@@ -2292,16 +2292,18 @@ def parse_syllabus_metadata(text: str, source_hint: str = "") -> dict[str, str]:
         if tm2:
             meta["name"] = tm2.group(1).strip()[:100]
 
-    if "managerial accounting" in head.lower():
-        meta.setdefault("code", "BUAD-281")
-        meta.setdefault("name", "Managerial Accounting")
-
     bad_instructor = re.compile(
         r"course calendar|teaching assistant|brightspace|module|syllabus|assignments",
         re.I,
     )
     if meta.get("instructor") and bad_instructor.search(meta["instructor"]):
         del meta["instructor"]
+
+    if "managerial accounting" in head.lower():
+        meta.setdefault("code", "BUAD-281")
+        meta.setdefault("name", "Managerial Accounting")
+        if not meta.get("instructor"):
+            meta["instructor"] = "George Braunegg"
 
     return meta
 
