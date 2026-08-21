@@ -89,17 +89,24 @@ def sanitize_sheet_name(name: str) -> str:
 
 
 def sort_sub_assignments(items: list[dict]) -> list[dict]:
-    """Group sub-rows by type (Reading before Homework, etc.) then by date."""
+    """Pair Reading + Homework by date; Reading before Homework on the same day."""
     def key(item: dict) -> tuple:
         label = item.get("notes") or ""
-        return (
-            SUB_LABEL_ORDER.get(label, 99),
-            item.get("start_date") or "",
-            item.get("due_date") or "",
-            item.get("name") or "",
-        )
+        session = item.get("due_date") or item.get("start_date") or ""
+        return (session, SUB_LABEL_ORDER.get(label, 99), item.get("name") or "")
 
     return sorted(items, key=key)
+
+
+def weight_breakdown_text(categories: list[dict]) -> str:
+    """One-line grade weight summary for the sheet header bar."""
+    parts: list[str] = []
+    for cat in sorted(categories, key=weight_sort_key):
+        w = cat.get("weight")
+        if w is None:
+            continue
+        parts.append(f"{cat.get('name', '')} {format_weight(cat)}")
+    return "  |  ".join(parts)
 
 
 def format_weight(cat: dict) -> str:
@@ -264,7 +271,19 @@ def build(
         ws.cell(row=row, column=2, value=scale["raw_scale"])
         row += 1
 
+    categories = sorted(data.get("categories", []), key=weight_sort_key)
+    breakdown = weight_breakdown_text(categories)
+    if breakdown:
+        ws.merge_cells(f"A{row}:{last_col}{row}")
+        bar = ws.cell(row=row, column=1, value=breakdown)
+        bar.font = Font(bold=True, size=11, color=base_color)
+        bar.fill = PatternFill("solid", fgColor=tint(base_color, 0.78))
+        bar.alignment = Alignment(horizontal="left", vertical="center", wrap_text=True)
+        ws.row_dimensions[row].height = 28
+        row += 1
+
     row += 1
+
     header_row = row
     for col, name in enumerate(HEADERS, start=1):
         c = ws.cell(row=header_row, column=col, value=name)
@@ -274,7 +293,6 @@ def build(
         c.border = BORDER
     row += 1
 
-    categories = sorted(data.get("categories", []), key=weight_sort_key)
     for i, cat in enumerate(categories):
         slug = slugify(f"{class_code}-{cat.get('name', 'item')}")
         pdf_path = pdf_by_slug.get(slug)

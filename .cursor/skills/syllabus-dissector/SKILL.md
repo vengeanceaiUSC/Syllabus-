@@ -120,7 +120,10 @@ Uses **Course Evaluation** (not an Assignments block) + a **Course Schedule** ta
 1. **`auto_dissect.py`** detects `Course Evaluation` → percentage categories (drops aggregate parents like `Team Project 30%` when children sum to parent)
 2. **Dedicated blocks** per category (Participation policy, Midterm blurb, Team Project, etc.) — avoids grep noise from the whole syllabus
 3. **Course Schedule parser** extracts ISO due dates from deliverable lines (handles split PDF lines and OCR like `1 1/9` → `11/9`)
-4. **`--research-guide`** merges the Marshall Research Participation Guide PDF into **Participation** (SONA milestones, contacts, quick reference)
+4. **`--research-guide`** merges the Marshall Research Participation Guide PDF into **Participation** (SONA milestones only — not Connect)
+5. **Connect / Sharpen** → separate unweighted row **`Personal Assessments (Connect)`** (prep work, not part of Participation 15%)
+
+**Participation 15%** (syllabus): Active Class Participation + Team Engagement + Research Studies (2). Connect self-assessments are **Personal assessments** for class prep — never route them under Participation or other graded categories.
 
 ```bash
 python scripts/dissect_syllabus.py "BUAD304_Syllabus.pdf" \

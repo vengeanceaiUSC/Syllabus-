@@ -228,25 +228,35 @@ Participation PDF sections: `Research Participation Guide (key dates)`, `(contac
 
 ### Sub-assignment type labels (Excel Category column)
 
-Every sub-row under a graded category shows its **type in the Category column** (`notes` in JSON). The **Details** column holds the descriptive name (class session, week block, Connect item). Sub-rows are sorted: Reading → Homework → Assignment → Exam → Research → Certification, then by date.
+Every sub-row under a graded category shows its **type in the Category column** (`notes` in JSON). The **Details** column holds the descriptive name. Sub-rows are sorted **by date**, with **Reading immediately before Homework** on the same session date.
 
-Parent category **Weight** cells use bold 13pt text on a tinted background for visibility.
+A **grade weight bar** (merged header row) lists each weighted category before the table.
 
-Implemented in `auto_dissect.py` (label assignment) and `build_workbook.py` (`sort_sub_assignments()`, color-coded Category labels).
+Implemented in `auto_dissect.py` (label assignment) and `build_workbook.py` (`sort_sub_assignments()`, `weight_breakdown_text()`, color-coded Category labels).
 
 **HIST-103 example:** Category = **Reading**, Details = `Week Sep 15-18: Renaissance`.
 
-**BUAD-281 example:** under Homework (170 pts), Category = **Reading** for chapter prep rows, Category = **Homework** for problem-set rows.
+**BUAD-281 example:** under Homework (170 pts), Class 5 (9/9) **Reading** row then **Homework** row on the same date.
 
-**BUAD-304 example:** Category = **Homework** for Connect self-assessments; Category = **Assignment** for team deliverables.
+**BUAD-304 example:** Connect items under **`Personal Assessments (Connect)`** (unweighted); **Research** only under Participation; **Assignment** for team deliverables.
+
+### BUAD-304 Connect vs Participation (do not repeat)
+
+| Syllabus bucket | Workbook section | Sub-rows |
+|-----------------|------------------|----------|
+| Participation 15% | **Participation** | **Research** milestones only |
+| Personal assessments (Connect) | **Personal Assessments (Connect)** | Connect self-assessments + Sharpen (**Homework** label) |
+| Case / Team / etc. | Graded categories | **Assignment** deliverables only |
+
+Never use `CONNECT_WEEK_CATEGORY` or schedule-week routing to drop Connect under graded categories.
 
 ### Which classes have true Homework sub-rows?
 
 | Class | Homework rows | Reading rows | Notes |
 |-------|---------------|--------------|-------|
 | HIST-103 | 0 | 36 | Weekly schedule is all Reading |
-| BUAD-281 | 12 | 25 | 12 graded problem sets |
-| BUAD-304 | 14 | 0 | Connect self-assessments + Sharpen |
+| BUAD-281 | 12 | 25 | 12 graded problem sets (paired with Reading by date) |
+| BUAD-304 | 14 | 0 | All under **Personal Assessments (Connect)**, not Participation |
 
 Only **BUAD-281** and **BUAD-304** have Homework sub-rows; HIST-103 has none (readings only).
 
@@ -286,6 +296,7 @@ Implemented in `sanitize_start_date()`, `parse_dates_from_text()` (due-only), `m
 | **Whole-syllabus grep** | Every category got Course Evaluation + all assignment blurbs | Marshall mode: dedicated blocks + schedule lines only |
 | **Missing schedule dates** | Course Schedule table JSON misparsed columns | Regex on prose schedule section with line-join heuristics |
 | **Participation flagged group** | `team` in participation blurb triggered group flag | `infer_group_project()` excludes Participation |
+| **Connect under Participation** | Connect self-assessments routed into Participation or other graded rows via schedule-week heuristic | Separate **`Personal Assessments (Connect)`** section; Participation gets **Research** only |
 | **Research credits missing** | Syllabus only says "see Brightspace" | Merge `--research-guide` PDF for SONA milestones |
 
 ---

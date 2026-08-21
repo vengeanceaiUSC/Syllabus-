@@ -40,52 +40,10 @@
           "notes": "Research"
         },
         {
-          "name": "Connect: Sharpen Companion",
-          "start_date": "",
-          "due_date": "2026-09-04",
-          "notes": "Homework"
-        },
-        {
           "name": "Research: SONA registration opens",
           "start_date": "2026-08-24",
           "due_date": "",
           "notes": "Research"
-        },
-        {
-          "name": "Connect: Self-Assessment 11.01 - What is my",
-          "start_date": "2026-08-24",
-          "due_date": "2026-12-20",
-          "notes": "Homework"
-        },
-        {
-          "name": "Connect: Self-Assessment 11.02 - What is my",
-          "start_date": "2026-08-24",
-          "due_date": "2026-12-20",
-          "notes": "Homework"
-        },
-        {
-          "name": "Connect: Self-Assessment 12.02 - Which influence",
-          "start_date": "2026-08-24",
-          "due_date": "2026-12-20",
-          "notes": "Homework"
-        },
-        {
-          "name": "Connect: Self-Assessment 3.01 - What is my Big thinking about your topics and",
-          "start_date": "2026-08-24",
-          "due_date": "2026-12-20",
-          "notes": "Homework"
-        },
-        {
-          "name": "Connect: Self-Assessment 3.04 - What Is Your Level",
-          "start_date": "2026-08-24",
-          "due_date": "2026-12-20",
-          "notes": "Homework"
-        },
-        {
-          "name": "Connect: Self-Assessment 5.01 - Assessing Your",
-          "start_date": "2026-08-24",
-          "due_date": "2026-12-20",
-          "notes": "Homework"
         },
         {
           "name": "Research: Prescreening questionnaire opens",
@@ -219,12 +177,6 @@
       "is_group_project": false,
       "assignments": [
         {
-          "name": "Connect: Self-Assessment 12.01 - What kind of",
-          "start_date": "2026-08-24",
-          "due_date": "2026-12-20",
-          "notes": "Homework"
-        },
-        {
           "name": "Thomas Green Case Analysis Memo",
           "start_date": "2026-08-26",
           "due_date": "2026-09-16",
@@ -275,18 +227,6 @@
       "is_group_project": false,
       "assignments": [
         {
-          "name": "Connect: Self-Assessment 16.02 - What Is Your",
-          "start_date": "2026-08-24",
-          "due_date": "2026-12-20",
-          "notes": "Homework"
-        },
-        {
-          "name": "Connect: Self-Assessment 16.03 - Assessing Your",
-          "start_date": "2026-08-24",
-          "due_date": "2026-12-20",
-          "notes": "Homework"
-        },
-        {
           "name": "Personal Reflection Paper",
           "start_date": "2026-08-31",
           "due_date": "2026-12-02",
@@ -325,18 +265,6 @@
       "due_date": "2026-09-28",
       "is_group_project": true,
       "assignments": [
-        {
-          "name": "Connect: Self-Assessment 10.5 - Preferred Conflict",
-          "start_date": "2026-08-24",
-          "due_date": "2026-12-20",
-          "notes": "Homework"
-        },
-        {
-          "name": "Connect: Self-Assessment 9.01 - Assessing My",
-          "start_date": "2026-08-24",
-          "due_date": "2026-12-20",
-          "notes": "Homework"
-        },
         {
           "name": "Team project proposal & team contract",
           "start_date": "2026-08-31",
@@ -413,18 +341,6 @@
       "due_date": "2026-11-09",
       "is_group_project": true,
       "assignments": [
-        {
-          "name": "Connect: Self-Assessment 14.02 - What Type of Organizational Culture Do I",
-          "start_date": "2026-08-24",
-          "due_date": "2026-12-20",
-          "notes": "Homework"
-        },
-        {
-          "name": "Connect: Self-Assessment 8.01 - Group",
-          "start_date": "2026-08-24",
-          "due_date": "2026-12-20",
-          "notes": "Homework"
-        },
         {
           "name": "Team project outline",
           "start_date": "2026-08-31",
@@ -917,6 +833,121 @@
         ]
       },
       "extracted_text": "Final Exam\nThe final exam will take place during the final examination period on the date and time assigned by the\nUniversity. It will consist of multiple-choice, true/false and/or short-essay questions. Please refer to the\nexam study guide posted to Brightspace for information on the material covered. If you have another final\nexam scheduled on the same date and time as the final exam for this course, you must let me know about\nthe conflict at least 2 weeks prior to the final exam. I expect this exam to be administered in person.\n\n---\n\nDue: 2026-12-09 | on Final Exam MW 4:00 - 5:50pm section: Wed., December 9; 4:30pm – 6:30pm MW 6:00 - 7:50pm section: Wed., December 9; 7pm – 9pm 10 -- 10 of 16 --\n\n---\n\nFinal Exam 25%"
+    },
+    {
+      "name": "Personal Assessments (Connect)",
+      "weight": null,
+      "weight_unit": "percent",
+      "start_date": "2026-08-24",
+      "due_date": "2026-12-20",
+      "is_group_project": false,
+      "assignments": [
+        {
+          "name": "Connect: Self-Assessment 3.01 - What is my Big thinking about your topics and",
+          "start_date": "2026-08-31",
+          "due_date": "2026-08-31",
+          "notes": "Homework"
+        },
+        {
+          "name": "Connect: Self-Assessment 3.04 - What Is Your Level",
+          "start_date": "2026-08-31",
+          "due_date": "2026-08-31",
+          "notes": "Homework"
+        },
+        {
+          "name": "Connect: Self-Assessment 5.01 - Assessing Your",
+          "start_date": "2026-09-02",
+          "due_date": "2026-09-02",
+          "notes": "Homework"
+        },
+        {
+          "name": "Connect: Sharpen Companion",
+          "start_date": "",
+          "due_date": "2026-09-04",
+          "notes": "Homework"
+        },
+        {
+          "name": "Connect: Self-Assessment 11.01 - What is my",
+          "start_date": "2026-09-09",
+          "due_date": "2026-09-09",
+          "notes": "Homework"
+        },
+        {
+          "name": "Connect: Self-Assessment 11.02 - What is my",
+          "start_date": "2026-09-09",
+          "due_date": "2026-09-09",
+          "notes": "Homework"
+        },
+        {
+          "name": "Connect: Self-Assessment 12.01 - What kind of",
+          "start_date": "2026-09-16",
+          "due_date": "2026-09-16",
+          "notes": "Homework"
+        },
+        {
+          "name": "Connect: Self-Assessment 10.5 - Preferred Conflict",
+          "start_date": "2026-09-28",
+          "due_date": "2026-09-28",
+          "notes": "Homework"
+        },
+        {
+          "name": "Connect: Self-Assessment 9.01 - Assessing My",
+          "start_date": "2026-09-28",
+          "due_date": "2026-09-28",
+          "notes": "Homework"
+        },
+        {
+          "name": "Connect: Self-Assessment 8.01 - Group",
+          "start_date": "2026-10-19",
+          "due_date": "2026-10-19",
+          "notes": "Homework"
+        },
+        {
+          "name": "Connect: Self-Assessment 14.02 - What Type of Organizational Culture Do I",
+          "start_date": "2026-11-04",
+          "due_date": "2026-11-04",
+          "notes": "Homework"
+        },
+        {
+          "name": "Connect: Self-Assessment 16.02 - What Is Your",
+          "start_date": "2026-11-30",
+          "due_date": "2026-11-30",
+          "notes": "Homework"
+        },
+        {
+          "name": "Connect: Self-Assessment 16.03 - Assessing Your",
+          "start_date": "2026-11-30",
+          "due_date": "2026-11-30",
+          "notes": "Homework"
+        },
+        {
+          "name": "Connect: Self-Assessment 12.02 - Which influence",
+          "start_date": "",
+          "due_date": "2026-12-20",
+          "notes": "Homework"
+        }
+      ],
+      "sections": {
+        "Personal Assessments (Connect prep)": [
+          "Personal assessments are listed in the course schedule and can be accessed via McGraw-Hill Connect, Brightspace (Connect module) or a separate website. 3. Any additional readings, assessments, and/or materials will be posted to Brightspace. 2",
+          "(1) Textbook & Connect/LearnSmart. You will need the ONLINE version of Organizational Behavior: A Practical, Problem-Solving Approach 3rd edition by Angelo Kinicki. 2021. McGraw Hill. USC has a new Digital Course Materials Program which provides access to many required textbooks, case studies and other resources for one flat fee. Our course materials have been submitted to the program coordinator and students have been sent notification about how to access the materials. Please check your usc.edu email for instructions on how to access the materials. I strongly recommend you access the textbook through this program, as the price for the e-book and Connect will be a significant discount relative to purchasing the book independent from the Course Materials Program. To gain access to the required ONLINE version of our textbook, Organizational Behavior: A Practical,",
+          "3. Under Content, find the Connect module and go to that module. 4. Click on one of the assignments in the Connect module (e.g., What is My Big Five Personality Profile), and you will jump over to the McGraw Hill website to register and access the e-book. 5. Please review the video at this link for additional information. (2) ARES Course Reader. This course reader is accessible for free on the USC Libraries ARES system online. Go to the online ARES system, click on Search Courses and search by course number: 304 for Fall 2026. Once you find the BUAD 304 course, add it then click View Course to view and access the",
+          "Self-Assessment 3.01 What is my Big thinking about your topics and",
+          "Self-Assessment 3.04: What Is Your Level",
+          "Self Assessment 5.01 - Assessing Your",
+          "Self-Assessment 11.01 What is my",
+          "Self-Assessment 11.02 What is my",
+          "Self-Assessment 12.01 What kind of",
+          "Self-Assessment 12.02 Which influence",
+          "Self-Assessment 9.01 Assessing My",
+          "Self-Assessment 10.5 Preferred Conflict",
+          "Self-Assessment 8.01 Group",
+          "Self-Assessment 14.02:",
+          "Self-Assessment 16.02: What Is Your",
+          "Self-Assessment 16.03: Assessing Your"
+        ]
+      },
+      "extracted_text": "Personal assessments are listed in the course schedule and can be accessed via McGraw-Hill Connect, Brightspace (Connect module) or a separate website. 3. Any additional readings, assessments, and/or materials will be posted to Brightspace. 2\n\n---\n\n(1) Textbook & Connect/LearnSmart. You will need the ONLINE version of Organizational Behavior: A Practical, Problem-Solving Approach 3rd edition by Angelo Kinicki. 2021. McGraw Hill. USC has a new Digital Course Materials Program which provides access to many required textbooks, case studies and other resources for one flat fee. Our course materials have been submitted to the program coordinator and students have been sent notification about how to access the materials. Please check your usc.edu email for instructions on how to access the materials. I strongly recommend you access the textbook through this program, as the price for the e-book and Connect will be a significant discount relative to purchasing the book independent from the Course Materials Program. To gain access to the required ONLINE version of our textbook, Organizational Behavior: A Practical,\n\n---\n\n3. Under Content, find the Connect module and go to that module. 4. Click on one of the assignments in the Connect module (e.g., What is My Big Five Personality Profile), and you will jump over to the McGraw Hill website to register and access the e-book. 5. Please review the video at this link for additional information. (2) ARES Course Reader. This course reader is accessible for free on the USC Libraries ARES system online. Go to the online ARES system, click on Search Courses and search by course number: 304 for Fall 2026. Once you find the BUAD 304 course, add it then click View Course to view and access the\n\n---\n\nSelf-Assessment 3.01 What is my Big thinking about your topics and\n\n---\n\nSelf-Assessment 3.04: What Is Your Level\n\n---\n\nSelf Assessment 5.01 - Assessing Your\n\n---\n\nSelf-Assessment 11.01 What is my\n\n---\n\nSelf-Assessment 11.02 What is my\n\n---\n\nSelf-Assessment 12.01 What kind of\n\n---\n\nSelf-Assessment 12.02 Which influence\n\n---\n\nSelf-Assessment 9.01 Assessing My\n\n---\n\nSelf-Assessment 10.5 Preferred Conflict\n\n---\n\nSelf-Assessment 8.01 Group\n\n---\n\nSelf-Assessment 14.02:\n\n---\n\nSelf-Assessment 16.02: What Is Your\n\n---\n\nSelf-Assessment 16.03: Assessing Your"
     }
   ]
 }

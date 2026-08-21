@@ -153,16 +153,8 @@ MARSHALL_CONNECT_START = "8/24"
 MARSHALL_CONNECT_DUE = "12/20"
 MARSHALL_SHARPEN_START = "7/6"
 MARSHALL_SHARPEN_DUE = "9/4"
-CONNECT_WEEK_CATEGORY: list[tuple[str, str]] = [
-    (r"\b8/31\b", "Participation"),
-    (r"\b9/2\b", "Participation"),
-    (r"\b9/9\b", "Participation"),
-    (r"\b9/16\b", "Case Analysis Assignments"),
-    (r"\b9/28\b", "Proposal & Team Contract"),
-    (r"\b10/19\b", "Team Project Paper"),
-    (r"\b11/4\b", "Team Project Paper"),
-    (r"\b11/30\b", "Final Reflection Paper"),
-]
+# Connect prep is NOT a Course Evaluation grade bucket (see reference.md).
+MARSHALL_CONNECT_CATEGORY = "Personal Assessments (Connect)"
 MARSHALL_INFERRED_STARTS: list[tuple[str, str, str]] = [
     ("Participation", r"8/24", r"\b8/24\b"),
     ("Case Analysis Assignments", r"8/26", r"USC-CT and Case\s*\n?\s*Analysis videos"),
@@ -659,13 +651,6 @@ def research_dates_for_participation(milestones: list[dict]) -> tuple[str, str]:
     return start, due
 
 
-def _connect_category_for_class_date(class_md: str) -> str:
-    for pattern, cat in CONNECT_WEEK_CATEGORY:
-        if re.search(pattern, class_md):
-            return cat
-    return "Participation"
-
-
 def _nearest_class_date_before(schedule: str, pos: int) -> str:
     lookback = schedule[max(0, pos - 400) : pos]
     dates = re.findall(r"\b(\d{1,2}/\d{1,2})\b", lookback)
@@ -673,11 +658,10 @@ def _nearest_class_date_before(schedule: str, pos: int) -> str:
 
 
 def parse_marshall_connect_assessments(schedule: str, year: int) -> list[dict]:
-    """McGraw-Hill Connect self-assessments listed in the Course Schedule."""
+    """McGraw-Hill Connect self-assessments - ungraded prep (own workbook section)."""
     if not schedule:
         return []
     schedule = _normalize_schedule_text(schedule)
-    connect_start = _normalize_md_date(MARSHALL_CONNECT_START, year)
     connect_due = _normalize_md_date(MARSHALL_CONNECT_DUE, year)
     seen: set[str] = set()
     items: list[dict] = []
@@ -692,18 +676,14 @@ def parse_marshall_connect_assessments(schedule: str, year: int) -> list[dict]:
         seen.add(code)
         title = re.sub(r"\s+", " ", m.group(2)).strip(" :-")
         class_md = _nearest_class_date_before(schedule, m.start())
-        class_iso = _normalize_md_date(class_md, year) if class_md else connect_start
-        cat = _connect_category_for_class_date(class_md) if class_md else "Participation"
+        session_iso = _normalize_md_date(class_md, year) if class_md else ""
         items.append(
-            {
-                **sub_assignment(
-                    f"Connect: Self-Assessment {code} - {title}",
-                    connect_start,
-                    connect_due,
-                    LABEL_HOMEWORK,
-                ),
-                "category": cat,
-            }
+            sub_assignment(
+                f"Connect: Self-Assessment {code} - {title}",
+                session_iso,
+                session_iso or connect_due,
+                LABEL_HOMEWORK,
+            )
         )
     return items
 
@@ -733,9 +713,10 @@ def build_marshall_assignments_by_category(
     year: int,
     research_guide: str,
     categories: list[Category],
-) -> dict[str, list[dict]]:
-    """Daily homework / deliverable rows keyed by graded category name."""
+) -> tuple[dict[str, list[dict]], list[dict]]:
+    """Graded deliverables + research under categories; Connect prep returned separately."""
     out: dict[str, list[dict]] = {c.name: [] for c in categories}
+    connect_items: list[dict] = []
     schedule = find_course_schedule_section(text)
     inferred = marshall_inferred_start_dates(schedule, year)
 
@@ -757,30 +738,20 @@ def build_marshall_assignments_by_category(
             )
         )
 
-    # Connect self-assessments (McGraw-Hill daily prep)
-    for item in parse_marshall_connect_assessments(schedule, year):
-        cat_name = next(
-            (c.name for c in categories if marshall_category_key(c.name) == item["category"]),
-            "Participation",
-        )
-        if cat_name not in out:
-            out[cat_name] = []
-        out[cat_name].append({k: v for k, v in item.items() if k != "category"})
+    # Connect self-assessments - NOT part of Participation or other graded buckets
+    connect_items.extend(parse_marshall_connect_assessments(schedule, year))
 
-    # Connect platform extras (Brightspace defaults for BUAD 304)
     if re.search(r"McGraw-Hill Connect|Connect module", text, re.I):
-        part_name = next((c.name for c in categories if "participation" in c.name.lower()), None)
-        if part_name:
-            out[part_name].append(
-                sub_assignment(
-                    "Connect: Sharpen Companion",
-                    _normalize_md_date(MARSHALL_SHARPEN_START, year),
-                    _normalize_md_date(MARSHALL_SHARPEN_DUE, year),
-                    LABEL_HOMEWORK,
-                )
+        connect_items.append(
+            sub_assignment(
+                "Connect: Sharpen Companion",
+                sanitize_start_date(_normalize_md_date(MARSHALL_SHARPEN_START, year), year),
+                _normalize_md_date(MARSHALL_SHARPEN_DUE, year),
+                LABEL_HOMEWORK,
             )
+        )
 
-    # Research participation milestones
+    # Research participation milestones  -  under Participation only
     if research_guide:
         part_name = next((c.name for c in categories if "participation" in c.name.lower()), None)
         if part_name:
@@ -794,7 +765,6 @@ def build_marshall_assignments_by_category(
                     )
                 )
 
-    # Deduplicate by name within each category
     for cat_name, items in out.items():
         seen_names: set[str] = set()
         unique: list[dict] = []
@@ -805,7 +775,44 @@ def build_marshall_assignments_by_category(
             seen_names.add(key)
             unique.append(item)
         out[cat_name] = unique
-    return out
+
+    seen_connect: set[str] = set()
+    unique_connect: list[dict] = []
+    for item in sorted(connect_items, key=lambda x: (x.get("due_date") or "", x["name"])):
+        key = item["name"].lower()
+        if key in seen_connect:
+            continue
+        seen_connect.add(key)
+        unique_connect.append(item)
+    return out, unique_connect
+
+
+def gather_marshall_connect_content(text: str) -> tuple[dict, str]:
+    """Verbatim for Personal Assessments (Connect) - ungraded prep, not Participation."""
+    matched: list[str] = []
+    for pat in [
+        r"Personal assessments are listed in the course schedule[^\n]+(?:\n[^\n]+){0,3}",
+        r"\(1\) Textbook & Connect/LearnSmart\.[^\n]+(?:\n[^\n]+){0,8}",
+        r"\d+\.\s*Under Content, find the Connect module[^\n]+(?:\n[^\n]+){0,6}",
+    ]:
+        m = re.search(pat, text, re.I)
+        if m:
+            matched.append(re.sub(r"\s+", " ", m.group(0)).strip())
+    schedule = find_course_schedule_section(text)
+    if schedule:
+        for m in re.finditer(
+            r"Self[- ]Assessment\s+\d+\.\d+[^\n]{0,120}",
+            schedule,
+            re.I,
+        ):
+            line = re.sub(r"\s+", " ", m.group(0)).strip()
+            if line not in matched:
+                matched.append(line)
+    sections: dict = {}
+    if matched:
+        sections["Personal Assessments (Connect prep)"] = matched[:20]
+    verbatim = "\n\n---\n\n".join(matched)
+    return sections, verbatim
 
 
 def calendar_week_assignments(rows: list[dict], year: int) -> list[dict]:
@@ -2143,8 +2150,9 @@ def dissect(
     year = infer_year(term)
     research_guide = parse_research_guide_text(text)
     assignment_map: dict[str, list[dict]] = {}
+    marshall_connect_items: list[dict] = []
     if marshall_mode:
-        assignment_map = build_marshall_assignments_by_category(
+        assignment_map, marshall_connect_items = build_marshall_assignments_by_category(
             text, year, research_guide, categories
         )
     elif calendar_mode:
@@ -2189,6 +2197,23 @@ def dissect(
                 "assignments": assignment_map.get(cat.name, []),
                 "sections": sections,
                 "extracted_text": verbatim,
+            }
+        )
+    if marshall_mode and marshall_connect_items:
+        conn_sections, conn_verbatim = gather_marshall_connect_content(text)
+        result_categories.append(
+            {
+                "name": MARSHALL_CONNECT_CATEGORY,
+                "weight": None,
+                "weight_unit": "percent",
+                "start_date": sanitize_start_date(
+                    _normalize_md_date(MARSHALL_CONNECT_START, year), year
+                ),
+                "due_date": _normalize_md_date(MARSHALL_CONNECT_DUE, year),
+                "is_group_project": False,
+                "assignments": marshall_connect_items,
+                "sections": conn_sections,
+                "extracted_text": conn_verbatim,
             }
         )
     cls: dict = {"code": class_code}
