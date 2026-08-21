@@ -51,6 +51,10 @@ MAJOR_NAME = re.compile(
     re.I,
 )
 PAPER_NAME = re.compile(r"\bpaper\b", re.I)
+EXTERNAL_CERT_NAME = re.compile(
+    r"\b(linkedin|linked in|stukent|simternship|certification)\b",
+    re.I,
+)
 MONTH_NAMES = (
     "",
     "January",
@@ -253,6 +257,21 @@ def _paper_names(categories: list[dict]) -> list[str]:
     ]
 
 
+def _external_certifications(categories: list[dict]) -> list[str]:
+    """Graded third-party certs (LinkedIn Learning, Stukent, etc.) - not Connect prep."""
+    names: list[str] = []
+    for cat in categories:
+        if cat.get("weight") is None:
+            continue
+        cname = cat.get("name") or ""
+        has_cert_sub = any(
+            sub.get("notes") == "Certification" for sub in cat.get("assignments") or []
+        )
+        if has_cert_sub or EXTERNAL_CERT_NAME.search(cname):
+            names.append(cname)
+    return names
+
+
 def iter_due_items(data: dict) -> list[dict]:
     """Flatten category + sub-rows that carry due dates."""
     code = str(data.get("class", {}).get("code") or "")
@@ -319,6 +338,7 @@ def summarize_class(data: dict) -> dict:
     first_any = sorted_all[0] if sorted_all else None
     first_major = sorted_major[0] if sorted_major else None
     papers = _paper_names(categories)
+    external_certs = _external_certifications(categories)
     return {
         "code": code,
         "name": cls.get("name") or "",
@@ -326,6 +346,7 @@ def summarize_class(data: dict) -> dict:
         "has_reading": class_has_label(data, "Reading"),
         "has_homework": class_has_label(data, "Homework"),
         "papers": papers,
+        "external_certs": external_certs,
         "has_group_project": any(c.get("is_group_project") for c in categories),
         "first_any": first_any,
         "first_major": first_major,
@@ -368,7 +389,7 @@ def build_overview_sheet(wb: Workbook, all_data: list[dict]) -> None:
     title_font = Font(bold=True, size=16, color="FFFFFF")
     header_font = Font(bold=True, color="FFFFFF")
     label_font = Font(bold=True)
-    ncols = 9
+    ncols = 10
     last_col = get_column_letter(ncols)
 
     row = 1
@@ -407,6 +428,7 @@ def build_overview_sheet(wb: Workbook, all_data: list[dict]) -> None:
         "Homework",
         "Papers",
         "Group Project",
+        "External certs",
         "First on list",
         "List due",
         "First major",
@@ -426,12 +448,14 @@ def build_overview_sheet(wb: Workbook, all_data: list[dict]) -> None:
         fa = s["first_any"]
         fm = s["first_major"]
         papers_text = ", ".join(s["papers"]) if s["papers"] else "-"
+        certs_text = ", ".join(s["external_certs"]) if s["external_certs"] else "-"
         values = [
             sheet_link(sanitize_sheet_name(s["code"]), s["code"]),
             "Yes" if s["has_reading"] else "-",
             "Yes" if s["has_homework"] else "-",
             papers_text,
             "Yes" if s["has_group_project"] else "-",
+            certs_text,
             (fa["name"][:55] if fa else "-"),
             (fa["due_date"] if fa else "-"),
             (fm["name"][:55] if fm else "-"),
@@ -444,6 +468,8 @@ def build_overview_sheet(wb: Workbook, all_data: list[dict]) -> None:
             c.alignment = Alignment(wrap_text=True, vertical="top")
             if col == 1 and str(value).startswith("=HYPERLINK"):
                 c.font = Font(bold=True, color="0563C1", underline="single")
+            elif col == 6 and value != "-":
+                c.font = Font(bold=True, color=SUB_LABEL_COLORS.get("Certification", "0070C0"))
         row += 1
 
     row += 1
@@ -476,10 +502,10 @@ def build_overview_sheet(wb: Workbook, all_data: list[dict]) -> None:
                 c.font = Font(bold=True, color=SUB_LABEL_COLORS[label])
         row += 1
 
-    widths = [14, 10, 10, 28, 12, 36, 12, 36, 12]
+    widths = [14, 10, 10, 24, 12, 32, 32, 12, 32, 12]
     for col, width in enumerate(widths, start=1):
         ws.column_dimensions[get_column_letter(col)].width = width
-    ws.column_dimensions["D"].width = 32
+    ws.column_dimensions["D"].width = 28
     ws.freeze_panes = ws.cell(row=hdr_row + 1, column=1)
 
 

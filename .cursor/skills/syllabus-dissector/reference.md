@@ -339,7 +339,7 @@ Built automatically whenever `build_workbook.py` runs. Scans every `output/*.jso
 | Section | Contents |
 |---------|----------|
 | **Start here** | Earliest due item across all classes |
-| **Class summary** | Per class: Reading / Homework / Papers / Group Project flags; first item on the assignment list + due; first **major** (papers, exams, memos, certs) + due |
+| **Class summary** | Per class: Reading / Homework / Papers / Group Project / **External certs** flags; first item on the assignment list + due; first **major** (papers, exams, memos, certs) + due |
 | **Do First - {Month}** | All due items in the month of the global earliest due date, chronological |
 
 Class names link to their worksheet. Regenerated after each class pipeline run (run all classes so Overview stays complete).
