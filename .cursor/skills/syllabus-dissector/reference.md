@@ -354,6 +354,7 @@ When `output/rmp.json` exists next to the workbook, Overview includes a **Profes
 |--------|--------|
 | Quality (/5) | RMP overall quality |
 | Difficulty (/5) | RMP level of difficulty |
+| Avg Reviewer Grade | Mean of self-reported letter grades on RMP (4.0 GPA scale); shows letter, GPA, and how many reviewers reported a grade |
 | Would Take Again | RMP percentage |
 | Consensus (below stats table) | Multi-paragraph STRENGTHS / GRADING / BOTTOM LINE themes from reviews |
 

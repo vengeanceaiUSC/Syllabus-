@@ -273,6 +273,22 @@ def rmp_for_class(
     return entry if entry.get("quality") is not None else None
 
 
+def format_avg_reviewer_grade(rmp: dict) -> str:
+    """Self-reported letter-grade average from RMP reviewers."""
+    letter = rmp.get("avg_grade_letter")
+    gpa = rmp.get("avg_grade_gpa")
+    reported = rmp.get("grades_reported")
+    total = rmp.get("num_ratings")
+    if not letter or gpa is None:
+        return "-"
+    text = f"{letter} ({gpa:g})"
+    if reported and total:
+        text += f" [{reported}/{total} reported]"
+    elif reported:
+        text += f" [{reported} reported]"
+    return text
+
+
 def _due_sort_key(due: str, label: str, name: str, is_sub: bool = False) -> tuple:
     return (due or "9999-99-99", 1 if is_sub else 0, SUB_LABEL_ORDER.get(label, 99), name)
 
@@ -607,6 +623,7 @@ def build_overview_sheet(
             "Instructor",
             "Quality (/5)",
             "Difficulty (/5)",
+            "Avg Reviewer Grade",
             "Would Take Again",
             "# Ratings",
         ]
@@ -627,11 +644,13 @@ def build_overview_sheet(
             difficulty = rmp.get("difficulty")
             again = rmp.get("would_take_again_pct")
             num = rmp.get("num_ratings")
+            avg_grade = format_avg_reviewer_grade(rmp)
             values = [
                 sheet_link(sanitize_sheet_name(s["code"]), s["code"]),
                 instructor,
                 f"{quality:g}" if quality is not None else "-",
                 f"{difficulty:g}" if difficulty is not None else "-",
+                avg_grade,
                 f"{again:g}%" if again is not None else "-",
                 str(num) if num is not None else "-",
             ]
@@ -684,7 +703,11 @@ def build_overview_sheet(
             ws.cell(
                 row=row,
                 column=1,
-                value=f"RMP data as of {rmp_as_of}. Source: ratemyprofessors.com",
+                value=(
+                    f"RMP data as of {rmp_as_of}. Source: ratemyprofessors.com. "
+                    "Avg reviewer grade = mean of self-reported letter grades (4.0 scale); "
+                    "not all reviewers report a grade."
+                ),
             ).font = Font(italic=True, size=9, color="808080")
             row += 1
         rmp_group_end = row - 1
