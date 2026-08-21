@@ -141,3 +141,8 @@ pip install -r requirements.txt
 | `generate_pdfs.py` | PDF rendering (called by build_workbook) |
 
 See [reference.md](reference.md) for JSON schema and calendar lessons learned.
+
+Golden auto-generated examples:
+
+- [examples/hist103.auto.json](examples/hist103.auto.json) — full syllabus (percentage weights)
+- [examples/buad281.auto.json](examples/buad281.auto.json) — course calendar (point weights, ISO dates)

@@ -96,31 +96,99 @@ These caused **~4/10 verbatim quality** before the table-path fix:
 
 ## JSON schema (auto-generated)
 
+Two shapes depending on document type. Golden references:
+
+- **Full syllabus:** [examples/hist103.auto.json](examples/hist103.auto.json)
+- **Course calendar:** [examples/buad281.auto.json](examples/buad281.auto.json)
+
+### Full syllabus (percentage weights)
+
 ```jsonc
 {
-  "class": { "code": "BUAD-281", "name": "...", "instructor": "...", "term": "..." },
+  "class": { "code": "HIST-103", "name": "...", "instructor": "...", "term": "Fall 2026" },
   "grading_scale": {
-    "a_threshold": "N/A",
-    "raw_scale": "Total graded points in calendar: 1055 (letter scale not in document)",
-    "scale_type": "points"
+    "a_threshold": "93% (100-93)",
+    "raw_scale": "A: 100-93; ...",
+    "scale_type": "percentage"
   },
   "categories": [{
-    "name": "Homework",
-    "weight": 155,
-    "weight_unit": "points",
-    "start_date": "",
-    "due_date": "",
+    "name": "Sleep Paper",
+    "weight": 20,
+    "weight_unit": "percent",
+    "start_date": "2026-09-04",
+    "due_date": "2026-09-15",
     "is_group_project": false,
     "sections": {
-      "Homework Assignments (by class date)": [
-        "Class 5 | Date: 9/9 | Topic: ... | Homework (due 8:00 am): 2-29, 2-30, 2-40; 15 Points"
-      ],
-      "Calendar Footnotes": ["Unless specifically Identified, Chapter Appendices ARE NOT included..."]
+      "Overview (Assignments section)": "...",
+      "Prompts (pick ONE)": ["..."],
+      "Helpful Hints": ["..."]
     },
-    "extracted_text": "Class 5 | Date: 9/9 | ...\n\nClass 7 | ..."
+    "extracted_text": "...\n\n---\n\n..."
   }]
 }
 ```
+
+### Course calendar (point weights, ISO dates)
+
+```jsonc
+{
+  "class": { "code": "BUAD-281", "name": "Managerial Accounting", "instructor": "Braunegg", "term": "Fall 2026" },
+  "grading_scale": {
+    "a_threshold": "N/A",
+    "raw_scale": "Total graded points in calendar: 1070 (letter scale not in document)",
+    "scale_type": "points"
+  },
+  "categories": [
+    {
+      "name": "Homework",
+      "weight": 170,
+      "weight_unit": "points",
+      "start_date": "2026-09-09",       // earliest homework ISO due
+      "due_date": "2026-11-16",         // latest homework ISO due
+      "is_group_project": false,
+      "sections": {
+        "Homework Assignments (by due date)": [
+          "Class 5 | Due: 2026-09-09 (8:00 am) | Topic: Product Cost Accumulation: Job; Order Costing | Required Reading: Chapter 3 | Homework: 2-29, 2-30, 2-40; 15 Points",
+          "Class 7 | Due: 2026-09-16 (8:00 am) | Topic: Activity Based Costing | Required Reading: Chapter 5- ONLY; LO 5.1, 2, 4 & 5 | Homework: 3-24, 3-28, 3-32; 15 Points"
+        ],
+        "Calendar Footnotes": [
+          "Unless specifically Identified, Chapter Appendices ARE NOT included as Required Reading"
+        ]
+      },
+      "extracted_text": "Class 5 | Due: 2026-09-09 (8:00 am) | ...\n\nClass 7 | Due: 2026-09-16 (8:00 am) | ..."
+    },
+    {
+      "name": "LinkedIn Learning Excel Certification",
+      "weight": 75,
+      "weight_unit": "points",
+      "start_date": "2026-09-23",       // in-class announcement
+      "due_date": "2026-12-02",         // 11:59 PM footer deadline
+      "sections": {
+        "Assignment Details": [
+          "Class 9 | Mentioned: 2026-09-23 (in-class announcement) | Linked In Learning Excel - 75 Points | Context: Introduced during this session; submit by 12/2 11:59 PM",
+          "Class 2 | Due: 2026-12-02 (11:59 PM) | Linked In Learning Excel Certification | Context: Final submission deadline (calendar footer)"
+        ],
+        "Due Date & Submission": "Due: 2026-12-02 (11:59 PM) - Assignments listed below due by 11:59 PM"
+      }
+    },
+    {
+      "name": "Final Exam",
+      "weight": 250,
+      "weight_unit": "points",
+      "due_date": "2026-12-16",
+      "sections": {
+        "Exam": "Final Exam: 250 Points | Final Exam; Wednesday,; December 16th; 8:00 AM -10:00 AM PST | ISO date: 2026-12-16 | Chapters 10, 11, 13, 14a | Knowledge of Cost Behavior (Chapter 6) & Contribution Margin (Chapter 7) are essential to cor-"
+      }
+    }
+  ]
+}
+```
+
+**Calendar row format:** `Class N | Due: YYYY-MM-DD (8:00 am) | Topic: ... | Required Reading: ... | Homework: ...`
+
+**Cert split format:** announcement row (Class 9) + submission row (Class 2) — never one combined blob.
+
+**With `--supplement`:** adds `"Additional Instructions (supplement syllabus)"` section when a full syllabus is merged.
 
 ## Category detection (full syllabus)
 
@@ -139,6 +207,10 @@ output/
   syllabi.xlsx
   documents/*.pdf
   buad281.json          # optional --keep-json
+
+examples/
+  hist103.auto.json     # golden reference — full syllabus
+  buad281.auto.json     # golden reference — course calendar (ISO dates)
 ```
 
 Excel **Open PDF** uses hosted URLs via `--link-base` (standalone download works).
