@@ -185,7 +185,7 @@ RESEARCH_MILESTONES: list[tuple[str, str, str, str]] = [
 ]
 MD_DATE = re.compile(r"\b(\d{1,2})/(\d{1,2})\b")
 
-# Strict Details-column labels for sub-assignment rows (see reference.md)
+# Strict type labels for sub-assignment rows (Category column in Excel; `notes` in JSON)
 LABEL_READING = "Reading"
 LABEL_HOMEWORK = "Homework"
 LABEL_ASSIGNMENT = "Assignment"
@@ -200,7 +200,7 @@ def sub_assignment(
     due: str,
     label: str,
 ) -> dict:
-    """Sub-row for Excel: `notes` is always the strict type label (Reading, Homework, etc.)."""
+    """Sub-row for Excel: `notes` is the strict type label shown in the Category column."""
     return {
         "name": name[:120],
         "start_date": start,
@@ -217,9 +217,9 @@ def classify_major_vs_daily(name: str) -> str:
     if re.search(r"\bfinal\b", low) and re.search(r"\b(exam|december|dec)\b", low):
         return LABEL_EXAM
     if re.search(
-        r"\b(paper due|paper\b|project paper|team project|proposal|contract|memo due|"
-        r"reflection paper|presentation slides|peer evaluation|outline due|certification|"
-        r"sleep paper|witchcraft paper|case analysis)\b",
+        r"\b(paper due|paper\b|project paper|team project|proposal|contract|memo due|memo\b|"
+        r"analysis memo|reflection paper|presentation slides|peer evaluation|outline due|"
+        r"certification|sleep paper|witchcraft paper|case analysis)\b",
         low,
     ):
         return LABEL_ASSIGNMENT

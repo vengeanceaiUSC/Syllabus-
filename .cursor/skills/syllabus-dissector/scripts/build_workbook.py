@@ -43,6 +43,24 @@ HEADERS = [
 THIN = Side(style="thin", color="D9D9D9")
 BORDER = Border(left=THIN, right=THIN, top=THIN, bottom=THIN)
 
+# Sub-row type labels (Category column) — sort order for grouped display
+SUB_LABEL_ORDER = {
+    "Reading": 0,
+    "Homework": 1,
+    "Assignment": 2,
+    "Exam": 3,
+    "Research": 4,
+    "Certification": 5,
+}
+SUB_LABEL_COLORS = {
+    "Reading": "1F4E79",       # navy
+    "Homework": "C65911",      # orange
+    "Assignment": "7030A0",    # purple
+    "Exam": "C00000",          # red
+    "Research": "375623",      # green
+    "Certification": "0070C0", # blue
+}
+
 
 def clean_hex(value: str) -> str:
     value = (value or "").lstrip("#").strip().upper()
@@ -68,6 +86,20 @@ def tint(hex_color: str, factor: float) -> str:
 def sanitize_sheet_name(name: str) -> str:
     name = re.sub(r"[:\\/?*\[\]]", "-", name).strip() or "Sheet"
     return name[:31]
+
+
+def sort_sub_assignments(items: list[dict]) -> list[dict]:
+    """Group sub-rows by type (Reading before Homework, etc.) then by date."""
+    def key(item: dict) -> tuple:
+        label = item.get("notes") or ""
+        return (
+            SUB_LABEL_ORDER.get(label, 99),
+            item.get("start_date") or "",
+            item.get("due_date") or "",
+            item.get("name") or "",
+        )
+
+    return sorted(items, key=key)
 
 
 def format_weight(cat: dict) -> str:
@@ -164,6 +196,8 @@ def build(
     title_font = Font(bold=True, size=14, color="FFFFFF")
     header_font = Font(bold=True, color="FFFFFF")
     label_font = Font(bold=True)
+    weight_font = Font(bold=True, size=13, color=base_color)
+    weight_fill = PatternFill("solid", fgColor=tint(base_color, 0.72))
 
     docs_dir = workbook_path.parent / "documents"
     docs_dir.mkdir(parents=True, exist_ok=True)
@@ -261,20 +295,35 @@ def build(
             details: str,
             *,
             is_sub: bool = False,
+            sub_label: str = "",
         ) -> None:
             nonlocal row
-            display_name = f"  ↳ {name}" if is_sub else name
-            values = [display_name, weight, start, due, group, details]
+            if is_sub and sub_label:
+                category_value = sub_label
+                details_value = name
+            else:
+                category_value = name
+                details_value = details
+            values = [category_value, weight, start, due, group, details_value]
             band = band_light if i % 2 == 0 else band_lighter
             sub_fill = PatternFill("solid", fgColor=tint(base_color, 0.96)) if is_sub else band
             for col, value in enumerate(values, start=1):
                 c = ws.cell(row=row, column=col, value=value)
                 c.fill = sub_fill
                 c.border = BORDER
-                c.alignment = Alignment(vertical="center", wrap_text=(col == 1))
-                if col == 1 and is_sub:
-                    c.font = Font(size=10, color="404040")
-                if col == ncols and value and value.startswith("=HYPERLINK"):
+                c.alignment = Alignment(
+                    vertical="center",
+                    wrap_text=(col in (1, ncols)),
+                    horizontal="right" if col == 2 and weight and not is_sub else "left",
+                )
+                if col == 1 and is_sub and sub_label:
+                    c.font = Font(bold=True, size=11, color=SUB_LABEL_COLORS.get(sub_label, "404040"))
+                elif col == 1 and not is_sub:
+                    c.font = Font(bold=True, size=11)
+                if col == 2 and weight and not is_sub:
+                    c.font = weight_font
+                    c.fill = weight_fill
+                if col == ncols and value and str(value).startswith("=HYPERLINK"):
                     c.font = Font(color="0563C1", underline="single")
             row += 1
 
@@ -286,24 +335,26 @@ def build(
             "Yes" if cat.get("is_group_project") else "No",
             pdf_hyperlink(target) if target else "",
         )
-        for sub in cat.get("assignments") or []:
+        for sub in sort_sub_assignments(cat.get("assignments") or []):
+            sub_label = sub.get("notes") or ""
             write_row(
                 sub.get("name", "Assignment"),
                 "",
                 sub.get("start_date") or "",
                 sub.get("due_date") or "",
                 "",
-                sub.get("notes") or "",
+                "",
                 is_sub=True,
+                sub_label=sub_label,
             )
 
     total = sum(float(c["weight"]) for c in categories if c.get("weight") is not None)
     if any(c.get("weight") is not None for c in categories):
         ws.cell(row=row, column=1, value="Total").font = label_font
         unit = "%" if not str(scale.get("scale_type", "")).lower().startswith("point") else " pts"
-        ws.cell(row=row, column=2, value=f"{total:g}{unit}").font = label_font
+        ws.cell(row=row, column=2, value=f"{total:g}{unit}").font = weight_font
 
-    for col, width in enumerate([30, 12, 14, 14, 14, 16], start=1):
+    for col, width in enumerate([22, 14, 14, 14, 14, 42], start=1):
         ws.column_dimensions[get_column_letter(col)].width = width
     ws.freeze_panes = ws.cell(row=header_row + 1, column=1)
 

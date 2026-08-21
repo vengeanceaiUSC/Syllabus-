@@ -226,26 +226,29 @@ When `Course Evaluation` is present (and document is **not** a point-based Cours
 
 Participation PDF sections: `Research Participation Guide (key dates)`, `(contacts)`, `(quick reference excerpt)`.
 
-### Sub-assignment type labels (Excel Details column)
+### Sub-assignment type labels (Excel Category column)
 
-Every indented sub-row under a category uses a **strict type label** in the Details column (`notes` in JSON). Do not use free-text notes like "Weekly schedule" or "Homework - {reading text}".
+Every sub-row under a graded category shows its **type in the Category column** (`notes` in JSON). The **Details** column holds the descriptive name (class session, week block, Connect item). Sub-rows are sorted: Reading → Homework → Assignment → Exam → Research → Certification, then by date.
 
-| Label | Use for |
-|-------|---------|
-| **Reading** | Weekly schedule blocks, section readings, textbook/chapter prep, lecture topics, calendar Required Reading rows |
-| **Homework** | Connect self-assessments, Sharpen, problem sets, quizzes, primary source activities |
-| **Assignment** | Papers, memos, proposals, outlines, presentations, peer evaluation, team deliverables |
-| **Exam** | Midterm, final |
-| **Research** | SONA milestones from `--research-guide` |
-| **Certification** | LinkedIn / Stukent cert rows |
+Parent category **Weight** cells use bold 13pt text on a tinted background for visibility.
 
-Implemented in `auto_dissect.py`: `classify_major_vs_daily()`, `classify_hist103_sub_item()`, `calendar_week_assignments()` (splits Reading vs Homework per class session).
+Implemented in `auto_dissect.py` (label assignment) and `build_workbook.py` (`sort_sub_assignments()`, color-coded Category labels).
 
-**HIST-103 example:** `Week Sep 15-18: Renaissance` → Details = **Reading** (not Homework).
+**HIST-103 example:** Category = **Reading**, Details = `Week Sep 15-18: Renaissance`.
 
-**BUAD-281 example:** calendar row with Required Reading → **Reading**; problem set with points → **Homework**.
+**BUAD-281 example:** under Homework (170 pts), Category = **Reading** for chapter prep rows, Category = **Homework** for problem-set rows.
 
-**BUAD-304 example:** Connect self-assessment → **Homework**; Team project paper due → **Assignment**; SONA registration → **Research**.
+**BUAD-304 example:** Category = **Homework** for Connect self-assessments; Category = **Assignment** for team deliverables.
+
+### Which classes have true Homework sub-rows?
+
+| Class | Homework rows | Reading rows | Notes |
+|-------|---------------|--------------|-------|
+| HIST-103 | 0 | 36 | Weekly schedule is all Reading |
+| BUAD-281 | 12 | 25 | 12 graded problem sets |
+| BUAD-304 | 14 | 0 | Connect self-assessments + Sharpen |
+
+Only **BUAD-281** and **BUAD-304** have Homework sub-rows; HIST-103 has none (readings only).
 
 ### Marshall schedule parsing notes
 

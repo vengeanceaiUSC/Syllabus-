@@ -16,7 +16,13 @@ the syllabus mentions about that item — extracted automatically.
 3. **Assignment details** — start date, due date, group-project flag
 4. **PDF documents** — one per category; structured sections + verbatim extract
 5. **Excel hyperlinks** — **Open PDF** opens hosted PDF in browser
-6. **Sub-assignments** — indented rows under each category with individual start/due dates (Connect self-assessments, homework problem sets, schedule deliverables). Each sub-row **Details** column uses a strict type label:
+6. **Sub-assignments** — indented schedule rows under each graded category. Sub-rows are **grouped by type** (Reading, then Homework, etc.) and sorted by date. Each sub-row uses:
+
+| Column | Parent category row | Sub-row |
+|--------|---------------------|---------|
+| **Category** | Graded category name (bold) | Type label: **Reading**, **Homework**, **Assignment**, **Exam**, **Research**, **Certification** (color-coded, bold) |
+| **Weight** | Bold, tinted cell (`20%` or `170 pts`) | *(empty)* |
+| **Details** | Open PDF hyperlink | Assignment description (class session, week, Connect item, etc.) |
 
 | Label | Use for |
 |-------|---------|
