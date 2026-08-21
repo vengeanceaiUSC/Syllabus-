@@ -7,7 +7,7 @@
   },
   "grading_scale": {
     "a_threshold": "N/A",
-    "raw_scale": "Total graded points in calendar: 1055 (letter scale not in document)",
+    "raw_scale": "Total graded points in calendar: 1070 (letter scale not in document)",
     "scale_type": "points"
   },
   "categories": [
@@ -19,19 +19,17 @@
       "due_date": "2026-09-30",
       "is_group_project": false,
       "sections": {
-        "Overview (Course Calendar)": "ked In Learning Excel - 75 Points • Stukent Simternship - 75 Points Practice Midterm Questions will be Posted by 5:00 PM Catchup & Midterm Review 8-28, 8-29 10 9/28 10 Points 9/30 Midterm 1: 250 Points Chapters 1, 2, 3, 4, 5, 8 11 10/5 Cost Estimation Chapter 6 Cost volume profit analysis Chapter 7 6-24, 6-25, 6-34 12 10/7 15 Points 13 Cost volume profit ana",
-        "Calendar Entries": [
-          "ked In Learning Excel - 75 Points • Stukent Simternship - 75 Points Practice Midterm Questions will be Posted by 5:00 PM Catchup & Midterm Review 8-28, 8-29 10 9/28 10 Points 9/30 Midterm 1: 250 Points Chapters 1, 2, 3, 4, 5, 8 11 10/5 Cost Estimation Chapter 6 Cost volume profit analysis Chapter 7 6-24, 6-25, 6-34 12 10/7 15 Points 13 Cost volume profit ana",
-          "Midterm 1: 250 Points Chapters 1, 2, 3, 4, 5, 8",
-          "Practice Midterm Questions will be Posted by 5:00 PM",
-          "Practice Midterm Questions Posted to Brightspace by",
-          "Catchup & Midterm Review 8-28, 8-29",
-          "Catchup & Midterm Review 10 Points",
-          "Unless specifically Identified, Chapter Appendices ARE NOT included as Required Reading",
-          "Knowledge of Cost Behavior (Chapter 6) & Contribution Margin (Chapter 7) are essential to cor-"
+        "Exam": [
+          "9/30 Midterm 1: 250 Points Chapters 1, 2, 3, 4, 5, 8"
+        ],
+        "Review & Practice": [
+          "Class 9 | Date: 9/23 | Topic: Cost of Quality & ESG &; Overview of; • Linked In Learning Excel - 75 Points; • Stukent Simternship - 75 Points; Practice Midterm Questions will be Posted by 5:00 PM | Required Reading: Chapter 8 - ONLY; LO 8.7, 8, 9 | Homework (due 8:00 am): 4-21, 4-22; 10 Points",
+          "Class 10 | Date: 9/28 | Topic: Catchup & Midterm Review | Homework (due 8:00 am): 8-28, 8-29; 10 Points",
+          "Class 15 | Date: 10/19 | Topic: Capital Budgeting; Practice Midterm Questions Posted to Brightspace by; 5:00 PM | Required Reading: Chapter 16- ONLY; LO 16.1, 2, 3 | Homework (due 8:00 am): 9-25, 9-28, 9-37; 15 - Points",
+          "Class 2 | Date: 12/2 | Topic: Catchup & Final Review; Practice Final Questions Posted to Brightspace at; 5:00 PM | Homework (due 8:00 am): 14-35, 14-41; 10 Points; Assignments listed Be-; low Due by11:59 PM; Linked In Learning; Excel Certification; 75 Points; Stukent Simternship; 75 Points"
         ]
       },
-      "extracted_text": "ked In Learning Excel - 75 Points • Stukent Simternship - 75 Points Practice Midterm Questions will be Posted by 5:00 PM Catchup & Midterm Review 8-28, 8-29 10 9/28 10 Points 9/30 Midterm 1: 250 Points Chapters 1, 2, 3, 4, 5, 8 11 10/5 Cost Estimation Chapter 6 Cost volume profit analysis Chapter 7 6-24, 6-25, 6-34 12 10/7 15 Points 13 Cost volume profit ana\n\n---\n\nKnowledge of Cost Behavior (Chapter 6) & Contribution Margin (Chapter 7) are essential to cor-\n\n---\n\nUnless specifically Identified, Chapter Appendices ARE NOT included as Required Reading\n\n---\n\nPractice Midterm Questions Posted to Brightspace by\n\n---\n\nCatchup & Midterm Review 10 Points"
+      "extracted_text": "Class 9 | Date: 9/23 | Topic: Cost of Quality & ESG &; Overview of; • Linked In Learning Excel - 75 Points; • Stukent Simternship - 75 Points; Practice Midterm Questions will be Posted by 5:00 PM | Required Reading: Chapter 8 - ONLY; LO 8.7, 8, 9 | Homework (due 8:00 am): 4-21, 4-22; 10 Points\n\nClass 2 | Date: 12/2 | Topic: Catchup & Final Review; Practice Final Questions Posted to Brightspace at; 5:00 PM | Homework (due 8:00 am): 14-35, 14-41; 10 Points; Assignments listed Be-; low Due by11:59 PM; Linked In Learning; Excel Certification; 75 Points; Stukent Simternship; 75 Points\n\nClass 15 | Date: 10/19 | Topic: Capital Budgeting; Practice Midterm Questions Posted to Brightspace by; 5:00 PM | Required Reading: Chapter 16- ONLY; LO 16.1, 2, 3 | Homework (due 8:00 am): 9-25, 9-28, 9-37; 15 - Points\n\nClass 10 | Date: 9/28 | Topic: Catchup & Midterm Review | Homework (due 8:00 am): 8-28, 8-29; 10 Points\n\n9/30 Midterm 1: 250 Points Chapters 1, 2, 3, 4, 5, 8"
     },
     {
       "name": "Midterm 2",
@@ -41,19 +39,15 @@
       "due_date": "2026-10-26",
       "is_group_project": false,
       "sections": {
-        "Overview (Course Calendar)": "ONLY 9-25, 9-28, 9-37 15 10/19 LO 16.1, 2, 3 15 - Points Practice Midterm Questions Posted to Brightspace by 5:00 PM 16-28, 16-40 16 10/21 Catchup & Midterm Review 10 Points 10/26 Midterm 2: 250 Points Chapters 6, 7, 9, & 16 17 10/28 Guest Speaker 2. Unless specifically Identified, Chapter Appendices ARE NOT included as Required Reading -- 1 of 2 -- Date D",
-        "Calendar Entries": [
-          "ONLY 9-25, 9-28, 9-37 15 10/19 LO 16.1, 2, 3 15 - Points Practice Midterm Questions Posted to Brightspace by 5:00 PM 16-28, 16-40 16 10/21 Catchup & Midterm Review 10 Points 10/26 Midterm 2: 250 Points Chapters 6, 7, 9, & 16 17 10/28 Guest Speaker 2. Unless specifically Identified, Chapter Appendices ARE NOT included as Required Reading -- 1 of 2 -- Date D",
-          "Midterm 2: 250 Points Chapters 6, 7, 9, & 16",
-          "Practice Midterm Questions will be Posted by 5:00 PM",
-          "Practice Midterm Questions Posted to Brightspace by",
-          "Catchup & Midterm Review 8-28, 8-29",
-          "Catchup & Midterm Review 10 Points",
-          "Unless specifically Identified, Chapter Appendices ARE NOT included as Required Reading",
-          "Knowledge of Cost Behavior (Chapter 6) & Contribution Margin (Chapter 7) are essential to cor-"
+        "Exam": [
+          "10/26 Midterm 2: 250 Points Chapters 6, 7, 9, & 16"
+        ],
+        "Review & Practice": [
+          "Class 15 | Date: 10/19 | Topic: Capital Budgeting; Practice Midterm Questions Posted to Brightspace by; 5:00 PM | Required Reading: Chapter 16- ONLY; LO 16.1, 2, 3 | Homework (due 8:00 am): 9-25, 9-28, 9-37; 15 - Points",
+          "Class 16 | Date: 10/21 | Topic: Catchup & Midterm Review | Homework (due 8:00 am): 16-28, 16-40; 10 Points"
         ]
       },
-      "extracted_text": "ONLY 9-25, 9-28, 9-37 15 10/19 LO 16.1, 2, 3 15 - Points Practice Midterm Questions Posted to Brightspace by 5:00 PM 16-28, 16-40 16 10/21 Catchup & Midterm Review 10 Points 10/26 Midterm 2: 250 Points Chapters 6, 7, 9, & 16 17 10/28 Guest Speaker 2. Unless specifically Identified, Chapter Appendices ARE NOT included as Required Reading -- 1 of 2 -- Date D\n\n---\n\nKnowledge of Cost Behavior (Chapter 6) & Contribution Margin (Chapter 7) are essential to cor-\n\n---\n\nPractice Midterm Questions will be Posted by 5:00 PM\n\n---\n\nCatchup & Midterm Review 8-28, 8-29"
+      "extracted_text": "Class 15 | Date: 10/19 | Topic: Capital Budgeting; Practice Midterm Questions Posted to Brightspace by; 5:00 PM | Required Reading: Chapter 16- ONLY; LO 16.1, 2, 3 | Homework (due 8:00 am): 9-25, 9-28, 9-37; 15 - Points\n\nClass 16 | Date: 10/21 | Topic: Catchup & Midterm Review | Homework (due 8:00 am): 16-28, 16-40; 10 Points\n\n10/26 Midterm 2: 250 Points Chapters 6, 7, 9, & 16"
     },
     {
       "name": "Final Exam",
@@ -63,93 +57,81 @@
       "due_date": "2026-12-16",
       "is_group_project": false,
       "sections": {
-        "Overview (Course Calendar)": "estions Posted to Brightspace at 5:00 PM Assignments listed Be- low Due by11:59 PM 2 12/2 Linked In Learning Excel Certification 75 Points Stukent Simternship 75 Points Final Exam Final Exam: 250 Points Wednesday, Chapters 10, 11, 13, 14a December 16th 8:00 AM -10:00 AM PST a. Knowledge of Cost Behavior (Chapter 6) & Contribution Margin (Chapter 7) are essen",
-        "Calendar Entries": [
-          "estions Posted to Brightspace at 5:00 PM Assignments listed Be- low Due by11:59 PM 2 12/2 Linked In Learning Excel Certification 75 Points Stukent Simternship 75 Points Final Exam Final Exam: 250 Points Wednesday, Chapters 10, 11, 13, 14a December 16th 8:00 AM -10:00 AM PST a. Knowledge of Cost Behavior (Chapter 6) & Contribution Margin (Chapter 7) are essen",
+        "Exam": [
           "Final Exam: 250 Points",
-          "Practice Final Questions Posted to Brightspace at",
-          "Catchup & Final Review 14-35, 14-41",
-          "Chapter 14 “Business Decision Making” questions on the Final",
+          "Chapters 10, 11, 13, 14a"
+        ],
+        "Review & Practice": [
+          "Class 2 | Date: 12/2 | Topic: Catchup & Final Review; Practice Final Questions Posted to Brightspace at; 5:00 PM | Homework (due 8:00 am): 14-35, 14-41; 10 Points; Assignments listed Be-; low Due by11:59 PM; Linked In Learning; Excel Certification; 75 Points; Stukent Simternship; 75 Points"
+        ],
+        "Exam Schedule": "Class Final Exam / Wednesday, / December 16th / 8:00 AM -10:00 AM PST",
+        "Calendar Footnotes": [
           "Unless specifically Identified, Chapter Appendices ARE NOT included as Required Reading",
           "Knowledge of Cost Behavior (Chapter 6) & Contribution Margin (Chapter 7) are essential to cor-"
         ]
       },
-      "extracted_text": "estions Posted to Brightspace at 5:00 PM Assignments listed Be- low Due by11:59 PM 2 12/2 Linked In Learning Excel Certification 75 Points Stukent Simternship 75 Points Final Exam Final Exam: 250 Points Wednesday, Chapters 10, 11, 13, 14a December 16th 8:00 AM -10:00 AM PST a. Knowledge of Cost Behavior (Chapter 6) & Contribution Margin (Chapter 7) are essen\n\n---\n\nKnowledge of Cost Behavior (Chapter 6) & Contribution Margin (Chapter 7) are essential to cor-\n\n---\n\nUnless specifically Identified, Chapter Appendices ARE NOT included as Required Reading\n\n---\n\nChapter 14 “Business Decision Making” questions on the Final\n\n---\n\nPractice Final Questions Posted to Brightspace at\n\n---\n\nCatchup & Final Review 14-35, 14-41"
+      "extracted_text": "Class 2 | Date: 12/2 | Topic: Catchup & Final Review; Practice Final Questions Posted to Brightspace at; 5:00 PM | Homework (due 8:00 am): 14-35, 14-41; 10 Points; Assignments listed Be-; low Due by11:59 PM; Linked In Learning; Excel Certification; 75 Points; Stukent Simternship; 75 Points\n\nKnowledge of Cost Behavior (Chapter 6) & Contribution Margin (Chapter 7) are essential to cor-\n\nUnless specifically Identified, Chapter Appendices ARE NOT included as Required Reading\n\nClass Final Exam / Wednesday, / December 16th / 8:00 AM -10:00 AM PST\n\nChapters 10, 11, 13, 14a\n\nFinal Exam: 250 Points"
     },
     {
       "name": "LinkedIn Learning Excel Certification",
       "weight": 75.0,
       "weight_unit": "points",
       "start_date": "",
-      "due_date": "2026-12-02",
+      "due_date": "2026-08-24",
       "is_group_project": false,
       "sections": {
-        "Overview (Course Calendar)": "ation: Pro- Chapter 4- ONLY 5-27 5-46 8 9/21 cess Costing LO 4.1, 3, 4, & 5 10 Points Cost of Quality & ESG & Chapter 8 - ONLY 4-21, 4-22 Overview of LO 8.7, 8, 9 10 Points 9 9/23 • Linked In Learning Excel - 75 Points • Stukent Simternship - 75 Points Practice Midterm Questions will be Posted by 5:00 PM Catchup & Midterm Review 8-28, 8-29 10 9/28 10 Points",
-        "Calendar Entries": [
-          "ation: Pro- Chapter 4- ONLY 5-27 5-46 8 9/21 cess Costing LO 4.1, 3, 4, & 5 10 Points Cost of Quality & ESG & Chapter 8 - ONLY 4-21, 4-22 Overview of LO 8.7, 8, 9 10 Points 9 9/23 • Linked In Learning Excel - 75 Points • Stukent Simternship - 75 Points Practice Midterm Questions will be Posted by 5:00 PM Catchup & Midterm Review 8-28, 8-29 10 9/28 10 Points",
-          "enefits Catchup & Final Review 14-35, 14-41 10 Points Practice Final Questions Posted to Brightspace at 5:00 PM Assignments listed Be- low Due by11:59 PM 2 12/2 Linked In Learning Excel Certification 75 Points Stukent Simternship 75 Points Final Exam Final Exam: 250 Points Wednesday, Chapters 10, 11, 13, 14a December 16th 8:00 AM -10:00 AM PST a. Knowledge o",
-          "ion: Pro- Chapter 4- ONLY 5-27 5-46 8 9/21 cess Costing LO 4.1, 3, 4, & 5 10 Points Cost of Quality & ESG & Chapter 8 - ONLY 4-21, 4-22 Overview of LO 8.7, 8, 9 10 Points 9 9/23 • Linked In Learning Excel - 75 Points • Stukent Simternship - 75 Points Practice Midterm Questions will be Posted by 5:00 PM Catchup & Midterm Review 8-28, 8-29 10 9/28 10 Points 9/",
-          "f 3) 24 11/30 and benefits Catchup & Final Review 14-35, 14-41 10 Points Practice Final Questions Posted to Brightspace at 5:00 PM Assignments listed Be- low Due by11:59 PM 2 12/2 Linked In Learning Excel Certification 75 Points Stukent Simternship 75 Points Final Exam Final Exam: 250 Points Wednesday, Chapters 10, 11, 13, 14a December 16th 8:00 AM -10:00 AM",
-          "s Catchup & Final Review 14-35, 14-41 10 Points Practice Final Questions Posted to Brightspace at 5:00 PM Assignments listed Be- low Due by11:59 PM 2 12/2 Linked In Learning Excel Certification 75 Points Stukent Simternship 75 Points Final Exam Final Exam: 250 Points Wednesday, Chapters 10, 11, 13, 14a December 16th 8:00 AM -10:00 AM PST a. Knowledge of Cost",
-          "Chapter 4- ONLY 5-27 5-46 8 9/21 cess Costing LO 4.1, 3, 4, & 5 10 Points Cost of Quality & ESG & Chapter 8 - ONLY 4-21, 4-22 Overview of LO 8.7, 8, 9 10 Points 9 9/23 • Linked In Learning Excel - 75 Points • Stukent Simternship - 75 Points Practice Midterm Questions will be Posted by 5:00 PM Catchup & Midterm Review 8-28, 8-29 10 9/28 10 Points 9/30 Midterm",
-          "/30 and benefits Catchup & Final Review 14-35, 14-41 10 Points Practice Final Questions Posted to Brightspace at 5:00 PM Assignments listed Be- low Due by11:59 PM 2 12/2 Linked In Learning Excel Certification 75 Points Stukent Simternship 75 Points Final Exam Final Exam: 250 Points Wednesday, Chapters 10, 11, 13, 14a December 16th 8:00 AM -10:00 AM PST a. Kn",
-          "- ONLY 5-27 5-46 8 9/21 cess Costing LO 4.1, 3, 4, & 5 10 Points Cost of Quality & ESG & Chapter 8 - ONLY 4-21, 4-22 Overview of LO 8.7, 8, 9 10 Points 9 9/23 • Linked In Learning Excel - 75 Points • Stukent Simternship - 75 Points Practice Midterm Questions will be Posted by 5:00 PM Catchup & Midterm Review 8-28, 8-29 10 9/28 10 Points 9/30 Midterm 1: 250 P",
-          "Unless specifically Identified, Chapter Appendices ARE NOT included as Required Reading",
-          "Knowledge of Cost Behavior (Chapter 6) & Contribution Margin (Chapter 7) are essential to cor-"
-        ]
+        "Assignment Details": [
+          "Class 9 | Date: 9/23 | Topic: Cost of Quality & ESG &; Overview of; • Linked In Learning Excel - 75 Points; • Stukent Simternship - 75 Points; Practice Midterm Questions will be Posted by 5:00 PM | Required Reading: Chapter 8 - ONLY; LO 8.7, 8, 9 | Homework (due 8:00 am): 4-21, 4-22; 10 Points",
+          "Class 2 | Date: 12/2 | Topic: Catchup & Final Review; Practice Final Questions Posted to Brightspace at; 5:00 PM | Homework (due 8:00 am): 14-35, 14-41; 10 Points; Assignments listed Be-; low Due by11:59 PM; Linked In Learning; Excel Certification; 75 Points; Stukent Simternship; 75 Points"
+        ],
+        "Due Date & Submission": "Due: 12/2 by 11:59 PM (from calendar footer)"
       },
-      "extracted_text": "enefits Catchup & Final Review 14-35, 14-41 10 Points Practice Final Questions Posted to Brightspace at 5:00 PM Assignments listed Be- low Due by11:59 PM 2 12/2 Linked In Learning Excel Certification 75 Points Stukent Simternship 75 Points Final Exam Final Exam: 250 Points Wednesday, Chapters 10, 11, 13, 14a December 16th 8:00 AM -10:00 AM PST a. Knowledge o\n\n---\n\nion: Pro- Chapter 4- ONLY 5-27 5-46 8 9/21 cess Costing LO 4.1, 3, 4, & 5 10 Points Cost of Quality & ESG & Chapter 8 - ONLY 4-21, 4-22 Overview of LO 8.7, 8, 9 10 Points 9 9/23 • Linked In Learning Excel - 75 Points • Stukent Simternship - 75 Points Practice Midterm Questions will be Posted by 5:00 PM Catchup & Midterm Review 8-28, 8-29 10 9/28 10 Points 9/\n\n---\n\nf 3) 24 11/30 and benefits Catchup & Final Review 14-35, 14-41 10 Points Practice Final Questions Posted to Brightspace at 5:00 PM Assignments listed Be- low Due by11:59 PM 2 12/2 Linked In Learning Excel Certification 75 Points Stukent Simternship 75 Points Final Exam Final Exam: 250 Points Wednesday, Chapters 10, 11, 13, 14a December 16th 8:00 AM -10:00 AM\n\n---\n\ns Catchup & Final Review 14-35, 14-41 10 Points Practice Final Questions Posted to Brightspace at 5:00 PM Assignments listed Be- low Due by11:59 PM 2 12/2 Linked In Learning Excel Certification 75 Points Stukent Simternship 75 Points Final Exam Final Exam: 250 Points Wednesday, Chapters 10, 11, 13, 14a December 16th 8:00 AM -10:00 AM PST a. Knowledge of Cost\n\n---\n\nChapter 4- ONLY 5-27 5-46 8 9/21 cess Costing LO 4.1, 3, 4, & 5 10 Points Cost of Quality & ESG & Chapter 8 - ONLY 4-21, 4-22 Overview of LO 8.7, 8, 9 10 Points 9 9/23 • Linked In Learning Excel - 75 Points • Stukent Simternship - 75 Points Practice Midterm Questions will be Posted by 5:00 PM Catchup & Midterm Review 8-28, 8-29 10 9/28 10 Points 9/30 Midterm\n\n---\n\n/30 and benefits Catchup & Final Review 14-35, 14-41 10 Points Practice Final Questions Posted to Brightspace at 5:00 PM Assignments listed Be- low Due by11:59 PM 2 12/2 Linked In Learning Excel Certification 75 Points Stukent Simternship 75 Points Final Exam Final Exam: 250 Points Wednesday, Chapters 10, 11, 13, 14a December 16th 8:00 AM -10:00 AM PST a. Kn\n\n---\n\n- ONLY 5-27 5-46 8 9/21 cess Costing LO 4.1, 3, 4, & 5 10 Points Cost of Quality & ESG & Chapter 8 - ONLY 4-21, 4-22 Overview of LO 8.7, 8, 9 10 Points 9 9/23 • Linked In Learning Excel - 75 Points • Stukent Simternship - 75 Points Practice Midterm Questions will be Posted by 5:00 PM Catchup & Midterm Review 8-28, 8-29 10 9/28 10 Points 9/30 Midterm 1: 250 P\n\n---\n\nation: Pro- Chapter 4- ONLY 5-27 5-46 8 9/21 cess Costing LO 4.1, 3, 4, & 5 10 Points Cost of Quality & ESG & Chapter 8 - ONLY 4-21, 4-22 Overview of LO 8.7, 8, 9 10 Points 9 9/23 • Linked In Learning Excel - 75 Points • Stukent Simternship - 75 Points Practice Midterm Questions will be Posted by 5:00 PM Catchup & Midterm Review 8-28, 8-29 10 9/28 10 Points\n\n---\n\nKnowledge of Cost Behavior (Chapter 6) & Contribution Margin (Chapter 7) are essential to cor-\n\n---\n\nUnless specifically Identified, Chapter Appendices ARE NOT included as Required Reading"
+      "extracted_text": "Class 9 | Date: 9/23 | Topic: Cost of Quality & ESG &; Overview of; • Linked In Learning Excel - 75 Points; • Stukent Simternship - 75 Points; Practice Midterm Questions will be Posted by 5:00 PM | Required Reading: Chapter 8 - ONLY; LO 8.7, 8, 9 | Homework (due 8:00 am): 4-21, 4-22; 10 Points\n\nClass 2 | Date: 12/2 | Topic: Catchup & Final Review; Practice Final Questions Posted to Brightspace at; 5:00 PM | Homework (due 8:00 am): 14-35, 14-41; 10 Points; Assignments listed Be-; low Due by11:59 PM; Linked In Learning; Excel Certification; 75 Points; Stukent Simternship; 75 Points\n\nDue: 12/2 by 11:59 PM (from calendar footer)"
     },
     {
       "name": "Stukent Simternship",
       "weight": 75.0,
       "weight_unit": "points",
       "start_date": "",
-      "due_date": "2026-12-02",
+      "due_date": "2026-08-24",
       "is_group_project": false,
       "sections": {
-        "Overview (Course Calendar)": "9/21 cess Costing LO 4.1, 3, 4, & 5 10 Points Cost of Quality & ESG & Chapter 8 - ONLY 4-21, 4-22 Overview of LO 8.7, 8, 9 10 Points 9 9/23 • Linked In Learning Excel - 75 Points • Stukent Simternship - 75 Points Practice Midterm Questions will be Posted by 5:00 PM Catchup & Midterm Review 8-28, 8-29 10 9/28 10 Points 9/30 Midterm 1: 250 Points Chapters 1,",
-        "Calendar Entries": [
-          "9/21 cess Costing LO 4.1, 3, 4, & 5 10 Points Cost of Quality & ESG & Chapter 8 - ONLY 4-21, 4-22 Overview of LO 8.7, 8, 9 10 Points 9 9/23 • Linked In Learning Excel - 75 Points • Stukent Simternship - 75 Points Practice Midterm Questions will be Posted by 5:00 PM Catchup & Midterm Review 8-28, 8-29 10 9/28 10 Points 9/30 Midterm 1: 250 Points Chapters 1,",
-          "/21 cess Costing LO 4.1, 3, 4, & 5 10 Points Cost of Quality & ESG & Chapter 8 - ONLY 4-21, 4-22 Overview of LO 8.7, 8, 9 10 Points 9 9/23 • Linked In Learning Excel - 75 Points • Stukent Simternship - 75 Points Practice Midterm Questions will be Posted by 5:00 PM Catchup & Midterm Review 8-28, 8-29 10 9/28 10 Points 9/30 Midterm 1: 250 Points Chapters 1, 2,",
-          "14-35, 14-41 10 Points Practice Final Questions Posted to Brightspace at 5:00 PM Assignments listed Be- low Due by11:59 PM 2 12/2 Linked In Learning Excel Certification 75 Points Stukent Simternship 75 Points Final Exam Final Exam: 250 Points Wednesday, Chapters 10, 11, 13, 14a December 16th 8:00 AM -10:00 AM PST a. Knowledge of Cost Behavior (Chapter 6) &",
-          "Costing LO 4.1, 3, 4, & 5 10 Points Cost of Quality & ESG & Chapter 8 - ONLY 4-21, 4-22 Overview of LO 8.7, 8, 9 10 Points 9 9/23 • Linked In Learning Excel - 75 Points • Stukent Simternship - 75 Points Practice Midterm Questions will be Posted by 5:00 PM Catchup & Midterm Review 8-28, 8-29 10 9/28 10 Points 9/30 Midterm 1: 250 Points Chapters 1, 2, 3, 4, 5",
-          "14-41 10 Points Practice Final Questions Posted to Brightspace at 5:00 PM Assignments listed Be- low Due by11:59 PM 2 12/2 Linked In Learning Excel Certification 75 Points Stukent Simternship 75 Points Final Exam Final Exam: 250 Points Wednesday, Chapters 10, 11, 13, 14a December 16th 8:00 AM -10:00 AM PST a. Knowledge of Cost Behavior (Chapter 6) & Contribu",
-          "Unless specifically Identified, Chapter Appendices ARE NOT included as Required Reading",
-          "Knowledge of Cost Behavior (Chapter 6) & Contribution Margin (Chapter 7) are essential to cor-"
-        ]
+        "Assignment Details": [
+          "Class 9 | Date: 9/23 | Topic: Cost of Quality & ESG &; Overview of; • Linked In Learning Excel - 75 Points; • Stukent Simternship - 75 Points; Practice Midterm Questions will be Posted by 5:00 PM | Required Reading: Chapter 8 - ONLY; LO 8.7, 8, 9 | Homework (due 8:00 am): 4-21, 4-22; 10 Points",
+          "Class 2 | Date: 12/2 | Topic: Catchup & Final Review; Practice Final Questions Posted to Brightspace at; 5:00 PM | Homework (due 8:00 am): 14-35, 14-41; 10 Points; Assignments listed Be-; low Due by11:59 PM; Linked In Learning; Excel Certification; 75 Points; Stukent Simternship; 75 Points"
+        ],
+        "Due Date & Submission": "Due: 12/2 by 11:59 PM (from calendar footer)"
       },
-      "extracted_text": "/21 cess Costing LO 4.1, 3, 4, & 5 10 Points Cost of Quality & ESG & Chapter 8 - ONLY 4-21, 4-22 Overview of LO 8.7, 8, 9 10 Points 9 9/23 • Linked In Learning Excel - 75 Points • Stukent Simternship - 75 Points Practice Midterm Questions will be Posted by 5:00 PM Catchup & Midterm Review 8-28, 8-29 10 9/28 10 Points 9/30 Midterm 1: 250 Points Chapters 1, 2,\n\n---\n\n14-41 10 Points Practice Final Questions Posted to Brightspace at 5:00 PM Assignments listed Be- low Due by11:59 PM 2 12/2 Linked In Learning Excel Certification 75 Points Stukent Simternship 75 Points Final Exam Final Exam: 250 Points Wednesday, Chapters 10, 11, 13, 14a December 16th 8:00 AM -10:00 AM PST a. Knowledge of Cost Behavior (Chapter 6) & Contribu\n\n---\n\nCosting LO 4.1, 3, 4, & 5 10 Points Cost of Quality & ESG & Chapter 8 - ONLY 4-21, 4-22 Overview of LO 8.7, 8, 9 10 Points 9 9/23 • Linked In Learning Excel - 75 Points • Stukent Simternship - 75 Points Practice Midterm Questions will be Posted by 5:00 PM Catchup & Midterm Review 8-28, 8-29 10 9/28 10 Points 9/30 Midterm 1: 250 Points Chapters 1, 2, 3, 4, 5\n\n---\n\n9/21 cess Costing LO 4.1, 3, 4, & 5 10 Points Cost of Quality & ESG & Chapter 8 - ONLY 4-21, 4-22 Overview of LO 8.7, 8, 9 10 Points 9 9/23 • Linked In Learning Excel - 75 Points • Stukent Simternship - 75 Points Practice Midterm Questions will be Posted by 5:00 PM Catchup & Midterm Review 8-28, 8-29 10 9/28 10 Points 9/30 Midterm 1: 250 Points Chapters 1,\n\n---\n\n14-35, 14-41 10 Points Practice Final Questions Posted to Brightspace at 5:00 PM Assignments listed Be- low Due by11:59 PM 2 12/2 Linked In Learning Excel Certification 75 Points Stukent Simternship 75 Points Final Exam Final Exam: 250 Points Wednesday, Chapters 10, 11, 13, 14a December 16th 8:00 AM -10:00 AM PST a. Knowledge of Cost Behavior (Chapter 6) &\n\n---\n\nKnowledge of Cost Behavior (Chapter 6) & Contribution Margin (Chapter 7) are essential to cor-\n\n---\n\nUnless specifically Identified, Chapter Appendices ARE NOT included as Required Reading"
+      "extracted_text": "Class 9 | Date: 9/23 | Topic: Cost of Quality & ESG &; Overview of; • Linked In Learning Excel - 75 Points; • Stukent Simternship - 75 Points; Practice Midterm Questions will be Posted by 5:00 PM | Required Reading: Chapter 8 - ONLY; LO 8.7, 8, 9 | Homework (due 8:00 am): 4-21, 4-22; 10 Points\n\nClass 2 | Date: 12/2 | Topic: Catchup & Final Review; Practice Final Questions Posted to Brightspace at; 5:00 PM | Homework (due 8:00 am): 14-35, 14-41; 10 Points; Assignments listed Be-; low Due by11:59 PM; Linked In Learning; Excel Certification; 75 Points; Stukent Simternship; 75 Points\n\nDue: 12/2 by 11:59 PM (from calendar footer)"
     },
     {
       "name": "Homework",
-      "weight": 155.0,
+      "weight": 170.0,
       "weight_unit": "points",
       "start_date": "",
       "due_date": "",
       "is_group_project": false,
       "sections": {
-        "Overview (Course Calendar)": "9/9 5 Order Costing 15 Points Manufacturing Overhead Normal Chapter 3 6 9/14; 9/16 Activity Based Costing Chapter 5- ONLY 3-24, 3-28, 3-32 7 LO 5.1, 2, 4 & 5 15 Points Product Cost Accumulation: Pro- Chapter 4- ONLY 5-27 5-46 8 9/21; Product Cost Accumulation: Pro- Chapter 4- ONLY 5-27 5-46 8 9/21 cess Costing LO 4.1, 3, 4, & 5 10 Points Cost of Quality & ESG & Chapter 8 - ONLY 4-21, 4-22 Overview of LO 8.7, 8, 9 10 Points",
-        "Calendar Entries": [
-          "9/9 5 Order Costing 15 Points Manufacturing Overhead Normal Chapter 3 6 9/14; 9/16 Activity Based Costing Chapter 5- ONLY 3-24, 3-28, 3-32 7 LO 5.1, 2, 4 & 5 15 Points Product Cost Accumulation: Pro- Chapter 4- ONLY 5-27 5-46 8 9/21; Product Cost Accumulation: Pro- Chapter 4- ONLY 5-27 5-46 8 9/21 cess Costing LO 4.1, 3, 4, & 5 10 Points Cost of Quality & ESG & Chapter 8 - ONLY 4-21, 4-22 Overview of LO 8.7, 8, 9 10 Points",
-          "9/9 5 Order Costing 15 Points Manufacturing Overhead Normal Chapter 3 6 9/14",
-          "9/16 Activity Based Costing Chapter 5- ONLY 3-24, 3-28, 3-32 7 LO 5.1, 2, 4 & 5 15 Points Product Cost Accumulation: Pro- Chapter 4- ONLY 5-27 5-46 8 9/21",
-          "Product Cost Accumulation: Pro- Chapter 4- ONLY 5-27 5-46 8 9/21 cess Costing LO 4.1, 3, 4, & 5 10 Points Cost of Quality & ESG & Chapter 8 - ONLY 4-21, 4-22 Overview of LO 8.7, 8, 9 10 Points",
-          "cess Costing LO 4.1, 3, 4, & 5 10 Points Cost of Quality & ESG & Chapter 8 - ONLY 4-21, 4-22 Overview of LO 8.7, 8, 9 10 Points 9 9/23 • Linked In Learning Excel - 75 Points",
-          "Catchup & Midterm Review 8-28, 8-29 10 9/28 10 Points 9/30 Midterm 1: 250 Points Chapters 1, 2, 3, 4, 5, 8 11 10/5 Cost Estimation Chapter 6",
-          "Cost volume profit analysis Chapter 7 6-24, 6-25, 6-34 12 10/7 15 Points 13 Cost volume profit analysis & Chapter 7 10/12",
-          "14 10/14 Static Master Budget; 15 Points Capital Budgeting Chapter 16- ONLY 9-25, 9-28, 9-37 15 10/19 LO 16.1, 2, 3 15 - Points",
-          "Static Master Budget; 15 Points Capital Budgeting Chapter 16- ONLY 9-25, 9-28, 9-37 15 10/19 LO 16.1, 2, 3 15 - Points Practice Midterm Questions Posted to Brightspace by 5:00 PM",
-          "5:00 PM 16-28, 16-40 16 10/21 Catchup & Midterm Review 10 Points 10/26 Midterm 2: 250 Points Chapters 6, 7, 9, & 16 17 10/28 Guest Speaker",
-          "Variance Analysis LO 10.1 thru 8 Sales Variance Analysis Chapter 11 - ONLY 10-26, 10-30 19 11/4 Flexible Budgeting LO 11.1, 11.2 & 10 Points Appendix B Chapter 13- ONLY 11-31, 11-52",
-          "Chapter 13- ONLY 11-31, 11-52 20 11/9 Investment Centers LO 13-1, 2, 3, 4 10 Points 11/11 No Class Veterans Day AI & FP&A 13-29, 13-33",
-          "AI & FP&A 13-29, 13-33 21 11/16 10 Points 22 Decision-making: relevant costs Chapter 14 (Part 1 of 3)",
-          "24 11/30 and benefits Catchup & Final Review 14-35, 14-41 10 Points Practice Final Questions Posted to Brightspace at 5:00 PM",
+        "Homework Assignments (by class date)": [
+          "Class 5 | Date: 9/9 | Topic: Product Cost Accumulation: Job; Order Costing | Required Reading: Chapter 3 | Homework (due 8:00 am): 2-29, 2-30, 2-40; 15 Points",
+          "Class 7 | Date: 9/16 | Topic: Activity Based Costing | Required Reading: Chapter 5- ONLY; LO 5.1, 2, 4 & 5 | Homework (due 8:00 am): 3-24, 3-28, 3-32; 15 Points",
+          "Class 8 | Date: 9/21 | Topic: Product Cost Accumulation: Pro-; cess Costing | Required Reading: Chapter 4- ONLY; LO 4.1, 3, 4, & 5 | Homework (due 8:00 am): 5-27 5-46; 10 Points",
+          "Class 9 | Date: 9/23 | Topic: Cost of Quality & ESG &; Overview of; • Linked In Learning Excel - 75 Points; • Stukent Simternship - 75 Points; Practice Midterm Questions will be Posted by 5:00 PM | Required Reading: Chapter 8 - ONLY; LO 8.7, 8, 9 | Homework (due 8:00 am): 4-21, 4-22; 10 Points",
+          "Class 10 | Date: 9/28 | Topic: Catchup & Midterm Review | Homework (due 8:00 am): 8-28, 8-29; 10 Points",
+          "Class 12 | Date: 10/7 | Topic: Cost volume profit analysis | Required Reading: Chapter 7 | Homework (due 8:00 am): 6-24, 6-25, 6-34; 15 Points",
+          "Class 14 | Date: 10/14 | Topic: Financial planning and analysis:; Static Master Budget; | Required Reading: Chapter 9 | Homework (due 8:00 am): 7-29, 7-33, 7-40; 15 Points",
+          "Class 15 | Date: 10/19 | Topic: Capital Budgeting; Practice Midterm Questions Posted to Brightspace by; 5:00 PM | Required Reading: Chapter 16- ONLY; LO 16.1, 2, 3 | Homework (due 8:00 am): 9-25, 9-28, 9-37; 15 - Points",
+          "Class 16 | Date: 10/21 | Topic: Catchup & Midterm Review | Homework (due 8:00 am): 16-28, 16-40; 10 Points",
+          "Class 19 | Date: 11/4 | Topic: Sales Variance Analysis; Flexible Budgeting | Required Reading: Chapter 11 - ONLY; LO 11.1, 11.2 &; Appendix B | Homework (due 8:00 am): 10-26, 10-30; 10 Points",
+          "Class 20 | Date: 11/9 | Topic: Investment Centers | Required Reading: Chapter 13- ONLY; LO 13-1, 2, 3, 4 | Homework (due 8:00 am): 11-31, 11-52; 10 Points",
+          "Class 21 | Date: 11/16 | Topic: AI & FP&A | Homework (due 8:00 am): 13-29, 13-33; 10 Points"
+        ],
+        "Calendar Footnotes": [
           "Unless specifically Identified, Chapter Appendices ARE NOT included as Required Reading",
           "Knowledge of Cost Behavior (Chapter 6) & Contribution Margin (Chapter 7) are essential to cor-"
         ]
       },
-      "extracted_text": "9/9 5 Order Costing 15 Points Manufacturing Overhead Normal Chapter 3 6 9/14; 9/16 Activity Based Costing Chapter 5- ONLY 3-24, 3-28, 3-32 7 LO 5.1, 2, 4 & 5 15 Points Product Cost Accumulation: Pro- Chapter 4- ONLY 5-27 5-46 8 9/21; Product Cost Accumulation: Pro- Chapter 4- ONLY 5-27 5-46 8 9/21 cess Costing LO 4.1, 3, 4, & 5 10 Points Cost of Quality & ESG & Chapter 8 - ONLY 4-21, 4-22 Overview of LO 8.7, 8, 9 10 Points\n\n---\n\nVariance Analysis LO 10.1 thru 8 Sales Variance Analysis Chapter 11 - ONLY 10-26, 10-30 19 11/4 Flexible Budgeting LO 11.1, 11.2 & 10 Points Appendix B Chapter 13- ONLY 11-31, 11-52\n\n---\n\nStatic Master Budget; 15 Points Capital Budgeting Chapter 16- ONLY 9-25, 9-28, 9-37 15 10/19 LO 16.1, 2, 3 15 - Points Practice Midterm Questions Posted to Brightspace by 5:00 PM\n\n---\n\ncess Costing LO 4.1, 3, 4, & 5 10 Points Cost of Quality & ESG & Chapter 8 - ONLY 4-21, 4-22 Overview of LO 8.7, 8, 9 10 Points 9 9/23 • Linked In Learning Excel - 75 Points\n\n---\n\nCatchup & Midterm Review 8-28, 8-29 10 9/28 10 Points 9/30 Midterm 1: 250 Points Chapters 1, 2, 3, 4, 5, 8 11 10/5 Cost Estimation Chapter 6\n\n---\n\n5:00 PM 16-28, 16-40 16 10/21 Catchup & Midterm Review 10 Points 10/26 Midterm 2: 250 Points Chapters 6, 7, 9, & 16 17 10/28 Guest Speaker\n\n---\n\nChapter 13- ONLY 11-31, 11-52 20 11/9 Investment Centers LO 13-1, 2, 3, 4 10 Points 11/11 No Class Veterans Day AI & FP&A 13-29, 13-33\n\n---\n\n14 10/14 Static Master Budget; 15 Points Capital Budgeting Chapter 16- ONLY 9-25, 9-28, 9-37 15 10/19 LO 16.1, 2, 3 15 - Points\n\n---\n\n24 11/30 and benefits Catchup & Final Review 14-35, 14-41 10 Points Practice Final Questions Posted to Brightspace at 5:00 PM\n\n---\n\nCost volume profit analysis Chapter 7 6-24, 6-25, 6-34 12 10/7 15 Points 13 Cost volume profit analysis & Chapter 7 10/12\n\n---\n\nAI & FP&A 13-29, 13-33 21 11/16 10 Points 22 Decision-making: relevant costs Chapter 14 (Part 1 of 3)\n\n---\n\nKnowledge of Cost Behavior (Chapter 6) & Contribution Margin (Chapter 7) are essential to cor-\n\n---\n\nUnless specifically Identified, Chapter Appendices ARE NOT included as Required Reading"
+      "extracted_text": "Class 9 | Date: 9/23 | Topic: Cost of Quality & ESG &; Overview of; • Linked In Learning Excel - 75 Points; • Stukent Simternship - 75 Points; Practice Midterm Questions will be Posted by 5:00 PM | Required Reading: Chapter 8 - ONLY; LO 8.7, 8, 9 | Homework (due 8:00 am): 4-21, 4-22; 10 Points\n\nClass 15 | Date: 10/19 | Topic: Capital Budgeting; Practice Midterm Questions Posted to Brightspace by; 5:00 PM | Required Reading: Chapter 16- ONLY; LO 16.1, 2, 3 | Homework (due 8:00 am): 9-25, 9-28, 9-37; 15 - Points\n\nClass 19 | Date: 11/4 | Topic: Sales Variance Analysis; Flexible Budgeting | Required Reading: Chapter 11 - ONLY; LO 11.1, 11.2 &; Appendix B | Homework (due 8:00 am): 10-26, 10-30; 10 Points\n\nClass 8 | Date: 9/21 | Topic: Product Cost Accumulation: Pro-; cess Costing | Required Reading: Chapter 4- ONLY; LO 4.1, 3, 4, & 5 | Homework (due 8:00 am): 5-27 5-46; 10 Points\n\nClass 14 | Date: 10/14 | Topic: Financial planning and analysis:; Static Master Budget; | Required Reading: Chapter 9 | Homework (due 8:00 am): 7-29, 7-33, 7-40; 15 Points\n\nClass 7 | Date: 9/16 | Topic: Activity Based Costing | Required Reading: Chapter 5- ONLY; LO 5.1, 2, 4 & 5 | Homework (due 8:00 am): 3-24, 3-28, 3-32; 15 Points\n\nClass 5 | Date: 9/9 | Topic: Product Cost Accumulation: Job; Order Costing | Required Reading: Chapter 3 | Homework (due 8:00 am): 2-29, 2-30, 2-40; 15 Points\n\nClass 20 | Date: 11/9 | Topic: Investment Centers | Required Reading: Chapter 13- ONLY; LO 13-1, 2, 3, 4 | Homework (due 8:00 am): 11-31, 11-52; 10 Points\n\nClass 12 | Date: 10/7 | Topic: Cost volume profit analysis | Required Reading: Chapter 7 | Homework (due 8:00 am): 6-24, 6-25, 6-34; 15 Points\n\nClass 16 | Date: 10/21 | Topic: Catchup & Midterm Review | Homework (due 8:00 am): 16-28, 16-40; 10 Points\n\nClass 10 | Date: 9/28 | Topic: Catchup & Midterm Review | Homework (due 8:00 am): 8-28, 8-29; 10 Points\n\nKnowledge of Cost Behavior (Chapter 6) & Contribution Margin (Chapter 7) are essential to cor-\n\nClass 21 | Date: 11/16 | Topic: AI & FP&A | Homework (due 8:00 am): 13-29, 13-33; 10 Points\n\nUnless specifically Identified, Chapter Appendices ARE NOT included as Required Reading"
     }
   ]
 }

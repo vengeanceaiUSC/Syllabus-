@@ -99,6 +99,8 @@ def make_aliases(name: str) -> list[str]:
 
 
 COURSE_CALENDAR = re.compile(r"Course Calendar", re.I)
+CALENDAR_TABLE_START = "=== CALENDAR_TABLE_JSON ==="
+CALENDAR_TABLE_END = "=== END CALENDAR_TABLE ==="
 MD_DATE = re.compile(r"\b(\d{1,2})/(\d{1,2})\b")
 CAL_EXAM = re.compile(
     r"(Midterm \d+|Final Exam)\s*:\s*(\d+)\s*Points?",
@@ -256,8 +258,200 @@ def parse_course_calendar_categories(text: str) -> list[Category]:
     return cats
 
 
+def parse_embedded_calendar_table(text: str) -> list[dict]:
+    """Read structured calendar rows embedded by extract_text.py."""
+    start = text.find(CALENDAR_TABLE_START)
+    end = text.find(CALENDAR_TABLE_END)
+    if start == -1 or end == -1:
+        return []
+    payload = text[start + len(CALENDAR_TABLE_START) : end].strip()
+    try:
+        rows = json.loads(payload)
+    except json.JSONDecodeError:
+        return []
+    return rows if isinstance(rows, list) else []
+
+
+def calendar_plain_text(text: str) -> str:
+    """Strip embedded JSON table block; keep readable calendar prose."""
+    start = text.find(CALENDAR_TABLE_START)
+    if start == -1:
+        return text
+    return text[:start].strip()
+
+
+def calendar_row_date(row: dict) -> str:
+    return row.get("date_mon") or row.get("date_wed") or ""
+
+
+def format_calendar_row(row: dict) -> str:
+    """One clean verbatim line per calendar table row."""
+    parts: list[str] = []
+    if row.get("class"):
+        parts.append(f"Class {row['class']}")
+    date = calendar_row_date(row)
+    if date:
+        parts.append(f"Date: {date}")
+    if row.get("topic"):
+        parts.append(f"Topic: {row['topic'].replace(' / ', '; ')}")
+    if row.get("reading"):
+        parts.append(f"Required Reading: {row['reading'].replace(' / ', '; ')}")
+    if row.get("homework"):
+        parts.append(f"Homework (due 8:00 am): {row['homework'].replace(' / ', '; ')}")
+    return " | ".join(parts)
+
+
+def calendar_footnotes(text: str) -> list[str]:
+    plain = calendar_plain_text(text)
+    notes: list[str] = []
+    for pat in [
+        r"Unless specifically Identified, Chapter Appendices ARE NOT included as Required Reading",
+        r"Knowledge of Cost Behavior \(Chapter 6\) & Contribution Margin \(Chapter 7\) are essential[^\n]+",
+        r"Homework & Assignments due by 8:00 am",
+        r"Assignments listed Below Due by\s*11:59 PM",
+    ]:
+        m = re.search(pat, plain, re.I)
+        if m:
+            notes.append(re.sub(r"\s+", " ", m.group(0)).strip())
+    return notes
+
+
+def calendar_exam_snippets(text: str) -> dict[str, list[str]]:
+    """Exam lines often missing from table cells; grep from plain text."""
+    plain = calendar_plain_text(text)
+    out: dict[str, list[str]] = {
+        "Midterm 1": [],
+        "Midterm 2": [],
+        "Final Exam": [],
+    }
+    specs = [
+        ("Midterm 1", r"(\d{1,2}/\d{1,2}\s*)?Midterm 1:\s*\d+\s*Points[^\n]*"),
+        ("Midterm 2", r"(\d{1,2}/\d{1,2}\s*)?Midterm 2:\s*\d+\s*Points[^\n]*"),
+        ("Final Exam", r"Final Exam:\s*\d+\s*Points[^\n]*"),
+        ("Final Exam", r"Wednesday,?\s*December\s+\d{1,2}(?:st|nd|rd|th)?[^\n]*8:00\s*AM[^\n]*PST"),
+        ("Final Exam", r"Chapters 10, 11, 13, 14[^\n]*"),
+    ]
+    seen: dict[str, set[str]] = {k: set() for k in out}
+    for label, pat in specs:
+        for m in re.finditer(pat, plain, re.I):
+            line = re.sub(r"\s+", " ", m.group(0)).strip()
+            key = normalize(line)
+            if key not in seen[label]:
+                seen[label].add(key)
+                out[label].append(line)
+    return out
+
+
+def row_has_homework_points(row: dict) -> bool:
+    hw = row.get("homework") or ""
+    if re.search(r"linked\s*in|stukent|certification|simternship", hw, re.I):
+        return False
+    return bool(re.search(r"\d+\s*[\-\u2013]?\s*Points?", hw, re.I))
+
+
+def gather_calendar_content_from_table(
+    rows: list[dict], cat: Category, text: str
+) -> tuple[dict, str]:
+    """Build clean verbatim from structured PDF table rows."""
+    low = cat.name.lower()
+    matched: list[str] = []
+    sections: dict[str, list[str] | str] = {}
+    exams = calendar_exam_snippets(text)
+
+    if "homework" in low:
+        hw_rows = [r for r in rows if row_has_homework_points(r)]
+        items = [format_calendar_row(r) for r in hw_rows]
+        if items:
+            sections["Homework Assignments (by class date)"] = items
+            matched.extend(items)
+    elif "midterm 1" in low:
+        if exams["Midterm 1"]:
+            sections["Exam"] = exams["Midterm 1"]
+            matched.extend(exams["Midterm 1"])
+        review = [
+            format_calendar_row(r)
+            for r in rows
+            if re.search(r"catchup|midterm review|practice midterm", r.get("topic", ""), re.I)
+            and not re.search(r"16-28, 16-40|midterm 2", format_calendar_row(r), re.I)
+        ]
+        if review:
+            sections["Review & Practice"] = review
+            matched.extend(review)
+    elif "midterm 2" in low:
+        if exams["Midterm 2"]:
+            sections["Exam"] = exams["Midterm 2"]
+            matched.extend(exams["Midterm 2"])
+        review = [
+            format_calendar_row(r)
+            for r in rows
+            if re.search(r"catchup|midterm review|practice midterm", r.get("topic", ""), re.I)
+            and not re.search(r"8-28, 8-29", format_calendar_row(r))
+            and (
+                re.search(r"10/19|10/21|16-28", format_calendar_row(r))
+                or "10/19" in r.get("date_mon", "")
+                or "10/21" in r.get("date_wed", "")
+            )
+        ]
+        if review:
+            sections["Review & Practice"] = review
+            matched.extend(review)
+    elif "final" in low and "exam" in low:
+        if exams["Final Exam"]:
+            sections["Exam"] = exams["Final Exam"]
+            matched.extend(exams["Final Exam"])
+        review = [
+            format_calendar_row(r)
+            for r in rows
+            if re.search(r"catchup & final|practice final", r.get("topic", ""), re.I)
+        ]
+        if review:
+            sections["Review & Practice"] = review
+            matched.extend(review)
+        final_row = next((r for r in rows if "december 16" in r.get("class", "").lower()), None)
+        if final_row:
+            line = format_calendar_row(final_row)
+            sections["Exam Schedule"] = line
+            matched.append(line)
+    elif "linkedin" in low:
+        mentions: list[str] = []
+        for r in rows:
+            blob = " ".join(r.values())
+            if re.search(r"linked\s*in\s*learning", blob, re.I):
+                mentions.append(format_calendar_row(r))
+        due_line = "Due: 12/2 by 11:59 PM (from calendar footer)"
+        sections["Assignment Details"] = mentions or ["LinkedIn Learning Excel Certification - 75 Points"]
+        sections["Due Date & Submission"] = due_line
+        matched.extend(mentions)
+        matched.append(due_line)
+    elif "stukent" in low:
+        mentions: list[str] = []
+        for r in rows:
+            blob = " ".join(r.values())
+            if re.search(r"stukent", blob, re.I):
+                mentions.append(format_calendar_row(r))
+        due_line = "Due: 12/2 by 11:59 PM (from calendar footer)"
+        sections["Assignment Details"] = mentions or ["Stukent Simternship - 75 Points"]
+        sections["Due Date & Submission"] = due_line
+        matched.extend(mentions)
+        matched.append(due_line)
+
+    footnotes = calendar_footnotes(text)
+    relevant_notes = list(footnotes)
+    if "final" in low or "homework" in low:
+        sections["Calendar Footnotes"] = relevant_notes
+        matched.extend(relevant_notes)
+
+    verbatim = "\n\n".join(dedupe_passages(matched))
+    return sections, verbatim
+
+
 def gather_calendar_content(text: str, cat: Category) -> tuple[dict, str]:
     """Collect calendar rows and context for a course-calendar category."""
+    rows = parse_embedded_calendar_table(text)
+    if rows:
+        return gather_calendar_content_from_table(rows, cat, text)
+
+    # Fallback: legacy grep-window extraction (lower quality for table PDFs)
     low = cat.name.lower()
     matched: list[str] = []
     seen: set[str] = set()

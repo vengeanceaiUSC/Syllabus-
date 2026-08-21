@@ -12,9 +12,9 @@ the syllabus mentions about that item — extracted automatically.
 ## What this produces
 
 1. **Sorting & weighting** — categories sorted highest-weight first
-2. **Grading scale** — full scale + exact **A** threshold
+2. **Grading scale** — full scale + exact **A** threshold (or points total for calendars)
 3. **Assignment details** — start date, due date, group-project flag
-4. **PDF documents** — one per category; full syllabus grep + dedicated blocks
+4. **PDF documents** — one per category; structured sections + verbatim extract
 5. **Excel hyperlinks** — **Open PDF** opens hosted PDF in browser
 
 ## Workflow (automatic — do NOT hand-write JSON)
@@ -40,41 +40,76 @@ python scripts/dissect_syllabus.py "<path-to-syllabus>" \
 
 This runs, in order:
 
-1. **`extract_text.py`** — PDF/Word/HTML → plain text
-2. **`auto_dissect.py`** — automatic full-document grep per category → JSON
+1. **`extract_text.py`** — PDF/Word/HTML → plain text (+ PDF table JSON for calendars)
+2. **`auto_dissect.py`** — automatic extraction per category → JSON
 3. **`build_workbook.py`** — JSON → Excel sheet + PDF documents
 
-### What auto_dissect.py does (no manual JSON)
+## Two document types
 
-For each graded category detected in the Assignments section:
+### A. Full syllabus (e.g. HIST-103)
 
-1. **Detect** name + weight (e.g. `Sleep Paper -20%`)
-2. **Parse** grading scale → exact A threshold
-3. **Grep** every paragraph in the full syllabus that mentions the category
-   (name, aliases like `midterm`, `paper 1`, `experiencing the past`)
-4. **Capture** dedicated blocks (study guides, full prompt pages, due-date sections)
-5. **Structure** matches into sections (Prompts, Helpful Hints, Format Requirements…)
-6. **Archive** all matching text verbatim in `extracted_text`
-7. **Infer** due dates and group-project flags from matched text
+Uses the **Assignments section** + full-document grep:
 
-Review the script output — each category prints section count and verbatim size:
+1. Detect name + weight (e.g. `Sleep Paper -20%`)
+2. Parse grading scale → exact A threshold
+3. Grep every paragraph mentioning the category (aliases: `paper 1`, `midterm`, etc.)
+4. Capture dedicated blocks (study guides, prompt pages, due-date sections)
+5. Structure into sections (Prompts, Helpful Hints, Format Requirements…)
+6. Archive all matching text verbatim in `extracted_text`
+
+**Expected quality:** ~7–9/10 detail. Verbatim blocks are full syllabus paragraphs.
+
+### B. Course Calendar (e.g. BUAD-281)
+
+Point-based schedule tables — **no Assignments section**.
+
+1. **`extract_text.py`** parses PDF **tables** via pdfplumber and embeds
+   `=== CALENDAR_TABLE_JSON ===` rows (class, date, topic, reading, homework)
+2. **`auto_dissect.py`** detects `Course Calendar` and parses categories from
+   point lines (`Midterm 1: 250 Points`, homework rows, certifications)
+3. **Structured verbatim** — one clean line per calendar row:
+   `Class 5 | Date: 9/9 | Topic: … | Required Reading: … | Homework: …`
+4. Exam/review lines merged from table rows + plain-text grep (exams often sit
+   outside table cells)
+5. Grading scale → points total; A threshold = N/A if not in document
+
+**Expected quality:** ~7/10 after table extraction (was ~4/10 with grep-only).
+
+See [reference.md](reference.md) for past errors and quality checks.
+
+## Quality review (Step 2)
+
+Review script output per category:
 
 ```
-Sleep Paper: 4 sections, 9312 chars verbatim
-Extra Credit: 3 sections, 1200 chars verbatim
+Sleep Paper: 6 sections, 5783 chars verbatim       # full syllabus — good
+Homework: 2 sections, 2173 chars verbatim          # calendar — good if rows are clean
+LinkedIn Learning: 2 sections, 632 chars verbatim  # calendar cert — short is OK if source is short
 ```
 
-If a category shows **0 sections** or very low char count, inspect the source
-syllabus formatting; you may pass a corrected `--class-code` or re-run after
-fixing the Assignments section labels.
+**Red flags (calendar PDFs):**
+
+| Symptom | Likely cause | Fix |
+|---------|--------------|-----|
+| Verbatim starts mid-word (`ked In Learning`) | Grep-window fallback, no table JSON | Re-run; check `extract_text` embeds `CALENDAR_TABLE_JSON` |
+| Unrelated categories in one PDF (Stukent in Midterm) | 200-char context windows | Table path should be active; verify embedded JSON |
+| Huge verbatim (3000+ chars) for 75-pt cert | Alias grep pulling whole calendar | Table path + category-specific row filter |
+| 0 sections / <200 chars | Missing Assignments block or empty table | Inspect source formatting |
+
+**Red flags (full syllabi):**
+
+| Symptom | Fix |
+|---------|-----|
+| 0 sections | TOC duplicate Assignments block — check `find_assignments_block()` |
+| Extra Credit pulls wrong block | Dedicated block pattern needs tuning |
+
+Do **not** manually author `sections` or `extracted_text` unless auto-extract
+failed and you are patching a known gap.
 
 ### Manual steps the agent still provides
 
 - `--class-code`, `--class-name`, `--instructor`, `--term` (from syllabus header)
 - `--link-base` URL for hosted PDF links (required for standalone xlsx download)
-
-Do **not** manually author category `sections` or `extracted_text` — the script
-does the full-document grep.
 
 ### Publish
 
@@ -95,10 +130,10 @@ pip install -r requirements.txt
 
 | Script | Purpose |
 |--------|---------|
-| `extract_text.py` | Syllabus file → plain text |
-| `auto_dissect.py` | Plain text → JSON (automatic grep) |
+| `extract_text.py` | Syllabus file → plain text + calendar table JSON |
+| `auto_dissect.py` | Plain text → JSON (syllabus grep or calendar tables) |
 | `build_workbook.py` | JSON → Excel + PDFs |
 | `dissect_syllabus.py` | All three in one command |
 | `generate_pdfs.py` | PDF rendering (called by build_workbook) |
 
-See [reference.md](reference.md) for JSON schema and [examples/hist103.json](examples/hist103.json) for sample output shape.
+See [reference.md](reference.md) for JSON schema and calendar lessons learned.

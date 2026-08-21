@@ -12,8 +12,49 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import json
+import re
 import sys
 from pathlib import Path
+
+CALENDAR_TABLE_START = "=== CALENDAR_TABLE_JSON ==="
+CALENDAR_TABLE_END = "=== END CALENDAR_TABLE ==="
+
+
+def _clean_cell(value: str | None) -> str:
+    if not value:
+        return ""
+    return re.sub(r"\s+", " ", value.replace("\n", " / ").strip())
+
+
+def _parse_calendar_tables(pdf) -> list[dict]:
+    """Extract structured rows from PDF table layouts (Course Calendar format)."""
+    rows: list[dict] = []
+    seen: set[tuple[str, ...]] = set()
+
+    for page in pdf.pages:
+        for table in page.extract_tables() or []:
+            if len(table) < 2:
+                continue
+            header = " ".join(_clean_cell(c) for c in table[0]).lower()
+            if "homework" not in header and "topic" not in header:
+                continue
+            for raw in table[1:]:
+                cells = list(raw) + [None] * max(0, 7 - len(raw))
+                row = {
+                    "class": _clean_cell(cells[0]),
+                    "date_mon": _clean_cell(cells[1]),
+                    "date_wed": _clean_cell(cells[2]),
+                    "topic": _clean_cell(cells[3]),
+                    "reading": _clean_cell(cells[5]),
+                    "homework": _clean_cell(cells[6]),
+                }
+                key = tuple(row.values())
+                if not any(row.values()) or key in seen:
+                    continue
+                seen.add(key)
+                rows.append(row)
+    return rows
 
 
 def extract_pdf(path: Path) -> str:
@@ -25,12 +66,21 @@ def extract_pdf(path: Path) -> str:
         ) from exc
 
     pages: list[str] = []
+    calendar_rows: list[dict] = []
     with pdfplumber.open(str(path)) as pdf:
+        calendar_rows = _parse_calendar_tables(pdf)
         for i, page in enumerate(pdf.pages, start=1):
             text = page.extract_text() or ""
             pages.append(text)
             pages.append(f"\n-- {i} of {len(pdf.pages)} --\n")
-    return "\n".join(pages)
+    body = "\n".join(pages)
+    if calendar_rows:
+        body += (
+            f"\n{CALENDAR_TABLE_START}\n"
+            f"{json.dumps(calendar_rows, ensure_ascii=False)}\n"
+            f"{CALENDAR_TABLE_END}\n"
+        )
+    return body
 
 
 def extract_docx(path: Path) -> str:
