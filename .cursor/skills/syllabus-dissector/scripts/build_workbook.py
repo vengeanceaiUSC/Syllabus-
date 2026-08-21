@@ -44,6 +44,7 @@ THIN = Side(style="thin", color="D9D9D9")
 BORDER = Border(left=THIN, right=THIN, top=THIN, bottom=THIN)
 
 OVERVIEW_SHEET = "Overview"
+TODO_LABELS = frozenset({"Homework", "Assignment", "Exam", "Certification", "Research"})
 MAJOR_LABELS = frozenset({"Assignment", "Exam", "Certification"})
 MAJOR_NAME = re.compile(
     r"\b(paper|midterm|final exam|final|exam|project|presentation|memo|"
@@ -242,6 +243,73 @@ def _due_sort_key(due: str, label: str, name: str, is_sub: bool = False) -> tupl
     return (due or "9999-99-99", 1 if is_sub else 0, SUB_LABEL_ORDER.get(label, 99), name)
 
 
+def is_todo_item(item: dict) -> bool:
+    """Assignments to do - excludes Reading prep."""
+    if item.get("label") == "Reading":
+        return False
+    if item.get("label") in TODO_LABELS:
+        return True
+    if not item.get("is_sub") and item.get("is_major"):
+        return True
+    return False
+
+
+def _todo_sort_key(item: dict) -> tuple:
+    """Prefer labeled assignment sub-rows over parent category rows on the same day."""
+    label = item.get("label") or ""
+    return (
+        item.get("due_date") or "9999-99-99",
+        0 if label in TODO_LABELS else 1,
+        1 if item.get("is_sub") else 0,
+        SUB_LABEL_ORDER.get(label, 99),
+        item.get("name") or "",
+    )
+
+
+def first_todo_item(due_items: list[dict]) -> dict | None:
+    todos = [x for x in due_items if is_todo_item(x)]
+    if not todos:
+        return None
+    todos.sort(key=_todo_sort_key)
+    return todos[0]
+
+
+def first_todo_by_class(all_due: list[dict]) -> list[dict]:
+    """Earliest assignment (non-reading) per class."""
+    todos = [x for x in all_due if is_todo_item(x)]
+    todos.sort(key=_todo_sort_key)
+    seen: set[str] = set()
+    out: list[dict] = []
+    for item in todos:
+        code = item["class_code"]
+        if code in seen:
+            continue
+        seen.add(code)
+        out.append(item)
+    return out
+
+
+def build_do_first_items(all_due: list[dict], focus_month: str) -> list[dict]:
+    """Assignments only: first per class always included, plus others due in focus month."""
+    todos = [x for x in all_due if is_todo_item(x)]
+    month_todos = [x for x in todos if _month_key(x["due_date"]) == focus_month]
+    merged: list[dict] = []
+    seen: set[tuple[str, str, str]] = set()
+
+    def add(item: dict) -> None:
+        key = (item["class_code"], item["due_date"], item["name"])
+        if key not in seen:
+            seen.add(key)
+            merged.append(item)
+
+    for item in first_todo_by_class(all_due):
+        add(item)
+    for item in month_todos:
+        add(item)
+    merged.sort(key=_todo_sort_key)
+    return merged
+
+
 def _is_major_category(cat: dict) -> bool:
     name = cat.get("name") or ""
     if cat.get("weight") is None and not MAJOR_NAME.search(name):
@@ -327,15 +395,11 @@ def summarize_class(data: dict) -> dict:
     code = str(cls.get("code") or "")
     categories = data.get("categories") or []
     due_items = iter_due_items(data)
-    sorted_all = sorted(
-        due_items,
-        key=lambda x: _due_sort_key(x["due_date"], x["label"], x["name"], x["is_sub"]),
-    )
     sorted_major = sorted(
         [x for x in due_items if x["is_major"]],
         key=lambda x: _due_sort_key(x["due_date"], x["label"], x["name"], x["is_sub"]),
     )
-    first_any = sorted_all[0] if sorted_all else None
+    first_todo = first_todo_item(due_items)
     first_major = sorted_major[0] if sorted_major else None
     papers = _paper_names(categories)
     external_certs = _external_certifications(categories)
@@ -348,7 +412,7 @@ def summarize_class(data: dict) -> dict:
         "papers": papers,
         "external_certs": external_certs,
         "has_group_project": any(c.get("is_group_project") for c in categories),
-        "first_any": first_any,
+        "first_todo": first_todo,
         "first_major": first_major,
         "due_items": due_items,
     }
@@ -380,8 +444,9 @@ def build_overview_sheet(wb: Workbook, all_data: list[dict]) -> None:
         all_due.extend(s["due_items"])
     all_due.sort(key=lambda x: _due_sort_key(x["due_date"], x["label"], x["name"], x["is_sub"]))
 
-    focus_month = _month_key(all_due[0]["due_date"]) if all_due else ""
-    month_items = [x for x in all_due if _month_key(x["due_date"]) == focus_month]
+    todo_due = sorted([x for x in all_due if is_todo_item(x)], key=_todo_sort_key)
+    focus_month = _month_key(todo_due[0]["due_date"]) if todo_due else ""
+    do_first_items = build_do_first_items(all_due, focus_month)
 
     title_fill = PatternFill("solid", fgColor="203764")
     header_fill = PatternFill("solid", fgColor="4472C4")
@@ -407,8 +472,8 @@ def build_overview_sheet(wb: Workbook, all_data: list[dict]) -> None:
         ws.cell(row=row, column=1, value=f"Term: {', '.join(terms)}").font = Font(italic=True)
         row += 1
 
-    if all_due:
-        start = all_due[0]
+    if todo_due:
+        start = todo_due[0]
         ws.merge_cells(f"A{row}:{last_col}{row}")
         lead = (
             f"Start here: {start['due_date']} - {start['class_code']} - "
@@ -429,8 +494,8 @@ def build_overview_sheet(wb: Workbook, all_data: list[dict]) -> None:
         "Papers",
         "Group Project",
         "External certs",
-        "First on list",
-        "List due",
+        "First assignment",
+        "Assign due",
         "First major",
         "Major due",
     ]
@@ -445,7 +510,7 @@ def build_overview_sheet(wb: Workbook, all_data: list[dict]) -> None:
 
     for i, s in enumerate(summaries):
         band = PatternFill("solid", fgColor="F2F2F2" if i % 2 else "FFFFFF")
-        fa = s["first_any"]
+        fa = s["first_todo"]
         fm = s["first_major"]
         papers_text = ", ".join(s["papers"]) if s["papers"] else "-"
         certs_text = ", ".join(s["external_certs"]) if s["external_certs"] else "-"
@@ -474,7 +539,11 @@ def build_overview_sheet(wb: Workbook, all_data: list[dict]) -> None:
 
     row += 1
     ws.merge_cells(f"A{row}:{last_col}{row}")
-    sec = ws.cell(row=row, column=1, value=_month_heading(focus_month))
+    sec = ws.cell(
+        row=row,
+        column=1,
+        value=f"{_month_heading(focus_month)} (assignments only; first per class included)",
+    )
     sec.font = label_font
     sec.fill = section_fill
     row += 1
@@ -487,9 +556,9 @@ def build_overview_sheet(wb: Workbook, all_data: list[dict]) -> None:
         c.border = BORDER
     row += 1
 
-    for i, item in enumerate(month_items[:40]):
+    for i, item in enumerate(do_first_items[:40]):
         band = PatternFill("solid", fgColor="F2F2F2" if i % 2 else "FFFFFF")
-        label = item["label"] or "Category"
+        label = item["label"] or ("Assignment" if item.get("is_major") else "Category")
         for col, value in enumerate(
             [item["due_date"], item["class_code"], label, item["name"][:80]],
             start=1,
