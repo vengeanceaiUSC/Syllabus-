@@ -641,6 +641,7 @@ def parse_marshall_connect_assessments(schedule: str, year: int) -> list[dict]:
 def _deliverable_assignment_name(raw: str, category: str) -> str:
     raw = re.sub(r"\s+", " ", raw).strip()
     patterns = [
+        (r"Personal Reflection Paper due", "Personal Reflection Paper"),
         (r"Midterm[^\n]{0,30}Exam", "Midterm Exam"),
         (r"Final Exam[^\n]{0,40}December", "Final Exam"),
         (r"Thomas Green|Case Analysis[^\n]{0,40}Memo due", "Thomas Green Case Analysis Memo"),
@@ -650,7 +651,6 @@ def _deliverable_assignment_name(raw: str, category: str) -> str:
         (r"[Tt]eam project paper due", "Team project paper"),
         (r"Presentation slides", "Presentation slides"),
         (r"peer evaluation due", "Self & peer evaluation"),
-        (r"Personal Reflection Paper due", "Personal Reflection Paper"),
     ]
     for pat, label in patterns:
         if re.search(pat, raw, re.I):
