@@ -89,7 +89,289 @@ def make_aliases(name: str) -> list[str]:
         aliases.update({"discussion section", "participation", "primary source activity"})
     if "extra credit" in low:
         aliases.update({"experiencing the past", "extra credit", "extra points"})
+    if "linkedin" in low:
+        aliases.update({"linked in learning", "linkedin learning excel", "excel certification"})
+    if "stukent" in low:
+        aliases.update({"stukent simternship", "simternship"})
+    if low == "homework":
+        aliases.update({"points", "problem", "chapter"})
     return sorted(aliases, key=len, reverse=True)
+
+
+COURSE_CALENDAR = re.compile(r"Course Calendar", re.I)
+MD_DATE = re.compile(r"\b(\d{1,2})/(\d{1,2})\b")
+CAL_EXAM = re.compile(
+    r"(Midterm \d+|Final Exam)\s*:\s*(\d+)\s*Points?",
+    re.I,
+)
+CAL_BULLET = re.compile(
+    r"[\u2022\*]\s*(.+?)\s*[\-\u2013]\s*(\d+)\s*Points?",
+    re.I,
+)
+CAL_HOMEWORK = re.compile(
+    r"(\d+)\s*[\-\u2013]?\s*Points?\b",
+    re.I,
+)
+
+
+def is_course_calendar(text: str) -> bool:
+    return bool(COURSE_CALENDAR.search(text))
+
+
+def _context_line(text: str, pos: int, radius: int = 200) -> str:
+    start = max(0, pos - radius)
+    end = min(len(text), pos + radius)
+    snippet = text[start:end]
+    return re.sub(r"\s+", " ", snippet).strip()
+
+
+def _normalize_calendar_name(raw: str) -> str:
+    name = re.sub(r"\s+", " ", raw.strip())
+    if re.search(r"linked\s*in\s*learning", name, re.I):
+        return "LinkedIn Learning Excel Certification"
+    if re.search(r"stukent", name, re.I):
+        return "Stukent Simternship"
+    return name
+
+
+def _line_window(text: str, pos: int, extra_lines: int = 1) -> str:
+    line_start = text.rfind("\n", 0, pos) + 1
+    line_end = text.find("\n", pos)
+    if line_end == -1:
+        line_end = len(text)
+    start = line_start
+    for _ in range(extra_lines):
+        prev = text.rfind("\n", 0, start - 1)
+        if prev < 0:
+            break
+        start = prev + 1
+    end = line_end
+    for _ in range(extra_lines):
+        nxt = text.find("\n", end + 1)
+        if nxt == -1:
+            end = len(text)
+            break
+        end = nxt
+    return text[start:end]
+
+
+def _is_exam_or_cert_points(text: str, m: re.Match) -> bool:
+    own_line = re.sub(r"\s+", " ", _line_window(text, m.start(), extra_lines=0)).strip()
+    pts = float(m.group(1))
+    if re.search(rf"Midterm \d+:\s*{pts:g}\s*Points?", own_line, re.I):
+        return True
+    if re.search(rf"Final Exam:\s*{pts:g}\s*Points?", own_line, re.I):
+        return True
+    if pts >= 75 and re.search(r"Linked\s*In|Stukent|Certification|Simternship", own_line, re.I):
+        return True
+    return False
+
+
+def _is_homework_points(text: str, m: re.Match) -> bool:
+    pts = float(m.group(1))
+    if pts >= 50 or _is_exam_or_cert_points(text, m):
+        return False
+    lookback = text[max(0, m.start() - 220) : m.end()]
+    return bool(re.search(r"\d-\d+", lookback))
+
+
+def parse_course_calendar_categories(text: str) -> list[Category]:
+    """Parse point-based categories from a Course Calendar document."""
+    cats: list[Category] = []
+    seen: set[str] = set()
+
+    for m in CAL_EXAM.finditer(text):
+        name = m.group(1).strip()
+        if name.lower() in seen:
+            continue
+        seen.add(name.lower())
+        ctx = _context_line(text, m.start(), 180)
+        cats.append(
+            Category(
+                name=name,
+                weight=float(m.group(2)),
+                weight_unit="points",
+                aliases=make_aliases(name),
+                assignment_blurb=ctx,
+            )
+        )
+
+    for m in CAL_BULLET.finditer(text):
+        name = _normalize_calendar_name(m.group(1))
+        key = name.lower()
+        if key in seen:
+            continue
+        seen.add(key)
+        ctx = _context_line(text, m.start(), 180)
+        cats.append(
+            Category(
+                name=name,
+                weight=float(m.group(2)),
+                weight_unit="points",
+                aliases=make_aliases(name),
+                assignment_blurb=ctx,
+            )
+        )
+
+    # Certifications sometimes appear without bullet on page 2
+    for pat, label in [
+        (r"Linked\s*In\s*Learning\s*\n?\s*Excel\s*Certification\s*\n?\s*(\d+)\s*Points?", "LinkedIn Learning Excel Certification"),
+        (r"Stukent\s*Simternship\s*\n?\s*(\d+)\s*Points?", "Stukent Simternship"),
+    ]:
+        m = re.search(pat, text, re.I | re.S)
+        if m and label.lower() not in seen:
+            seen.add(label.lower())
+            cats.append(
+                Category(
+                    name=label,
+                    weight=float(m.group(1)),
+                    weight_unit="points",
+                    aliases=make_aliases(label),
+                    assignment_blurb=_context_line(text, m.start(), 220),
+                )
+            )
+
+    homework_lines: list[str] = []
+    homework_total = 0.0
+    for m in CAL_HOMEWORK.finditer(text):
+        if not _is_homework_points(text, m):
+            continue
+        pts = float(m.group(1))
+        ctx = re.sub(r"\s+", " ", _line_window(text, m.start(), extra_lines=2)).strip()
+        if ctx in homework_lines:
+            continue
+        homework_lines.append(ctx)
+        homework_total += pts
+
+    if homework_lines and "homework" not in seen:
+        cats.append(
+            Category(
+                name="Homework",
+                weight=homework_total,
+                weight_unit="points",
+                aliases=make_aliases("Homework"),
+                assignment_blurb="; ".join(homework_lines[:3]),
+            )
+        )
+    return cats
+
+
+def gather_calendar_content(text: str, cat: Category) -> tuple[dict, str]:
+    """Collect calendar rows and context for a course-calendar category."""
+    low = cat.name.lower()
+    matched: list[str] = []
+    seen: set[str] = set()
+
+    if cat.assignment_blurb:
+        matched.append(cat.assignment_blurb)
+        seen.add(normalize(cat.assignment_blurb))
+
+    if "midterm" in low:
+        num = re.search(r"\d+", cat.name)
+        n = num.group() if num else ""
+        patterns = [
+            rf"Midterm {n}:\s*\d+\s*Points?[^\n]*",
+            rf"Practice Midterm Questions[^\n]*",
+            rf"Catchup & Midterm Review[^\n]*",
+        ]
+        for pat in patterns:
+            for m in re.finditer(pat, text, re.I):
+                line = m.group(0).strip()
+                key = normalize(line)
+                if key not in seen:
+                    seen.add(key)
+                    matched.append(line)
+    elif "final" in low:
+        patterns = [
+            r"Final Exam:\s*\d+\s*Points?[^\n]*",
+            r"Final Exam[^\n]*December[^\n]*",
+            r"Practice Final Questions[^\n]*",
+            r"Catchup & Final Review[^\n]*",
+            r"Chapter 14[^\n]*Final",
+        ]
+        for pat in patterns:
+            for m in re.finditer(pat, text, re.I | re.S):
+                line = re.sub(r"\s+", " ", m.group(0)).strip()
+                key = normalize(line)
+                if key not in seen and len(line) > 15:
+                    seen.add(key)
+                    matched.append(line)
+    elif "homework" in low:
+        for m in CAL_HOMEWORK.finditer(text):
+            if not _is_homework_points(text, m):
+                continue
+            ctx = re.sub(r"\s+", " ", _line_window(text, m.start(), extra_lines=2)).strip()
+            key = normalize(ctx)
+            if key not in seen:
+                seen.add(key)
+                matched.append(ctx)
+    else:
+        for alias in cat.aliases:
+            if len(alias) < 5:
+                continue
+            for m in re.finditer(re.escape(alias), text, re.I):
+                ctx = _context_line(text, m.start(), 180)
+                key = normalize(ctx)
+                if key not in seen:
+                    seen.add(key)
+                    matched.append(ctx)
+
+    footnotes = re.findall(
+        r"Unless specifically Identified[^\n]+|Knowledge of Cost Behavior[^\n]+",
+        text,
+        re.I,
+    )
+    for fn in footnotes:
+        key = normalize(fn)
+        if key not in seen:
+            seen.add(key)
+            matched.append(fn.strip())
+
+    verbatim = "\n\n---\n\n".join(dedupe_passages(matched))
+    sections: dict[str, list[str] | str] = {}
+    if cat.assignment_blurb:
+        sections["Overview (Course Calendar)"] = cat.assignment_blurb
+    if matched:
+        sections["Calendar Entries"] = matched
+    return sections, verbatim
+
+
+def parse_calendar_dates(text: str, cat: Category, year: int) -> tuple[str, str]:
+    """Infer start/due dates from calendar-style M/D and month-day patterns."""
+    low = cat.name.lower()
+    dates: list[str] = []
+
+    if "midterm 1" in low:
+        m = re.search(r"(\d{1,2})/(\d{1,2})\s*Midterm 1", text, re.I)
+        if m:
+            dates.append(f"{year:04d}-{int(m.group(1)):02d}-{int(m.group(2)):02d}")
+    elif "midterm 2" in low:
+        m = re.search(r"(\d{1,2})/(\d{1,2})\s*Midterm 2", text, re.I)
+        if m:
+            dates.append(f"{year:04d}-{int(m.group(1)):02d}-{int(m.group(2)):02d}")
+    elif "final" in low and "exam" in low:
+        m = re.search(
+            r"December\s+(\d{1,2})(?:st|nd|rd|th)?",
+            text,
+            re.I,
+        )
+        if m:
+            dates.append(f"{year:04d}-12-{int(m.group(1)):02d}")
+    elif "linkedin" in low or "stukent" in low:
+        m = re.search(r"(\d{1,2})/(\d{1,2})[^\n]*(?:11:59|Due by)", text, re.I)
+        if not m:
+            m = re.search(r"\b(\d{1,2})/(\d{1,2})\b[^\n]*(?:Linked\s*In|Stukent|Certification|Simternship)", text, re.I)
+        if m:
+            mo, day = int(m.group(1)), int(m.group(2))
+            dates.append(f"{year:04d}-{mo:02d}-{day:02d}")
+    elif "homework" in low:
+        return "", ""
+
+    if not dates:
+        return parse_dates_from_text(text, year)
+
+    unique = sorted(set(dates))
+    return (unique[0], unique[-1]) if len(unique) > 1 else ("", unique[0])
 
 
 def find_assignments_block(text: str) -> str:
@@ -420,17 +702,29 @@ def dissect(
     term: str = "",
     color: str = "",
 ) -> dict:
+    calendar_mode = is_course_calendar(text)
     categories = parse_categories(text)
+    if not categories and calendar_mode:
+        categories = parse_course_calendar_categories(text)
     if not categories:
         raise SystemExit(
-            "No graded categories found. Expected an Assignments section like 'Sleep Paper - 20%'."
+            "No graded categories found. Expected an Assignments section like 'Sleep Paper - 20%' "
+            "or a Course Calendar with point values like 'Midterm 1: 250 Points'."
         )
     grading_scale = parse_grading_scale(text)
+    if calendar_mode and grading_scale["a_threshold"] == "N/A":
+        total_pts = sum(c.weight or 0 for c in categories)
+        grading_scale["scale_type"] = "points"
+        grading_scale["raw_scale"] = f"Total graded points in calendar: {total_pts:g} (letter scale not in document)"
     year = infer_year(term)
     result_categories = []
     for cat in categories:
-        sections, verbatim = gather_category_content(text, cat)
-        start, due = parse_dates_from_text(verbatim, year)
+        if calendar_mode:
+            sections, verbatim = gather_calendar_content(text, cat)
+            start, due = parse_calendar_dates(text, cat, year)
+        else:
+            sections, verbatim = gather_category_content(text, cat)
+            start, due = parse_dates_from_text(verbatim, year)
         result_categories.append(
             {
                 "name": cat.name,
