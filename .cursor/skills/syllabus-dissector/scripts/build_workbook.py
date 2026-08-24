@@ -273,6 +273,15 @@ def rmp_for_class(
     return entry if entry.get("quality") is not None else None
 
 
+def format_rmp_instructor_label(rmp: dict, fallback: str = "") -> str:
+    """Syllabus instructor(s) plus RMP profile name when they differ."""
+    syllabus = (rmp.get("instructor") or fallback or "").strip()
+    profile = (rmp.get("rmp_instructor") or "").strip()
+    if profile and profile != syllabus and syllabus:
+        return f"{syllabus} (RMP: {profile})"
+    return profile or syllabus or "-"
+
+
 def format_avg_reviewer_grade(rmp: dict) -> str:
     """Self-reported letter-grade average from RMP reviewers."""
     letter = rmp.get("avg_grade_letter")
@@ -638,7 +647,7 @@ def build_overview_sheet(
         for i, s in enumerate(rmp_rows):
             rmp = s["rmp_entry"]
             band = PatternFill("solid", fgColor="F2F2F2" if i % 2 else "FFFFFF")
-            instructor = rmp.get("instructor") or s.get("instructor") or "-"
+            instructor = format_rmp_instructor_label(rmp, s.get("instructor", ""))
             url = rmp.get("url") or ""
             quality = rmp.get("quality")
             difficulty = rmp.get("difficulty")
@@ -678,7 +687,7 @@ def build_overview_sheet(
         for i, (_stat_row, s, rmp) in enumerate(rmp_stat_rows):
             band = PatternFill("solid", fgColor="F2F2F2" if i % 2 else "FFFFFF")
             code = s["code"]
-            instructor = rmp.get("instructor") or s.get("instructor") or "-"
+            instructor = format_rmp_instructor_label(rmp, s.get("instructor", ""))
             detail = (rmp.get("consensus") or "").strip()
             ws.cell(row=row, column=1, value=code).fill = band
             ws.cell(row=row, column=1).font = Font(bold=True)
@@ -692,6 +701,72 @@ def build_overview_sheet(
             detail_cell.alignment = Alignment(wrap_text=True, vertical="top")
             line_count = max(3, detail.count("\n") + 1, (len(detail) // 90) + 1)
             ws.row_dimensions[row].height = min(180, 15 * line_count)
+            row += 1
+
+        review_classes = [
+            (s, rmp)
+            for (_stat_row, s, rmp) in rmp_stat_rows
+            if isinstance(rmp.get("reviews"), list) and rmp["reviews"]
+        ]
+        if review_classes:
+            row += 1
+            ws.merge_cells(f"A{row}:{last_col}{row}")
+            review_hdr = ws.cell(
+                row=row,
+                column=1,
+                value="Student reviews (Rate My Professors) - newest first",
+            )
+            review_hdr.font = label_font
+            review_hdr.fill = section_fill
+            row += 1
+            review_group_start = row
+            review_headers = ["Class", "Date", "Grade", "Q/D", "Review"]
+            for col, name in enumerate(review_headers, start=1):
+                c = ws.cell(row=row, column=col, value=name)
+                c.font = header_font
+                c.fill = header_fill
+                c.border = BORDER
+                c.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
+            row += 1
+            for i, (s, rmp) in enumerate(review_classes):
+                code = s["code"]
+                profile = rmp.get("rmp_instructor") or rmp.get("instructor") or ""
+                reviews = sorted(
+                    rmp["reviews"],
+                    key=lambda r: r.get("date") or "",
+                    reverse=True,
+                )
+                for j, rev in enumerate(reviews):
+                    band = PatternFill("solid", fgColor="F2F2F2" if (i + j) % 2 else "FFFFFF")
+                    q = rev.get("quality")
+                    d = rev.get("difficulty")
+                    qd = f"{q:g}/{d:g}" if q is not None and d is not None else "-"
+                    comment = rev.get("comment") or ""
+                    if rev.get("tags"):
+                        tags = ", ".join(rev["tags"][:4])
+                        comment = f"{comment} [{tags}]"
+                    label = code if j == 0 else ""
+                    instructor_note = profile if j == 0 else ""
+                    ws.cell(row=row, column=1, value=label or instructor_note).fill = band
+                    ws.cell(row=row, column=1).border = BORDER
+                    if label:
+                        ws.cell(row=row, column=1).font = Font(bold=True)
+                    ws.cell(row=row, column=2, value=rev.get("date") or "-").fill = band
+                    ws.cell(row=row, column=2).border = BORDER
+                    ws.cell(row=row, column=3, value=rev.get("grade") or "-").fill = band
+                    ws.cell(row=row, column=3).border = BORDER
+                    ws.cell(row=row, column=4, value=qd).fill = band
+                    ws.cell(row=row, column=4).border = BORDER
+                    ws.merge_cells(start_row=row, start_column=5, end_row=row, end_column=ncols)
+                    detail_cell = ws.cell(row=row, column=5, value=comment)
+                    detail_cell.fill = band
+                    detail_cell.border = BORDER
+                    detail_cell.alignment = Alignment(wrap_text=True, vertical="top")
+                    line_count = max(2, (len(comment) // 80) + 1)
+                    ws.row_dimensions[row].height = min(120, 15 * line_count)
+                    row += 1
+            review_group_end = row - 1
+            group_outline_rows(ws, review_group_start, review_group_end, collapsed=True)
             row += 1
 
         rmp_as_of = next(
