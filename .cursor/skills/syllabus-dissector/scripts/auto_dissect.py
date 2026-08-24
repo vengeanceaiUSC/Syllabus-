@@ -109,6 +109,28 @@ def make_aliases(name: str) -> list[str]:
         aliases.update({"peer evaluation", "self and peer", "self & peer evaluation"})
     if "participation" in low:
         aliases.update({"class participation", "research studies participation", "attendance"})
+    if "midterm" in low and "exam" in low:
+        aliases.update({"midterm", "mid-term", "mid term"})
+        if "first" in low:
+            aliases.update({"midterm 1", "first midterm", "midterm one"})
+        if "second" in low:
+            aliases.update({"midterm 2", "second midterm"})
+        if "third" in low:
+            aliases.update({"midterm 3", "third midterm"})
+        if "fourth" in low or "forth" in low:
+            aliases.update({"midterm 4", "fourth midterm"})
+    if "ai forecast" in low or "forecast project" in low:
+        aliases.update(
+            {
+                "ai forecast project",
+                "ai forecasting project",
+                "ai project",
+                "final project",
+                "forecasting project",
+            }
+        )
+    if "wsj" in low or "future view" in low:
+        aliases.update({"wsj future view", "wall street journal", "future view"})
     return sorted(aliases, key=len, reverse=True)
 
 
@@ -272,6 +294,30 @@ CAL_HOMEWORK = re.compile(
 
 def is_course_calendar(text: str) -> bool:
     return bool(COURSE_CALENDAR.search(text))
+
+
+def is_grading_policies_syllabus(text: str) -> bool:
+    """Marshall ECON-style syllabi: Grading Policies table + embedded COURSE CALENDAR."""
+    return bool(
+        re.search(
+            r"Grading Policies\s*\n\s*ASSIGNMENTS\s+Points\s+%\s+of\s+Grade",
+            text,
+            re.I,
+        )
+    )
+
+
+def is_point_course_calendar(text: str) -> bool:
+    """Point-based calendar PDFs (BUAD-281), not percentage syllabi with schedule tables."""
+    if not COURSE_CALENDAR.search(text):
+        return False
+    if is_grading_policies_syllabus(text):
+        return False
+    return bool(
+        re.search(r"Midterm \d+:\s*\d+\s*Points?", text, re.I)
+        or re.search(r"Final Exam:\s*\d+\s*Points?", text, re.I)
+        or re.search(r"Linked\s*In\s*Learning[^\n]+\d+\s*Points?", text, re.I)
+    )
 
 
 def _context_line(text: str, pos: int, radius: int = 200) -> str:
@@ -455,7 +501,11 @@ def parse_research_guide_text(text: str) -> str:
 
 def is_marshall_syllabus(text: str) -> bool:
     """Percentage-weight Marshall OB syllabi with Course Evaluation (not point calendars)."""
-    return bool(find_course_evaluation_block(text)) and not is_course_calendar(text)
+    return (
+        bool(find_course_evaluation_block(text))
+        and not is_point_course_calendar(text)
+        and not is_grading_policies_syllabus(text)
+    )
 
 
 def find_course_schedule_section(text: str) -> str:
@@ -1817,6 +1867,313 @@ def parse_course_evaluation_categories(text: str) -> list[Category]:
     return _drop_aggregate_parents(cats)
 
 
+def find_grading_policies_block(text: str) -> str:
+    m = re.search(r"Grading Policies\s*\n", text, re.I)
+    if not m:
+        return ""
+    snippet = text[m.end() : m.end() + 4500]
+    end = re.search(r"\nCOURSE CALENDAR\b|\nCollaboration policy\b", snippet, re.I)
+    return snippet[: end.start()] if end else snippet[:3500]
+
+
+def parse_grading_policies_categories(text: str) -> list[Category]:
+    """Parse 'First midterm exam 20 20.0%' rows from Grading Policies (ECON-351 style)."""
+    block = find_grading_policies_block(text)
+    if not block:
+        return []
+    cats: list[Category] = []
+    for line in block.splitlines():
+        line = line.strip()
+        cm = re.match(
+            r"^(.+?)\s+(\d+(?:\.\d+)?)\s+(\d+(?:\.\d+)?)\s*%\s*$",
+            line,
+        )
+        if not cm:
+            continue
+        name = cm.group(1).strip()
+        if name.lower() == "total":
+            continue
+        if name.lower().startswith("forth midterm"):
+            name = "Fourth midterm exam"
+        cats.append(
+            Category(
+                name=name,
+                weight=float(cm.group(3)),
+                weight_unit="percent",
+                aliases=make_aliases(name),
+            )
+        )
+    return cats
+
+
+def econ_dot_date_to_iso(raw: str, year: int) -> str:
+    """Parse Sep.4 or Sep/14 style dates from ECON-351 calendar/prose."""
+    raw = raw.strip()
+    m = re.match(r"([A-Za-z]+)[./](\d{1,2})", raw)
+    if not m:
+        return ""
+    mon = HIST_MONTH.get(m.group(1)[:3].lower(), 0)
+    if not mon:
+        return ""
+    return f"{year:04d}-{mon:02d}-{int(m.group(2)):02d}"
+
+
+def parse_econ351_week_end(class_field: str, year: int) -> str:
+    flat = (class_field or "").replace(" / ", "")
+    m = re.search(
+        r"([A-Za-z]+)\.(\d{1,2})/(?:([A-Za-z]+)\.)?(\d{1,2})",
+        flat,
+        re.I,
+    )
+    if not m:
+        m2 = re.search(r"([A-Za-z]+)\.(\d{1,2})\b", flat, re.I)
+        if m2:
+            return econ_dot_date_to_iso(f"{m2.group(1)}.{m2.group(2)}", year)
+        return ""
+    end_mon = m.group(3) or m.group(1)
+    end_day = m.group(4) if m.group(3) else m.group(2)
+    return econ_dot_date_to_iso(f"{end_mon}.{end_day}", year)
+
+
+def econ351_midterm_number(cat_name: str) -> int:
+    low = cat_name.lower()
+    for word, num in (("first", 1), ("second", 2), ("third", 3), ("fourth", 4), ("forth", 4)):
+        if word in low:
+            return num
+    return 0
+
+
+def parse_econ351_exam_dates(text: str, year: int) -> dict[int, str]:
+    out: dict[int, str] = {}
+    for m in re.finditer(
+        r"Midterm\s+(\d+):\s*(?:Monday|Wednesday)?\s*([A-Za-z]+)/(\d{1,2})",
+        text,
+        re.I,
+    ):
+        out[int(m.group(1))] = econ_dot_date_to_iso(f"{m.group(2)}.{m.group(3)}", year)
+    return out
+
+
+def _econ351_wed_bullets(date_wed: str) -> list[str]:
+    flat = (date_wed or "").replace(" / ", " ").strip()
+    parts = re.split(r"\s*•\s*", flat)
+    return [re.sub(r"\s+", " ", p).strip() for p in parts if p.strip()]
+
+
+def _econ351_is_homework_bullet(bullet: str) -> bool:
+    return bool(
+        re.search(
+            r"Complete the .*homework|homework on Brightspace|course survey on Brightspace",
+            bullet,
+            re.I,
+        )
+    )
+
+
+def parse_econ351_homework_and_readings(rows: list[dict], year: int) -> list[dict]:
+    """Reading + Homework sub-rows from embedded COURSE CALENDAR table."""
+    items: list[dict] = []
+    for row in rows:
+        week = (row.get("class") or "").replace(" / ", " ").strip()
+        week_end = parse_econ351_week_end(row.get("class") or "", year)
+        reading_col = (row.get("reading") or "").replace(" / ", " ")
+        hw_m = re.search(r"Homework\s+(\d+)\s*/?\s*([A-Za-z]+)[./](\d+)", reading_col, re.I)
+        due_iso = ""
+        hw_num = ""
+        if hw_m:
+            hw_num = hw_m.group(1)
+            due_iso = econ_dot_date_to_iso(f"{hw_m.group(2)}.{hw_m.group(3)}", year)
+        elif week_end and (row.get("date_wed") or "").strip():
+            due_iso = week_end
+
+        for bullet in _econ351_wed_bullets(row.get("date_wed") or ""):
+            if _econ351_is_homework_bullet(bullet):
+                continue
+            if len(bullet) < 8:
+                continue
+            prefix = week or "Week"
+            items.append(
+                sub_assignment(
+                    f"{prefix} - {bullet[:100]}",
+                    "",
+                    due_iso,
+                    LABEL_READING,
+                )
+            )
+
+        if hw_num and due_iso:
+            chapter_hint = ""
+            for bullet in _econ351_wed_bullets(row.get("date_wed") or ""):
+                ch = re.search(r"Chapter\s+\d+", bullet, re.I)
+                if ch:
+                    chapter_hint = f" ({ch.group(0)})"
+                    break
+            items.append(
+                sub_assignment(
+                    f"Homework {hw_num}{chapter_hint} — Brightspace, due 11:59 pm",
+                    "",
+                    due_iso,
+                    LABEL_HOMEWORK,
+                )
+            )
+    return items
+
+
+def parse_econ351_midterm_coverage(rows: list[dict], exam_num: int) -> str:
+    for i, row in enumerate(rows):
+        topic = (row.get("topic") or "").replace(" / ", " ")
+        m = re.search(
+            rf"Midterm\s+{exam_num}\s+covers\s+(.+)",
+            topic,
+            re.I,
+        )
+        if m:
+            cov = m.group(1).strip()
+            if re.search(r"\band\s*$", cov) and i + 1 < len(rows):
+                nxt = (rows[i + 1].get("topic") or "").replace(" / ", " ").strip()
+                if nxt and len(nxt) < 40 and not re.search(r"midterm|exam|•", nxt, re.I):
+                    cov = f"{cov} {nxt}"
+            return re.sub(r"\s+", " ", cov).strip()
+    return ""
+
+
+def build_econ351_assignments_by_category(
+    text: str,
+    year: int,
+    categories: list[Category],
+) -> dict[str, list[dict]]:
+    out: dict[str, list[dict]] = {c.name: [] for c in categories}
+    rows = parse_embedded_calendar_table(text)
+    exam_dates = parse_econ351_exam_dates(text, year)
+
+    hw_items = parse_econ351_homework_and_readings(rows, year) if rows else []
+    for cat in categories:
+        low = cat.name.lower()
+        if low == "homework":
+            out[cat.name] = hw_items
+        elif "midterm" in low and "exam" in low:
+            num = econ351_midterm_number(cat.name)
+            due = exam_dates.get(num, "")
+            coverage = parse_econ351_midterm_coverage(rows, num) if rows else ""
+            label = f"Midterm {num} (in class)"
+            if coverage:
+                label = f"Midterm {num} — covers {coverage}"
+            out[cat.name] = [sub_assignment(label, "", due, LABEL_EXAM)]
+        elif "ai forecast" in low:
+            part_i = ""
+            part_ii = ""
+            for pat in (
+                r"Part I due\s+([A-Za-z]+)\s+(\d+)",
+                r"AI Project[^\n]{0,40}Part I due\s+([A-Za-z]+)\s+(\d+)",
+            ):
+                m_i = re.search(pat, text, re.I)
+                if m_i:
+                    part_i = econ_dot_date_to_iso(f"{m_i.group(1)}.{m_i.group(2)}", year)
+                    break
+            m_ii = re.search(r"Part II due\s+([A-Za-z]+)\s+(\d+)", text, re.I)
+            if m_ii:
+                part_ii = econ_dot_date_to_iso(f"{m_ii.group(1)}.{m_ii.group(2)}", year)
+            out[cat.name] = [
+                sub_assignment("AI Forecast Project — Part I", "", part_i, LABEL_ASSIGNMENT),
+                sub_assignment("AI Forecast Project — Part II", "", part_ii, LABEL_ASSIGNMENT),
+            ]
+    return out
+
+
+def find_grading_policies_line(text: str, cat: Category) -> str:
+    block = find_grading_policies_block(text)
+    if not block:
+        return ""
+    target = cat.name.lower()
+    for line in block.splitlines():
+        line = line.strip()
+        if line.lower().startswith(target.split()[0]) and re.search(r"\d+(?:\.\d+)?\s*%\s*$", line):
+            return line
+        if normalize(line).startswith(normalize(cat.name)):
+            return line
+    return ""
+
+
+def gather_econ351_content(
+    text: str, cat: Category, year: int
+) -> tuple[dict, str, tuple[str, str]]:
+    matched: list[str] = []
+    sections: dict[str, list[str] | str] = {}
+    gp_line = find_grading_policies_line(text, cat)
+    if gp_line:
+        sections["Overview (Grading Policies)"] = gp_line
+        matched.append(gp_line)
+
+    for block in find_dedicated_blocks(text, cat):
+        matched.append(block)
+
+    rows = parse_embedded_calendar_table(text)
+    cal_lines: list[str] = []
+    low = cat.name.lower()
+    if low == "homework":
+        for item in parse_econ351_homework_and_readings(rows, year):
+            cal_lines.append(
+                f"Due: {item.get('due_date', '')} | {item.get('name', '')}"
+            )
+    elif "midterm" in low and "exam" in low:
+        num = econ351_midterm_number(cat.name)
+        due = parse_econ351_exam_dates(text, year).get(num, "")
+        cov = parse_econ351_midterm_coverage(rows, num)
+        if due:
+            cal_lines.append(f"Exam date: {due}")
+        if cov:
+            cal_lines.append(f"Coverage: {cov}")
+    elif "ai forecast" in low:
+        for row in rows:
+            blob = " ".join(
+                filter(
+                    None,
+                    [
+                        row.get("date_wed") or "",
+                        row.get("topic") or "",
+                        row.get("date_mon") or "",
+                    ],
+                )
+            )
+            if re.search(r"AI Project", blob, re.I):
+                cal_lines.append(re.sub(r"\s+", " ", blob.replace(" / ", "; "))[:200])
+    if cal_lines:
+        sections["Course Calendar (schedule)"] = cal_lines
+        matched.extend(cal_lines)
+
+    matched = dedupe_passages(matched)
+    verbatim = "\n\n---\n\n".join(matched)
+    for block in matched:
+        for heading, content in structure_block(block).items():
+            if heading in sections:
+                prev = sections[heading]
+                if isinstance(prev, list) and isinstance(content, list):
+                    prev.extend(content)
+                elif isinstance(content, list):
+                    sections[heading] = (
+                        ([prev] if not isinstance(prev, list) else prev) + content
+                    )
+                else:
+                    sections[heading] = content
+            else:
+                sections[heading] = content
+
+    start, due = "", ""
+    if low == "homework":
+        dues = sorted(
+            {item.get("due_date") for item in parse_econ351_homework_and_readings(rows, year) if item.get("due_date")}
+        )
+        due = dues[-1] if dues else ""
+    elif "midterm" in low and "exam" in low:
+        due = parse_econ351_exam_dates(text, year).get(econ351_midterm_number(cat.name), "")
+    elif "ai forecast" in low:
+        m_ii = re.search(r"Part II due\s+([A-Za-z]+)\s+(\d+)", text, re.I)
+        if m_ii:
+            due = econ_dot_date_to_iso(f"{m_ii.group(1)}.{m_ii.group(2)}", year)
+
+    return sections, verbatim, (start, due)
+
+
 def find_assignments_block(text: str) -> str:
     """Locate the real Assignments section (skip TOC/nav duplicates)."""
     best = ""
@@ -1874,6 +2231,9 @@ def parse_categories(text: str) -> list[Category]:
                 i += 1
 
     if not cats:
+        cats = parse_grading_policies_categories(text)
+
+    if not cats:
         cats = parse_course_evaluation_categories(text)
 
     if re.search(r"\bExtra Credit\b", text, re.I):
@@ -1906,6 +2266,23 @@ def parse_grading_scale(text: str) -> dict:
             "Weighted score (% of points earned) + class average + student ranking "
             "(relative grading - no fixed A threshold in syllabus)"
         )
+    if scale["a_threshold"] == "N/A":
+        lm = re.search(
+            r"above\s+(\d+)%\s+an\s+A|grades between 70% and 85% a B.*?above\s+(\d+)%\s+an\s+A",
+            text,
+            re.I | re.S,
+        )
+        if lm:
+            pct = lm.group(1) or lm.group(2)
+            scale["a_threshold"] = f"{pct}%+ (rough guideline)"
+            scale["scale_type"] = "percentage"
+            block = re.search(
+                r"Letter Grades\s*-(.+?)(?:\nCollaboration|\nEvaluation of)",
+                text,
+                re.I | re.S,
+            )
+            if block:
+                scale["raw_scale"] = re.sub(r"\s+", " ", block.group(1)).strip()[:800]
     return scale
 
 
@@ -2027,9 +2404,23 @@ def find_dedicated_blocks(text: str, cat: Category) -> list[str]:
         specs += [
             (r"Final Exam\s*\n", [r"\nOnline Class Expectations", r"\nCourse Notes"]),
         ]
+    if is_grading_policies_syllabus(clean):
+        if low == "homework":
+            specs += [(r"Homework\s*-\s*We will have", [r"\nWSJ Future View", r"\nExams\s*-"])]
+        if "midterm" in low and "exam" in low:
+            specs += [
+                (r"Exams\s*-\s*The four midterms", [r"\nFinal Project", r"\nLetter Grades"]),
+                (r"Makeup Tests\s*-", [r"\nHomework\s*-"]),
+            ]
+        if "ai forecast" in low:
+            specs += [(r"Final Project\s*[–-]\s*The AI Forecasting", [r"\nLetter Grades", r"\nCollaboration"])]
+        if "extra credit" in low:
+            specs += [(r"WSJ Future View\s*-?\s*Extra credit", [r"\nExams\s*-", r"\nFinal Project"])]
 
     # Generic schedule due-line (skip Extra Credit - no stable end marker)
-    if "extra credit" not in low:
+    if "extra credit" not in low and not (
+        is_grading_policies_syllabus(clean) and low == "homework"
+    ):
         specs.append(
             (
                 rf"\n[^\n]*{re.escape(cat.name)}[^\n]*Due[^\n]*\n",
@@ -2226,7 +2617,12 @@ def parse_syllabus_metadata(text: str, source_hint: str = "") -> dict[str, str]:
     """Best-effort class code, title, instructor, and term from syllabus text or filename."""
     meta: dict[str, str] = {}
     head = text[:15000]
-    skip_codes = {"PDF", "LO", "ISO", "ARES", "ONLY", "NOT", "THE", "AND"}
+    skip_codes = {"PDF", "LO", "ISO", "ARES", "ONLY", "NOT", "THE", "AND", "LL"}
+
+    em = re.search(r"ECON\s*351x?\s*[–-]\s*([^\n]+)", head, re.I)
+    if em:
+        meta["code"] = "ECON-351"
+        meta["name"] = em.group(1).strip()[:100]
 
     m = re.search(r"\b([A-Z]{2,5})[\s-](\d{3}[A-Z]?)\s*:\s*([^\n]+)", head)
     if m and m.group(1) not in skip_codes:
@@ -2263,6 +2659,7 @@ def parse_syllabus_metadata(text: str, source_hint: str = "") -> dict[str, str]:
         meta["instructor"] = im.group(1).strip()
 
     for pat in (
+        r"Professors?:?\s*([^\n]+)",
         r"Professor:?\s*([^\n]+)",
         r"Instructor:?\s*([^\n]+)",
         r"Faculty:?\s*([^\n]+)",
@@ -2498,7 +2895,8 @@ def dissect(
     class_name = meta["name"]
     instructor = meta["instructor"]
     term = meta["term"]
-    calendar_mode = is_course_calendar(text)
+    calendar_mode = is_point_course_calendar(text)
+    grading_policies_mode = is_grading_policies_syllabus(text)
     marshall_mode = is_marshall_syllabus(text)
     categories = parse_categories(text)
     if not categories and calendar_mode:
@@ -2521,6 +2919,8 @@ def dissect(
         assignment_map, marshall_connect_items = build_marshall_assignments_by_category(
             text, year, research_guide, categories
         )
+    elif grading_policies_mode:
+        assignment_map = build_econ351_assignments_by_category(text, year, categories)
     elif calendar_mode:
         assignment_map = build_calendar_assignments_by_category(text, year, categories)
     else:
@@ -2543,6 +2943,8 @@ def dissect(
             sections, verbatim, (start, due) = gather_marshall_content(
                 text, cat, year, research_guide=research_guide
             )
+        elif grading_policies_mode:
+            sections, verbatim, (start, due) = gather_econ351_content(text, cat, year)
         else:
             sections, verbatim = gather_category_content(text, cat)
             supplement = parse_supplement_text(text)

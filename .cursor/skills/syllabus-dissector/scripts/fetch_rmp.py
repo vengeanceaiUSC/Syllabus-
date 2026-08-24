@@ -70,6 +70,10 @@ KNOWN_PROFESSORS: dict[str, dict] = {
         "instructor": "Christine El Haddad",
         "professor_id": "1808480",
     },
+    "ECON-351": {
+        "instructor": "Alejandro Martínez-Marquina / João Ramos",
+        "professor_id": "2880539",
+    },
 }
 
 

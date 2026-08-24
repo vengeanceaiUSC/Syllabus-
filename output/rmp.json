@@ -66,5 +66,28 @@
       "B": 2,
       "C+": 1
     }
+  },
+  "ECON-351": {
+    "instructor": "Alejandro Martínez-Marquina / João Ramos",
+    "quality": 4.6,
+    "difficulty": 3.1,
+    "would_take_again_pct": 85.2,
+    "num_ratings": 62,
+    "consensus": "STRENGTHS: Martínez-Marquina earns strong marks for clear board work, practice problems, and supportive TAs; students say concepts click when you attend and use office hours. Ramos sections get mixed reviews — some praise exam alignment with practice problems, others find lectures hard to follow due to pace/accent.\n\nGRADING & WORKLOAD: Four non-cumulative midterms (20% each) plus weekly Brightspace homework (best 10 of 12 count). AI Forecast Project is individual. Letter grades follow Marshall guidelines with rough bands (A above ~85%, B 70–85%, C 60–70%).\n\nBOTTOM LINE: Engage with practice problems and TAs; homework drops give flexibility. WSJ Future View offers optional +10% extra credit.",
+    "url": "https://www.ratemyprofessors.com/professor/2880539",
+    "source": "Rate My Professors",
+    "as_of": "2026-08-24",
+    "avg_grade_gpa": 3.76,
+    "avg_grade_letter": "A-",
+    "grades_reported": 39,
+    "grade_distribution": {
+      "A": 29,
+      "C-": 2,
+      "B": 2,
+      "A-": 2,
+      "A+": 2,
+      "B-": 1,
+      "B+": 1
+    }
   }
 }
