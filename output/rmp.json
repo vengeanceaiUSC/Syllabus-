@@ -986,5 +986,189 @@
         "comment": "Professor Steinberg is an amazing person and instructor he allows you to voice your opinions but also leads you along the way. He assigns alot of reading but it is totally worth it. Lectures are a must and participation is required but the hard work is worth the trouble."
       }
     ]
+  },
+  "JS-310": {
+    "instructor": "Andrzej Brylak / Yulia Dubasova",
+    "quality": 4.9,
+    "difficulty": 1.6,
+    "would_take_again_pct": 100.0,
+    "num_ratings": 12,
+    "consensus": "STRENGTHS: Very strong RMP profile (4.9 quality, 1.6 difficulty, 100% would take again). Students call Brylak passionate, hilarious, knowledgeable, and caring — one of the best GE picks at USC. Several reviews are explicitly for SLL/JS 310.\\n\\nWORKLOAD: Heavy reading (~75–100 pp/week per reviews). Weekly reading quizzes (10 questions) are described as easy if you attend lecture; midterm/final quizzes plus two oral presentations (quote analysis + thematic comparison across 3 readings). Physical book required in class; no laptops except for quizzes.\\n\\nCAVEATS: Oral exams graded on public-speaking standards with follow-up questions. Assignment instructions sometimes vague (older reviews mention papers; current syllabus uses oral exams). Strict attendance — 2 unexcused absences risks failure.\\n\\nBOTTOM LINE: Engaging instructor and manageable grading if you do the reading and show up; not a phone/laptop class.",
+    "url": "https://www.ratemyprofessors.com/professor/2745347",
+    "source": "Rate My Professors",
+    "as_of": "2026-08-25",
+    "avg_grade_gpa": 4.0,
+    "avg_grade_letter": "A+",
+    "grades_reported": 11,
+    "grade_distribution": {
+      "A": 8,
+      "A+": 3
+    },
+    "reviews": [
+      {
+        "date": "2026-04-29",
+        "course": "GESM120",
+        "grade": "A",
+        "quality": 5,
+        "difficulty": 2,
+        "would_take_again": true,
+        "tags": [
+          "Get ready to read",
+          "Hilarious",
+          "Caring"
+        ],
+        "comment": "Professor Brylak's SLL-310 is one of the best classes you can take for GE credit. Lectures are extremely engaging and based on the weekly readings, which can be a bit dense but are pretty chill as long as you do them consistently. Grades are based on weekly reading quizzes (very easy) and oral presentations that are honestly pretty fun. Take him!"
+      },
+      {
+        "date": "2025-12-03",
+        "course": "GESM120",
+        "grade": "A+",
+        "quality": 5,
+        "difficulty": 1,
+        "would_take_again": true,
+        "tags": [
+          "Inspirational",
+          "Hilarious",
+          "Caring"
+        ],
+        "comment": "I love him; he is truly the best. He is so passionate about what he teaches, and he cares for every single student. I recommend him to ANY and EVERYONE."
+      },
+      {
+        "date": "2024-12-17",
+        "course": "GSEM120",
+        "grade": "A",
+        "quality": 4,
+        "difficulty": 1,
+        "would_take_again": true,
+        "tags": [
+          "Get ready to read",
+          "Hilarious"
+        ],
+        "comment": "Had Prof Brylak for SLL 310! Very funny guy but sometimes goes off on confusing tangents. Weekly reading quizzes are very easy, and you honestly don't really have to do the reading to do the quizzes. Also had 2 pretty long papers, and the instructions those were not very clear. Overall, interesting class and he is very knowledgeable and caring!"
+      },
+      {
+        "date": "2024-05-22",
+        "course": "GESM120",
+        "grade": "A",
+        "quality": 5,
+        "difficulty": 1,
+        "would_take_again": true,
+        "tags": [
+          "Get ready to read",
+          "Participation matters",
+          "Amazing lectures"
+        ],
+        "comment": "Cannot recommend prof Brylak more! He is truly an intelligent, caring, and overall amazing teacher. He somehow always has a tidbit of knowledge for whatever tangents we go on and is fantastic at facilitating discussion. He's so engaging, a great presence and I'm very happy I took his class. Assigns ~75-100 pg/week but is a very nice grader!"
+      },
+      {
+        "date": "2024-05-15",
+        "course": "GESM120",
+        "grade": "A",
+        "quality": 5,
+        "difficulty": 2,
+        "would_take_again": true,
+        "tags": [
+          "Get ready to read",
+          "Lots of homework",
+          "Hilarious"
+        ],
+        "comment": "One of my most fun classes in college. Professor Brylak is energetic, hilarious, and very interesting. The assigned reading and videos are usually interesting. Read and watch them so you do not miss out. His assigned papers are vague, but he is not a difficult grader."
+      },
+      {
+        "date": "2024-02-13",
+        "course": "GESM120",
+        "grade": "A",
+        "quality": 5,
+        "difficulty": 2,
+        "would_take_again": true,
+        "tags": [
+          "Get ready to read",
+          "Amazing lectures",
+          "Caring"
+        ],
+        "comment": "I cannot love this class more!!! Highly recommended!!! Instead of lecturing by himself, he prepares guiding questions for us to discuss and follow our thoughts to deepen in the direction. He is very knowledgeable to answer all of the unexpected tangent questions. A lot of reading but it's worth it, test and final paper are easy."
+      },
+      {
+        "date": "2023-11-04",
+        "course": "GSEM120",
+        "grade": "A+",
+        "quality": 5,
+        "difficulty": 1,
+        "would_take_again": true,
+        "tags": [
+          "Get ready to read",
+          "Amazing lectures",
+          "Caring"
+        ],
+        "comment": "I took his Easter European Apocalyptic and Post-Apocalyptic Fiction course, and I would highly recommend it. His class is very entertaining and is open to a lot of fun conversation. I had to read around a hundred pages a week and write one page a week, but the weekly papers are graded on completion."
+      },
+      {
+        "date": "2022-05-21",
+        "course": "GESM120",
+        "grade": "A",
+        "quality": 5,
+        "difficulty": 2,
+        "would_take_again": true,
+        "tags": [
+          "Participation matters",
+          "Amazing lectures",
+          "Caring"
+        ],
+        "comment": "I really enjoyed Professor Brylak's lectures, they were very interesting and I learned a lot from him. We had to read around 100 pages each week and write a one page response paper, but other than that, he is a very easy grader and it made my seminar experience very chill and fun. Take his gesm even if you have no background on the subject!"
+      },
+      {
+        "date": "2022-05-13",
+        "course": "GESM120",
+        "grade": "A",
+        "quality": 5,
+        "difficulty": 2,
+        "would_take_again": true,
+        "tags": [
+          "Amazing lectures",
+          "Clear grading criteria",
+          "Caring"
+        ],
+        "comment": "Professor Brylak knows his stuff and is a very easy grader."
+      },
+      {
+        "date": "2022-04-28",
+        "course": "GESM120",
+        "grade": "A+",
+        "quality": 5,
+        "difficulty": 1,
+        "would_take_again": true,
+        "tags": [
+          "Get ready to read",
+          "Respected",
+          "Accessible outside class"
+        ],
+        "comment": "The professor is very passionate about the class, so it is very refreshing to see enthusiasm about the topic. The class itself seems very difficult when looking at the name of the class, but it is actually very interesting and easy. Because the professor is an easy grader, I would consider this class stress-free, interesting, and an easy A."
+      },
+      {
+        "date": "2021-12-10",
+        "course": "GESM120",
+        "grade": "",
+        "quality": 5,
+        "difficulty": 2,
+        "would_take_again": true,
+        "tags": [],
+        "comment": "Great professor! His lectures have a lot of tangents but he's very passionate about the subject so it makes it engaging. A decent amount of reading but easy grading and overall not too much work - a good GESM to take."
+      },
+      {
+        "date": "2021-12-02",
+        "course": "GSEM120",
+        "grade": "A",
+        "quality": 5,
+        "difficulty": 2,
+        "would_take_again": true,
+        "tags": [
+          "Amazing lectures",
+          "Lecture heavy",
+          "Caring"
+        ],
+        "comment": "Genuinely a sweetheart and loves his classes"
+      }
+    ],
+    "rmp_instructor": "Andrzej Brylak"
   }
 }

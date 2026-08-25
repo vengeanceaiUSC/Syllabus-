@@ -23,7 +23,7 @@ from pathlib import Path
 
 PAGE_MARKER = re.compile(r"^--\s*\d+\s+of\s+\d+\s*--\s*$", re.M)
 GRADING_SCALE = re.compile(
-    r"Grading Scale\s*\n(.+?)(?:\n\n|\nCourse materials\b|\n[A-Z][a-z]{2}\s+\d|\Z)",
+    r"Grading Scale(?:[^\n]*)?\n(.+?)(?:\n\n|\nAssignment Submission\b|\nCourse materials\b|\n[A-Z][a-z]{2}\s+\d|\Z)",
     re.S | re.I,
 )
 A_THRESHOLD = re.compile(
@@ -139,6 +139,10 @@ def make_aliases(name: str) -> list[str]:
         if "2" in low:
             aliases.update({"essay 2", "second essay"})
         aliases.update({"essay", "essays"})
+    if "weekly quiz" in low:
+        aliases.update({"weekly quiz", "weekly quizzes", "quiz"})
+    if "oral exam" in low or "oral presentation" in low:
+        aliases.update({"oral exam", "oral presentation", "oral presentations"})
     return sorted(aliases, key=len, reverse=True)
 
 
@@ -518,6 +522,7 @@ def is_marshall_syllabus(text: str) -> bool:
         and not is_point_course_calendar(text)
         and not is_grading_policies_syllabus(text)
         and not is_requirements_syllabus(text)
+        and not is_assessment_breakdown_syllabus(text)
     )
 
 
@@ -2159,6 +2164,225 @@ def parse_requirements_categories(text: str) -> list[Category]:
     return cats
 
 
+def is_assessment_breakdown_syllabus(text: str) -> bool:
+    """Syllabi with 'Description and Assessment of Assignments' + grading breakdown table."""
+    return bool(
+        re.search(r"Description and Assessment of Assignments", text, re.I)
+        and re.search(r"Grading breakdown", text, re.I)
+        and re.search(r"Assignment\s+%\s+of\s+Grade", text, re.I)
+    )
+
+
+def find_assessment_description_block(text: str) -> str:
+    m = re.search(r"Description and Assessment of Assignments\s*\n", text, re.I)
+    if not m:
+        return ""
+    snippet = text[m.end() : m.end() + 6000]
+    end = re.search(r"\nGrading breakdown", snippet, re.I)
+    return snippet[: end.start()] if end else snippet[:4500]
+
+
+def find_assessment_grading_table(text: str) -> str:
+    m = re.search(r"Grading breakdown[^\n]*\n", text, re.I)
+    if not m:
+        return ""
+    snippet = text[m.end() : m.end() + 800]
+    end = re.search(r"\nGrading Scale\b", snippet, re.I)
+    return snippet[: end.start()] if end else snippet[:500]
+
+
+def parse_assessment_breakdown_categories(text: str) -> list[Category]:
+    """Parse 'Weekly Quizzes 30' rows from grading breakdown table."""
+    block = find_assessment_grading_table(text)
+    if not block:
+        return []
+    cats: list[Category] = []
+    for line in block.splitlines():
+        line = line.strip()
+        cm = re.match(r"^(.+?)\s+(\d+(?:\.\d+)?)\s*$", line)
+        if not cm:
+            continue
+        name = cm.group(1).strip()
+        if name.lower() in ("assignment", "assignment % of grade"):
+            continue
+        cats.append(
+            Category(
+                name=name,
+                weight=float(cm.group(2)),
+                weight_unit="percent",
+                aliases=make_aliases(name),
+            )
+        )
+    return cats
+
+
+def find_weekly_readings_section(text: str) -> str:
+    m = re.search(r"Readings:\s*same reading[^\n]*\n", text, re.I)
+    if not m:
+        m = re.search(r"Readings:\s*\n", text, re.I)
+    if not m:
+        return ""
+    snippet = text[m.end() :]
+    end = re.search(r"\nAcademic Conduct\b", snippet, re.I)
+    return snippet[: end.start()] if end else snippet[:5000]
+
+
+def parse_weekly_reading_schedule(text: str) -> list[dict]:
+    """Parse 'Week 2. Title' + reading/film lines."""
+    section = find_weekly_readings_section(text)
+    if not section:
+        return []
+    section = PAGE_MARKER.sub("\n", section)
+    weeks: list[dict] = []
+    current: dict | None = None
+
+    for raw_line in section.splitlines():
+        line = raw_line.strip()
+        if not line or line.startswith("--"):
+            continue
+        wm = re.match(r"^Week\s+(\d+)\.\s*(.+)$", line, re.I)
+        if wm:
+            if current:
+                weeks.append(current)
+            current = {
+                "week": int(wm.group(1)),
+                "title": wm.group(2).strip(),
+                "materials": [],
+            }
+            continue
+        if current and len(line) > 2:
+            current["materials"].append(re.sub(r"\s+", " ", line))
+
+    if current:
+        weeks.append(current)
+    return weeks
+
+
+def _assessment_category_block(text: str, cat: Category) -> str:
+    block = find_assessment_description_block(text)
+    if not block:
+        return ""
+    labels = {
+        "weekly quizzes": r"Weekly Quizzes",
+        "midterm quiz": r"Midterm Quiz",
+        "midterm oral exam": r"Midterm Oral Exam",
+        "final quiz": r"Final Quiz",
+        "final oral exam": r"Final Oral Exam",
+    }
+    low = cat.name.lower()
+    start_pat = labels.get(low, re.escape(cat.name))
+    m = re.search(rf"[-\u2013]\s*{start_pat}\s*\n", block, re.I)
+    if not m:
+        return ""
+    rest = block[m.end() :]
+    end = re.search(r"\n-\s*(?:Weekly|Midterm|Final)\s", rest, re.I)
+    chunk = rest[: end.start()] if end else rest
+    chunk = chunk.strip()
+    return chunk if len(chunk) > 40 else ""
+
+
+def build_assessment_assignments_by_category(
+    text: str, categories: list[Category]
+) -> dict[str, list[dict]]:
+    out: dict[str, list[dict]] = {c.name: [] for c in categories}
+    weeks = parse_weekly_reading_schedule(text)
+
+    for cat in categories:
+        low = cat.name.lower()
+        if low == "weekly quizzes":
+            for w in weeks:
+                mats = w.get("materials") or []
+                body = "; ".join(mats[:2]) if mats else w.get("title", "")
+                name = f"Week {w['week']} — {w.get('title', '')[:60]}"
+                if body and body != w.get("title"):
+                    name = f"{name} — {body[:70]}"
+                out[cat.name].append(
+                    sub_assignment(name, "", "", LABEL_HOMEWORK)
+                )
+        elif low == "midterm quiz":
+            out[cat.name].append(
+                sub_assignment(
+                    "Midterm Quiz — Thursday, instructional week 7 (20 questions, closed-ended)",
+                    "",
+                    "",
+                    LABEL_EXAM,
+                )
+            )
+        elif low == "midterm oral exam":
+            out[cat.name].append(
+                sub_assignment(
+                    "Midterm Oral Exam — instructional week 8 (15-min quote presentation, 60 pts max)",
+                    "",
+                    "",
+                    LABEL_ASSIGNMENT,
+                )
+            )
+        elif low == "final quiz":
+            out[cat.name].append(
+                sub_assignment(
+                    "Final Quiz — same format as midterm, second half of semester",
+                    "",
+                    "",
+                    LABEL_EXAM,
+                )
+            )
+        elif low == "final oral exam":
+            out[cat.name].append(
+                sub_assignment(
+                    "Final Oral Exam — last instructional week (15-min presentation on Love/Tradition/Jewishness/Violence/Humor across 3 readings, 50 pts max)",
+                    "",
+                    "",
+                    LABEL_ASSIGNMENT,
+                )
+            )
+    return out
+
+
+def gather_assessment_content(
+    text: str, cat: Category
+) -> tuple[dict, str, tuple[str, str]]:
+    matched: list[str] = []
+    sections: dict[str, list[str] | str] = {}
+
+    table = find_assessment_grading_table(text)
+    for line in table.splitlines():
+        line = line.strip()
+        if line.lower().startswith(cat.name.lower().split()[0]) and re.search(r"\d+\s*$", line):
+            sections["Overview (Grading breakdown)"] = line
+            matched.append(line)
+            break
+
+    desc = _assessment_category_block(text, cat)
+    if desc:
+        sections["Assignment Description"] = desc
+        matched.append(desc)
+
+    if cat.name.lower() == "weekly quizzes":
+        sched_lines: list[str] = []
+        for w in parse_weekly_reading_schedule(text):
+            mats = "; ".join(w.get("materials") or [])
+            sched_lines.append(f"Week {w['week']}: {w.get('title', '')} | {mats[:120]}")
+        if sched_lines:
+            sections["Weekly Readings (quiz content)"] = sched_lines
+            matched.extend(sched_lines)
+
+    if re.search(r"\bquiz\b|\boral\b", cat.name, re.I):
+        pol = re.search(
+            r"Attendance in all classes is mandatory.+?Use of AI in any shape or form is strictly prohibited",
+            text,
+            re.I | re.S,
+        )
+        if pol:
+            sections["Class Policies (attendance & devices)"] = re.sub(
+                r"\s+", " ", pol.group(0)
+            ).strip()[:800]
+            matched.append(sections["Class Policies (attendance & devices)"])
+
+    matched = dedupe_passages(matched)
+    verbatim = "\n\n---\n\n".join(matched)
+    return sections, verbatim, ("", "")
+
+
 def find_provisional_schedule_section(text: str) -> str:
     m = re.search(r"Provisional Schedule\s*\n", text, re.I)
     if not m:
@@ -2803,6 +3027,9 @@ def parse_categories(text: str) -> list[Category]:
         cats = parse_grading_policies_categories(text)
 
     if not cats:
+        cats = parse_assessment_breakdown_categories(text)
+
+    if not cats:
         cats = parse_requirements_categories(text)
 
     if not cats:
@@ -2830,6 +3057,10 @@ def parse_grading_scale(text: str) -> dict:
             tab_a = re.search(r"\bA\s+(\d+)\s*[\-\u2013]\s*(\d+)", raw)
             if tab_a:
                 scale["a_threshold"] = f"{tab_a.group(1)}% ({tab_a.group(1)}-{tab_a.group(2)})"
+        if scale["a_threshold"] == "N/A":
+            dash_a = re.search(r"\bA\s*[–\-]\s*(\d+)\s*[–\-]\s*(\d+)", raw)
+            if dash_a:
+                scale["a_threshold"] = f"{dash_a.group(1)}% ({dash_a.group(1)}-{dash_a.group(2)})"
         if re.search(r"\bpts?\b|\bpoints\b", raw, re.I):
             scale["scale_type"] = "points"
     if scale["a_threshold"] == "N/A" and re.search(
@@ -2859,6 +3090,15 @@ def parse_grading_scale(text: str) -> dict:
             )
             if block:
                 scale["raw_scale"] = re.sub(r"\s+", " ", block.group(1)).strip()[:800]
+    if scale["a_threshold"] == "N/A":
+        dash_a = re.search(r"\bA\s*[–\-]\s*(\d+)\s*[–\-]\s*(\d+)", text)
+        if dash_a:
+            scale["a_threshold"] = f"{dash_a.group(1)}% ({dash_a.group(1)}-{dash_a.group(2)})"
+            if not scale.get("raw_scale"):
+                scale["raw_scale"] = re.sub(
+                    r"\s+", " ",
+                    text[dash_a.start() : dash_a.start() + 200],
+                ).strip()
     return scale
 
 
@@ -3474,6 +3714,7 @@ def dissect(
     calendar_mode = is_point_course_calendar(text)
     grading_policies_mode = is_grading_policies_syllabus(text)
     requirements_mode = is_requirements_syllabus(text)
+    assessment_mode = is_assessment_breakdown_syllabus(text)
     marshall_mode = is_marshall_syllabus(text)
     categories = parse_categories(text)
     if not categories and calendar_mode:
@@ -3505,6 +3746,8 @@ def dissect(
         assignment_map = build_econ351_assignments_by_category(text, year, categories)
     elif requirements_mode:
         assignment_map = build_requirements_assignments_by_category(text, year, categories)
+    elif assessment_mode:
+        assignment_map = build_assessment_assignments_by_category(text, categories)
     elif calendar_mode:
         assignment_map = build_calendar_assignments_by_category(text, year, categories)
     else:
@@ -3531,6 +3774,8 @@ def dissect(
             sections, verbatim, (start, due) = gather_econ351_content(text, cat, year)
         elif requirements_mode:
             sections, verbatim, (start, due) = gather_requirements_content(text, cat, year)
+        elif assessment_mode:
+            sections, verbatim, (start, due) = gather_assessment_content(text, cat)
         else:
             sections, verbatim = gather_category_content(text, cat)
             supplement = parse_supplement_text(text)
