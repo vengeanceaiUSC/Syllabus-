@@ -49,19 +49,22 @@
           "name": "Active Class Participation — attend MW sessions prepared; contribute to discussions and in-class activities (2 free abse",
           "start_date": "2026-08-24",
           "due_date": "2026-12-04",
-          "notes": "Assignment"
+          "notes": "Assignment",
+          "weight_note": "Not in syllabus (% of 15%)"
         },
         {
           "name": "Research Studies — complete 2.0 credits via SONA (register, setup, lab studies)",
           "start_date": "2026-08-24",
           "due_date": "2026-12-04",
-          "notes": "Research"
+          "notes": "Research",
+          "weight_note": "Not in syllabus (% of 15%)"
         },
         {
           "name": "Team Engagement — effective engagement with project team throughout semester",
           "start_date": "2026-09-07",
           "due_date": "2026-12-04",
-          "notes": "Assignment"
+          "notes": "Assignment",
+          "weight_note": "Not in syllabus (% of 15%)"
         },
         {
           "name": "Research: Prescreening questionnaire opens",
@@ -83,6 +86,19 @@
           "Research Studies (2)"
         ],
         "Overview (Course Evaluation)": "Participation 15% — Active Class Participation; Team Engagement; Research Studies (2.0 credits)",
+        "Weight Breakdown (15% total)": [
+          "Active Class Participation — % of the 15% not specified in syllabus",
+          "Team Engagement — % of the 15% not specified in syllabus",
+          "Research Studies (2.0 credits) — % of the 15% not specified in syllabus"
+        ],
+        "Syllabus note on sub-weights": "Course Evaluation lists three components under Participation 15% but does not assign individual percentages (unlike Team Project 30%, which breaks down to 3% + 15% + 10% + 2%). The instructor evaluates participation holistically across all three components.",
+        "Research Studies — Credit scale (within its component)": [
+          "2.0 credits earned → 100% on the Research Studies portion of Participation",
+          "1.5 credits → 75%",
+          "1.0 credits → 50%",
+          "0 credits → 0%",
+          "Partial credits prorated; no extensions (Marshall Research Participation Guide)"
+        ],
         "Attendance Policy": "Attendance Policy. Attendance is critical in this course. All missed classes will be noted. The policy on missed classes is to allow each student two (2) absences, no questions asked, no penalty. Missing three or more classes without a reasonable conversation with the professor will reduce your participation grade and final course grade. Students with an excessive number of absences are at risk of failing the course. Only official university engagements, such as officially scheduled USC Marshall sponsored case competitions and sports events, will be accepted as exceptions to this policy. Job interviews are not excused so choose your absences carefully. Habitual lateness and leaving class early, for whatever reason, will be noted as evidence of low course commitment and penalized. Simply put, you cannot learn from our class discussions, and your classmates cannot learn from you, if you are not present.",
         "Team Engagement": "Effective engagement with your team is also an important component of your participation grade.",
         "Active Class Participation": "Your participation grade will be based on consistent and effective contributions to class discussions and participation in in-class assignments and activities. You are expected to attend every class session having read, thought about, and prepared any assigned material. You should also be prepared to share your ideas and to actively listen to and interpret the ideas presented by others.  3",

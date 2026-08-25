@@ -1166,7 +1166,7 @@ def build(
             sub_label = sub.get("notes") or ""
             write_row(
                 sub.get("name", "Assignment"),
-                "",
+                sub.get("weight_note") or "",
                 sub.get("start_date") or "",
                 sub.get("due_date") or "",
                 "",

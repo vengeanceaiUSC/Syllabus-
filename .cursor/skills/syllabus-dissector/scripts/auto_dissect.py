@@ -218,14 +218,18 @@ def sub_assignment(
     start: str,
     due: str,
     label: str,
+    weight_note: str = "",
 ) -> dict:
     """Sub-row for Excel: `notes` is the strict type label shown in the Category column."""
-    return {
+    row = {
         "name": name[:120],
         "start_date": start,
         "due_date": due,
         "notes": label,
     }
+    if weight_note:
+        row["weight_note"] = weight_note
+    return row
 
 
 def classify_major_vs_daily(name: str) -> str:
@@ -810,24 +814,28 @@ def build_marshall_assignments_by_category(
     # Research participation milestones — under Participation only
     part_name = next((c.name for c in categories if "participation" in c.name.lower()), None)
     if part_name:
+        not_spec = "Not in syllabus (% of 15%)"
         out[part_name] = [
             sub_assignment(
                 "Active Class Participation — attend MW sessions prepared; contribute to discussions and in-class activities (2 free absences)",
                 f"{year:04d}-08-24",
                 f"{year:04d}-12-04",
                 LABEL_ASSIGNMENT,
+                weight_note=not_spec,
             ),
             sub_assignment(
                 "Team Engagement — effective engagement with project team throughout semester",
                 f"{year:04d}-09-07",
                 f"{year:04d}-12-04",
                 LABEL_ASSIGNMENT,
+                weight_note=not_spec,
             ),
             sub_assignment(
                 "Research Studies — complete 2.0 credits via SONA (register, setup, lab studies)",
                 f"{year:04d}-08-24",
                 f"{year:04d}-12-04",
                 LABEL_RESEARCH,
+                weight_note=not_spec,
             ),
         ]
     if research_guide and part_name:
@@ -1320,6 +1328,24 @@ def gather_marshall_participation_content(
     sections["Overview (Course Evaluation)"] = (
         "Participation 15% — Active Class Participation; Team Engagement; Research Studies (2.0 credits)"
     )
+
+    sections["Weight Breakdown (15% total)"] = [
+        "Active Class Participation — % of the 15% not specified in syllabus",
+        "Team Engagement — % of the 15% not specified in syllabus",
+        "Research Studies (2.0 credits) — % of the 15% not specified in syllabus",
+    ]
+    sections["Syllabus note on sub-weights"] = (
+        "Course Evaluation lists three components under Participation 15% but does not assign "
+        "individual percentages (unlike Team Project 30%, which breaks down to 3% + 15% + 10% + 2%). "
+        "The instructor evaluates participation holistically across all three components."
+    )
+    sections["Research Studies — Credit scale (within its component)"] = [
+        "2.0 credits earned → 100% on the Research Studies portion of Participation",
+        "1.5 credits → 75%",
+        "1.0 credits → 50%",
+        "0 credits → 0%",
+        "Partial credits prorated; no extensions (Marshall Research Participation Guide)",
+    ]
 
     block = extract_marshall_participation_block(text)
     if block:
