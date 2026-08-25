@@ -46,6 +46,24 @@
           "notes": "Research"
         },
         {
+          "name": "Active Class Participation — attend MW sessions prepared; contribute to discussions and in-class activities (2 free abse",
+          "start_date": "2026-08-24",
+          "due_date": "2026-12-04",
+          "notes": "Assignment"
+        },
+        {
+          "name": "Research Studies — complete 2.0 credits via SONA (register, setup, lab studies)",
+          "start_date": "2026-08-24",
+          "due_date": "2026-12-04",
+          "notes": "Research"
+        },
+        {
+          "name": "Team Engagement — effective engagement with project team throughout semester",
+          "start_date": "2026-09-07",
+          "due_date": "2026-12-04",
+          "notes": "Assignment"
+        },
+        {
           "name": "Research: Prescreening questionnaire opens",
           "start_date": "2026-09-11",
           "due_date": "",
@@ -59,13 +77,30 @@
         }
       ],
       "sections": {
-        "Overview (Course Evaluation)": "Participation 15%",
-        "Course Schedule (dated sessions)": [
-          "2026-08-24 | 8/24 Introduction • Vermeulen, F. (2013). Beware the Sirens to the Course of Management Pseudo Science. • Pfeffer, J. & Sutton, R. (2011). Trust the Evidence, Not Your Instincts W Values, Textbook Reading: Chapters 1 & 7 We will complete th",
-          "2026-08-26 | 8/26 Attitudes & ARES Reading: Park, N. & Peterson, C. Character Strengths Ethics (2009) Character Strengths: Research and assessment in class. Practice Other: Watch the USC-CT and Case Analysis videos at this link. M Individual Textbook Re",
-          "2026-09-07 | 9/7 W Perception & Textbook Reading: Ch. 11 & Ch. 4.1-4.3 We will be forming teams this"
+        "Grade Components (15% total)": [
+          "Active Class Participation",
+          "Team Engagement",
+          "Research Studies (2)"
         ],
-        "Research Participation Guide (key dates)": [
+        "Overview (Course Evaluation)": "Participation 15% — Active Class Participation; Team Engagement; Research Studies (2.0 credits)",
+        "Attendance Policy": "Attendance Policy. Attendance is critical in this course. All missed classes will be noted. The policy on missed classes is to allow each student two (2) absences, no questions asked, no penalty. Missing three or more classes without a reasonable conversation with the professor will reduce your participation grade and final course grade. Students with an excessive number of absences are at risk of failing the course. Only official university engagements, such as officially scheduled USC Marshall sponsored case competitions and sports events, will be accepted as exceptions to this policy. Job interviews are not excused so choose your absences carefully. Habitual lateness and leaving class early, for whatever reason, will be noted as evidence of low course commitment and penalized. Simply put, you cannot learn from our class discussions, and your classmates cannot learn from you, if you are not present.",
+        "Team Engagement": "Effective engagement with your team is also an important component of your participation grade.",
+        "Active Class Participation": "Your participation grade will be based on consistent and effective contributions to class discussions and participation in in-class assignments and activities. You are expected to attend every class session having read, thought about, and prepared any assigned material. You should also be prepared to share your ideas and to actively listen to and interpret the ideas presented by others.  3",
+        "What Counts as Quality Participation": [
+          "Offer a relevant concept or personal experience",
+          "Provide careful analysis by applying theory and concepts from readings and lectures",
+          "Move the discussion forward by building on previous contributions with new insights",
+          "Ask thoughtful and challenging questions."
+        ],
+        "Classroom Expectations": "Our learning community operates in an environment of openness, respect, encouragement and engagement. Discussions will be richer if you share your unique perspective. There is rarely one right answer in organizational behavior! It may take courage or patience or imagination to engage with the course material, our classmates and our experiences. In our classroom, I aim to develop a psychologically safe space where we can all learn together and benefit from the diversity that leads to increased innovation, better problem solving and, in our case, what I hope will be new friends and a great semester!",
+        "Research Studies (syllabus)": "Research Studies Participation. Please refer to the Research Studies Participation document in Brightspace for more information on this component of your grade.",
+        "Research Studies — 3-Step Process": [
+          "Step 1 (Register): Create SONA account at marshall-mor.sona-systems.com — opens Aug 24, deadline Sep 25",
+          "Step 2 (Setup): Complete prescreening questionnaire + submit 3 employee contacts — opens Sep 11, deadline Sep 25",
+          "Step 3 (Earn credits): Complete 3–6 lab studies (online or in-person) — invitations begin after setup; deadline Dec 4",
+          "Goal: 2.0 research credits (typically 0.25 credit per 15 minutes of study time)"
+        ],
+        "Research Studies — Key Dates": [
           "2026-08-24 (start): SONA registration opens",
           "2026-09-11 (start): Prescreening questionnaire opens",
           "2026-09-25 (due): Setup deadline (registration, prescreening, contacts)",
@@ -73,62 +108,15 @@
           "2026-10-26 (due): Employee contact surveys sent",
           "2026-12-04 (due): Complete 2.0 research credits"
         ],
-        "Research Participation Guide (contacts)": [
+        "Research Studies — Contacts & Support": [
           "Marshall Behavioral Research Lab: mor.sona@marshall.usc.edu",
           "Guide online: bit.ly/MOR-BUAD",
-          "SONA registration walkthrough (3 min): bit.ly/SONA-BUAD304",
-          "SONA registration: marshall-mor.sona-systems.com"
-        ],
-        "Research Participation Guide (quick reference excerpt)": "& Contacts Key information, deadlines, and support contacts for research participation KEY DATES · FALL 2026 Aug 24 Sep 11 Sep 25 Late Oct Dec 4 Registration Prescreening Setup deadline Employee Credit opens opens (Steps 1–2) surveys sent deadline This guide lives online. Always-current web version with clickable links: bit.ly/MOR-BUAD SCAN SONA PORTAL WHO TO CONTACT STEPS 1 · 2A · 3 — LAB STUDIES marshall-mor.sona-systems.com mor.sona@marshall.usc.edu Register, complete prescreening, sign up for studies, and 213.821.9752 track your credit progress. SCAN TO OPEN SONA registration, prescreening questionnaire, study scheduling, research credits, technical issues, lab location STEP 2B — FIELD RESEARCH mor.research@usc.edu 2.0 3–6 0.25 Employee contact submissions, survey distribution, contact updates, completion CREDIT GOAL TYPICAL STUDIES CREDIT PER 15 MIN status STUDY LOGISTICS SLACK & DROP-IN HELP Online Slack Sign up and complete within 3 days of your invitation, in one #buad304-research-participation · Peer support and sitting. course updates In-Person Book 1–2 weeks ahead · Cancel 6+ hours ahead · VPD Drop-In Hours Lower Level Wednesdays 2:00–3:00 PM · Online via Zoom Directions",
-        "Related Mentions": [
-          "Participation",
-          "Attendance Policy. Attendance is critical in this course. All missed classes will be noted. The policy on missed",
-          "classes is to allow each student two (2) absences, no questions asked, no penalty. Missing three or more classes",
-          "without a reasonable conversation with the professor will reduce your participation grade and final course",
-          "grade. Students with an excessive number of absences are at risk of failing the course. Only official",
-          "university engagements, such as officially scheduled USC Marshall sponsored case competitions and sports",
-          "events, will be accepted as exceptions to this policy. Job interviews are not excused so choose your absences",
-          "carefully. Habitual lateness and leaving class early, for whatever reason, will be noted as evidence of low",
-          "course commitment and penalized. Simply put, you cannot learn from our class discussions, and your",
-          "classmates cannot learn from you, if you are not present.",
-          "Participation. Your participation grade will be based on consistent and effective contributions to class",
-          "discussions and participation in in-class assignments and activities. You are expected to attend every class",
-          "session having read, thought about, and prepared any assigned material. You should also be prepared to share",
-          "your ideas and to actively listen to and interpret the ideas presented by others. Effective engagement with your",
-          "team is also an important component of your participation grade.",
-          "3",
-          "Comments that are vague, repetitive, unrelated to the discussion, or disrespectful of others will be evaluated",
-          "negatively. Quality comments possess one or more of the following attributes:",
-          "• Offer a relevant concept or personal experience",
-          "• Provide careful analysis by applying theory and concepts from readings and lectures",
-          "• Move the discussion forward by building on previous contributions with new insights",
-          "• Ask thoughtful and challenging questions.",
-          "Our learning community operates in an environment of openness, respect, encouragement and engagement.",
-          "Discussions will be richer if you share your unique perspective. There is rarely one right answer in",
-          "organizational behavior! It may take courage or patience or imagination to engage with the course material,",
-          "our classmates and our experiences. In our classroom, I aim to develop a psychologically safe space where",
-          "we can all learn together and benefit from the diversity that leads to increased innovation, better problem",
-          "solving and, in our case, what I hope will be new friends and a great semester!",
-          "Research Studies Participation. Please refer to the Research Studies Participation document in Brightspace",
-          "for more information on this component of your grade.",
-          "& Contacts Key information, deadlines, and support contacts for research participation KEY DATES · FALL 2026 Aug 24 Sep 11 Sep 25 Late Oct Dec 4 Registration Prescreening Setup deadline Employee Credit opens opens (Steps 1–2) surveys sent deadline This guide lives online. Always-current web version with clickable links: bit.ly/MOR-BUAD SCAN SONA PORTAL WHO TO CONTACT STEPS 1 · 2A · 3 — LAB STUDIES marshall-mor.sona-systems.com mor.sona@marshall.usc.edu Register, complete prescreening, sign up for studies, and 213.821.9752 track your credit progress. SCAN TO OPEN SONA registration, prescreening questionnaire, study scheduling, research credits, technical issues, lab location STEP 2B — FIELD RESEARCH mor.research@usc.edu 2.0 3–6 0.25 Employee contact submissions, survey distribution, contact updates, completion CREDIT GOAL TYPICAL STUDIES CREDIT PER 15 MIN status STUDY LOGISTICS SLACK & DROP-IN HELP Online Slack Sign up and complete within 3 days of your invitation, in one #buad304-research-participation · Peer support and sitting. course updates In-Person Book 1–2 weeks ahead · Cancel 6+ hours ahead · VPD Drop-In Hours Lower Level Wednesdays 2:00–3:00 PM · Online via Zoom Directions",
-          "2026-08-24 | 8/24 Introduction • Vermeulen, F. (2013). Beware the Sirens to the Course of Management Pseudo Science. • Pfeffer, J. & Sutton, R. (2011). Trust the Evidence, Not Your Instincts W Values, Textbook Reading: Chapters 1 & 7 We will complete th",
-          "2026-08-26 | 8/26 Attitudes & ARES Reading: Park, N. & Peterson, C. Character Strengths Ethics (2009) Character Strengths: Research and assessment in class. Practice Other: Watch the USC-CT and Case Analysis videos at this link. M Individual Textbook Re",
-          "2026-09-07 | 9/7 W Perception & Textbook Reading: Ch. 11 & Ch. 4.1-4.3 We will be forming teams this",
-          "2026-09-25 (due): Setup deadline (registration, prescreening, contacts)",
-          "Marshall Behavioral Research Lab: mor.sona@marshall.usc.edu",
-          "SONA registration walkthrough (3 min): bit.ly/SONA-BUAD304",
-          "2026-09-26 (start): Study invitations begin (after setup)",
-          "2026-09-11 (start): Prescreening questionnaire opens",
-          "SONA registration: marshall-mor.sona-systems.com",
-          "2026-10-26 (due): Employee contact surveys sent",
-          "2026-12-04 (due): Complete 2.0 research credits",
-          "2026-08-24 (start): SONA registration opens",
-          "Guide online: bit.ly/MOR-BUAD",
-          "Participation 15%"
+          "SONA walkthrough (3 min): bit.ly/SONA-BUAD304",
+          "SONA portal: marshall-mor.sona-systems.com",
+          "Slack support: #buad304-research-participation"
         ]
       },
-      "extracted_text": "Participation\nAttendance Policy. Attendance is critical in this course. All missed classes will be noted. The policy on missed\nclasses is to allow each student two (2) absences, no questions asked, no penalty. Missing three or more classes\nwithout a reasonable conversation with the professor will reduce your participation grade and final course\ngrade. Students with an excessive number of absences are at risk of failing the course. Only official\nuniversity engagements, such as officially scheduled USC Marshall sponsored case competitions and sports\nevents, will be accepted as exceptions to this policy. Job interviews are not excused so choose your absences\ncarefully. Habitual lateness and leaving class early, for whatever reason, will be noted as evidence of low\ncourse commitment and penalized. Simply put, you cannot learn from our class discussions, and your\nclassmates cannot learn from you, if you are not present.\nParticipation. Your participation grade will be based on consistent and effective contributions to class\ndiscussions and participation in in-class assignments and activities. You are expected to attend every class\nsession having read, thought about, and prepared any assigned material. You should also be prepared to share\nyour ideas and to actively listen to and interpret the ideas presented by others. Effective engagement with your\nteam is also an important component of your participation grade.\n3\n\n\n\nComments that are vague, repetitive, unrelated to the discussion, or disrespectful of others will be evaluated\nnegatively. Quality comments possess one or more of the following attributes:\n• Offer a relevant concept or personal experience\n• Provide careful analysis by applying theory and concepts from readings and lectures\n• Move the discussion forward by building on previous contributions with new insights\n• Ask thoughtful and challenging questions.\nOur learning community operates in an environment of openness, respect, encouragement and engagement.\nDiscussions will be richer if you share your unique perspective. There is rarely one right answer in\norganizational behavior! It may take courage or patience or imagination to engage with the course material,\nour classmates and our experiences. In our classroom, I aim to develop a psychologically safe space where\nwe can all learn together and benefit from the diversity that leads to increased innovation, better problem\nsolving and, in our case, what I hope will be new friends and a great semester!\nResearch Studies Participation. Please refer to the Research Studies Participation document in Brightspace\nfor more information on this component of your grade.\n\n---\n\n& Contacts Key information, deadlines, and support contacts for research participation KEY DATES · FALL 2026 Aug 24 Sep 11 Sep 25 Late Oct Dec 4 Registration Prescreening Setup deadline Employee Credit opens opens (Steps 1–2) surveys sent deadline This guide lives online. Always-current web version with clickable links: bit.ly/MOR-BUAD SCAN SONA PORTAL WHO TO CONTACT STEPS 1 · 2A · 3 — LAB STUDIES marshall-mor.sona-systems.com mor.sona@marshall.usc.edu Register, complete prescreening, sign up for studies, and 213.821.9752 track your credit progress. SCAN TO OPEN SONA registration, prescreening questionnaire, study scheduling, research credits, technical issues, lab location STEP 2B — FIELD RESEARCH mor.research@usc.edu 2.0 3–6 0.25 Employee contact submissions, survey distribution, contact updates, completion CREDIT GOAL TYPICAL STUDIES CREDIT PER 15 MIN status STUDY LOGISTICS SLACK & DROP-IN HELP Online Slack Sign up and complete within 3 days of your invitation, in one #buad304-research-participation · Peer support and sitting. course updates In-Person Book 1–2 weeks ahead · Cancel 6+ hours ahead · VPD Drop-In Hours Lower Level Wednesdays 2:00–3:00 PM · Online via Zoom Directions\n\n---\n\n2026-08-24 | 8/24 Introduction • Vermeulen, F. (2013). Beware the Sirens to the Course of Management Pseudo Science. • Pfeffer, J. & Sutton, R. (2011). Trust the Evidence, Not Your Instincts W Values, Textbook Reading: Chapters 1 & 7 We will complete th\n\n---\n\n2026-08-26 | 8/26 Attitudes & ARES Reading: Park, N. & Peterson, C. Character Strengths Ethics (2009) Character Strengths: Research and assessment in class. Practice Other: Watch the USC-CT and Case Analysis videos at this link. M Individual Textbook Re\n\n---\n\n2026-09-07 | 9/7 W Perception & Textbook Reading: Ch. 11 & Ch. 4.1-4.3 We will be forming teams this\n\n---\n\n2026-09-25 (due): Setup deadline (registration, prescreening, contacts)\n\n---\n\nMarshall Behavioral Research Lab: mor.sona@marshall.usc.edu\n\n---\n\nSONA registration walkthrough (3 min): bit.ly/SONA-BUAD304\n\n---\n\n2026-09-26 (start): Study invitations begin (after setup)\n\n---\n\n2026-09-11 (start): Prescreening questionnaire opens\n\n---\n\nSONA registration: marshall-mor.sona-systems.com\n\n---\n\n2026-10-26 (due): Employee contact surveys sent\n\n---\n\n2026-12-04 (due): Complete 2.0 research credits\n\n---\n\n2026-08-24 (start): SONA registration opens\n\n---\n\nGuide online: bit.ly/MOR-BUAD\n\n---\n\nParticipation 15%"
+      "extracted_text": ""
     },
     {
       "name": "Midterm Exam",

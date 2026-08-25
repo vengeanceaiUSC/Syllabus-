@@ -251,7 +251,7 @@ def write_assignment_pdf(
             story.append(Paragraph(esc(details), styles["body"]))
 
     extracted = (cat.get("extracted_text") or "").strip()
-    if extracted:
+    if extracted and not cat.get("omit_verbatim"):
         story.append(section_bar("Full Syllabus Extract", styles))
         story.append(Spacer(1, 0.08 * inch))
         for para in extracted.split("\n\n"):

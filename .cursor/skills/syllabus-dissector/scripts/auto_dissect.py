@@ -807,19 +807,39 @@ def build_marshall_assignments_by_category(
             )
         )
 
-    # Research participation milestones  -  under Participation only
-    if research_guide:
-        part_name = next((c.name for c in categories if "participation" in c.name.lower()), None)
-        if part_name:
-            for m in parse_research_participation_milestones(research_guide, year):
-                out[part_name].append(
-                    sub_assignment(
-                        f"Research: {m['label']}",
-                        m["date_iso"] if m["kind"] == "start" else "",
-                        m["date_iso"] if m["kind"] == "due" else "",
-                        LABEL_RESEARCH,
-                    )
+    # Research participation milestones — under Participation only
+    part_name = next((c.name for c in categories if "participation" in c.name.lower()), None)
+    if part_name:
+        out[part_name] = [
+            sub_assignment(
+                "Active Class Participation — attend MW sessions prepared; contribute to discussions and in-class activities (2 free absences)",
+                f"{year:04d}-08-24",
+                f"{year:04d}-12-04",
+                LABEL_ASSIGNMENT,
+            ),
+            sub_assignment(
+                "Team Engagement — effective engagement with project team throughout semester",
+                f"{year:04d}-09-07",
+                f"{year:04d}-12-04",
+                LABEL_ASSIGNMENT,
+            ),
+            sub_assignment(
+                "Research Studies — complete 2.0 credits via SONA (register, setup, lab studies)",
+                f"{year:04d}-08-24",
+                f"{year:04d}-12-04",
+                LABEL_RESEARCH,
+            ),
+        ]
+    if research_guide and part_name:
+        for m in parse_research_participation_milestones(research_guide, year):
+            out[part_name].append(
+                sub_assignment(
+                    f"Research: {m['label']}",
+                    m["date_iso"] if m["kind"] == "start" else "",
+                    m["date_iso"] if m["kind"] == "due" else "",
+                    LABEL_RESEARCH,
                 )
+            )
 
     for cat_name, items in out.items():
         seen_names: set[str] = set()
@@ -1242,10 +1262,167 @@ def find_marshall_evaluation_line(text: str, cat: Category) -> str:
     return ""
 
 
+def parse_participation_subcomponents(text: str) -> list[str]:
+    """BUAD-304 Participation 15% breakdown from Course Evaluation."""
+    block = find_course_evaluation_block(text)
+    if not block:
+        return []
+    names: list[str] = []
+    after_parent = False
+    for line in block.splitlines():
+        line = line.strip()
+        if re.match(r"^Participation\s+\d", line, re.I):
+            after_parent = True
+            continue
+        if not after_parent:
+            continue
+        if re.match(r"^(Individual Assignments|Midterm|Team Project|Final Exam|Total)\b", line, re.I):
+            break
+        if line and not re.match(r"^\d", line):
+            names.append(line)
+    return names
+
+
+def extract_marshall_participation_block(text: str) -> str:
+    """Dedicated Participation policy section (attendance through research blurb)."""
+    m = re.search(
+        r"Participation\s*\nAttendance Policy(.+?)(?:\nIndividual Assignments\b|\nMidterm Exam\b)",
+        text,
+        re.I | re.S,
+    )
+    if not m:
+        return ""
+    return ("Participation\nAttendance Policy" + m.group(1)).strip()
+
+
+def _clean_prose(blob: str) -> str:
+    blob = PAGE_MARKER.sub(" ", blob)
+    blob = re.sub(r"--\s*\d+\s+of\s+\d+\s*--", " ", blob, flags=re.I)
+    blob = re.sub(r"\b\d+\s+--\s*\d+\s+of\s+\d+\s*--", " ", blob)
+    return re.sub(r"\s+", " ", blob.replace("\n", " ")).strip()
+
+
+def gather_marshall_participation_content(
+    text: str, year: int, research_guide: str = ""
+) -> tuple[dict, str, tuple[str, str]]:
+    """Clean, structured Participation 15% content (no schedule grep noise)."""
+    sections: dict[str, list[str] | str] = {}
+    subcomps = parse_participation_subcomponents(text)
+    if subcomps:
+        sections["Grade Components (15% total)"] = subcomps
+    else:
+        sections["Grade Components (15% total)"] = [
+            "Active Class Participation",
+            "Team Engagement",
+            "Research Studies (2)",
+        ]
+
+    sections["Overview (Course Evaluation)"] = (
+        "Participation 15% — Active Class Participation; Team Engagement; Research Studies (2.0 credits)"
+    )
+
+    block = extract_marshall_participation_block(text)
+    if block:
+        att = re.search(
+            r"Attendance Policy\.(.+?)(?=Participation\. Your participation)",
+            block,
+            re.I | re.S,
+        )
+        if att:
+            sections["Attendance Policy"] = _clean_prose("Attendance Policy." + att.group(1))
+
+        disc = re.search(
+            r"Participation\. Your participation grade(.+?)(?=Comments that are vague|Research Studies Participation)",
+            block,
+            re.I | re.S,
+        )
+        if disc:
+            active_text = _clean_prose("Your participation grade" + disc.group(1))
+            team_sent = (
+                "Effective engagement with your team is also an important component "
+                "of your participation grade."
+            )
+            if team_sent in active_text:
+                active_text = active_text.replace(team_sent, "").strip()
+                sections["Team Engagement"] = team_sent
+            sections["Active Class Participation"] = active_text
+
+        team = re.search(
+            r"Effective engagement with your team is also an important component of your participation grade\.",
+            block,
+            re.I,
+        )
+        if team and "Team Engagement" not in sections:
+            sections["Team Engagement"] = team.group(0)
+
+        quality = re.findall(
+            r"•\s*(Offer a relevant concept.+|Provide careful analysis.+|Move the discussion forward.+|Ask thoughtful and challenging questions.+)",
+            block,
+            re.I,
+        )
+        if quality:
+            sections["What Counts as Quality Participation"] = [
+                _clean_prose(q) for q in quality
+            ]
+
+        classroom = re.search(
+            r"Our learning community operates(.+?)(?=Research Studies Participation)",
+            block,
+            re.I | re.S,
+        )
+        if classroom:
+            sections["Classroom Expectations"] = _clean_prose(classroom.group(0))
+
+        rs = re.search(r"Research Studies Participation\.(.+?)(?:\Z|\n3\n)", block, re.I | re.S)
+        if rs:
+            sections["Research Studies (syllabus)"] = _clean_prose(
+                "Research Studies Participation." + rs.group(1)
+            )
+
+    if research_guide:
+        sections["Research Studies — 3-Step Process"] = [
+            "Step 1 (Register): Create SONA account at marshall-mor.sona-systems.com — opens Aug 24, deadline Sep 25",
+            "Step 2 (Setup): Complete prescreening questionnaire + submit 3 employee contacts — opens Sep 11, deadline Sep 25",
+            "Step 3 (Earn credits): Complete 3–6 lab studies (online or in-person) — invitations begin after setup; deadline Dec 4",
+            "Goal: 2.0 research credits (typically 0.25 credit per 15 minutes of study time)",
+        ]
+        milestones = parse_research_participation_milestones(research_guide, year)
+        if milestones:
+            sections["Research Studies — Key Dates"] = [
+                f"{m['date_iso']} ({m['kind']}): {m['label']}" for m in milestones
+            ]
+        contacts = []
+        if re.search(r"mor\.sona@marshall\.usc\.edu", research_guide, re.I):
+            contacts.append("Marshall Behavioral Research Lab: mor.sona@marshall.usc.edu")
+        if re.search(r"bit\.ly/MOR-BUAD", research_guide, re.I):
+            contacts.append("Guide online: bit.ly/MOR-BUAD")
+        if re.search(r"bit\.ly/SONA-BUAD304", research_guide, re.I):
+            contacts.append("SONA walkthrough (3 min): bit.ly/SONA-BUAD304")
+        if re.search(r"marshall-mor\.sona-systems\.com", research_guide, re.I):
+            contacts.append("SONA portal: marshall-mor.sona-systems.com")
+        if re.search(r"#buad304-research-participation", research_guide, re.I):
+            contacts.append("Slack support: #buad304-research-participation")
+        if contacts:
+            sections["Research Studies — Contacts & Support"] = contacts
+
+    start, due = "", ""
+    if research_guide:
+        start, due = research_dates_for_participation(
+            parse_research_participation_milestones(research_guide, year)
+        )
+    if not start:
+        start = f"{year:04d}-08-24"
+
+    return sections, "", (start, due)
+
+
 def gather_marshall_content(
     text: str, cat: Category, year: int, research_guide: str = ""
 ) -> tuple[dict, str, tuple[str, str]]:
     """Targeted extraction for Marshall percentage syllabi (BUAD-304 style)."""
+    if "participation" in cat.name.lower():
+        return gather_marshall_participation_content(text, year, research_guide)
+
     matched: list[str] = []
     sections: dict[str, list[str] | str] = {}
     eval_line = find_marshall_evaluation_line(text, cat)
