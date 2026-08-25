@@ -88,6 +88,10 @@ KNOWN_PROFESSORS: dict[str, dict] = {
         "rmp_instructor": "Alejandro Martínez-Marquina",
         "professor_id": "2880539",
     },
+    "SPAN-290": {
+        "instructor": "Samuel Steinberg",
+        "professor_id": "2132312",
+    },
 }
 
 

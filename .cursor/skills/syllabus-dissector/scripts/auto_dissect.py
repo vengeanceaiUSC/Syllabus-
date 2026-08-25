@@ -23,7 +23,7 @@ from pathlib import Path
 
 PAGE_MARKER = re.compile(r"^--\s*\d+\s+of\s+\d+\s*--\s*$", re.M)
 GRADING_SCALE = re.compile(
-    r"Grading Scale\s*\n(.+?)(?:\n\n|\n[A-Z][a-z]{2}\s+\d|\Z)",
+    r"Grading Scale\s*\n(.+?)(?:\n\n|\nCourse materials\b|\n[A-Z][a-z]{2}\s+\d|\Z)",
     re.S | re.I,
 )
 A_THRESHOLD = re.compile(
@@ -131,6 +131,14 @@ def make_aliases(name: str) -> list[str]:
         )
     if "wsj" in low or "future view" in low:
         aliases.update({"wsj future view", "wall street journal", "future view"})
+    if "reading notes" in low:
+        aliases.update({"reading notes", "reading note", "reading notes assignment"})
+    if "essay" in low:
+        if "1" in low:
+            aliases.update({"essay 1", "first essay"})
+        if "2" in low:
+            aliases.update({"essay 2", "second essay"})
+        aliases.update({"essay", "essays"})
     return sorted(aliases, key=len, reverse=True)
 
 
@@ -509,6 +517,7 @@ def is_marshall_syllabus(text: str) -> bool:
         bool(find_course_evaluation_block(text))
         and not is_point_course_calendar(text)
         and not is_grading_policies_syllabus(text)
+        and not is_requirements_syllabus(text)
     )
 
 
@@ -2109,6 +2118,363 @@ def parse_grading_policies_categories(text: str) -> list[Category]:
     return cats
 
 
+def is_requirements_syllabus(text: str) -> bool:
+    """Dornsife-style syllabi: Requirements (N points) + Provisional Schedule."""
+    return bool(
+        re.search(r"Requirements\s*\n", text, re.I)
+        and re.search(r"\(\d+\s+points?\)", text, re.I)
+        and re.search(r"Provisional Schedule", text, re.I)
+    )
+
+
+def find_requirements_block(text: str) -> str:
+    m = re.search(r"Requirements\s*\n", text, re.I)
+    if not m:
+        return ""
+    snippet = text[m.end() : m.end() + 1200]
+    end = re.search(r"\nLearning Objectives\b|\nGrading Scale\b", snippet, re.I)
+    return snippet[: end.start()] if end else snippet[:800]
+
+
+def parse_requirements_categories(text: str) -> list[Category]:
+    """Parse 'Reading Notes (100 points)' bullets from a Requirements section."""
+    block = find_requirements_block(text)
+    if not block:
+        return []
+    cats: list[Category] = []
+    for line in block.splitlines():
+        line = line.strip()
+        cm = re.match(r"^[\u2022\*]?\s*(.+?)\s*\((\d+(?:\.\d+)?)\s+points?\)\s*$", line, re.I)
+        if not cm:
+            continue
+        name = cm.group(1).strip()
+        cats.append(
+            Category(
+                name=name,
+                weight=float(cm.group(2)),
+                weight_unit="points",
+                aliases=make_aliases(name),
+            )
+        )
+    return cats
+
+
+def find_provisional_schedule_section(text: str) -> str:
+    m = re.search(r"Provisional Schedule\s*\n", text, re.I)
+    if not m:
+        return ""
+    snippet = text[m.end() :]
+    end = re.search(r"\nAcademic Integrity\b", snippet, re.I)
+    return snippet[: end.start()] if end else snippet[:12000]
+
+
+def _classify_provisional_line(text: str) -> str:
+    low = text.lower()
+    if re.search(r"\bmidterm\b", low):
+        return "exam"
+    if re.search(r"\bfinal\b", low) and re.search(r"\b(review|exam)\b", low):
+        return "exam"
+    if re.search(r"\bessay\b", low):
+        return "assignment"
+    if re.search(r"\bno class\b|thanksgiving|fall recess", low):
+        return "holiday"
+    if re.search(r"\bguest lecture\b", low):
+        return "session"
+    if re.search(r"\bfilm\b", low):
+        return "reading"
+    return "reading"
+
+
+def _is_provisional_theme_header(line: str) -> bool:
+    if ":" in line or re.search(r"\d/\d", line) or line.startswith("•"):
+        return False
+    if re.search(r'["\'"\u201c\u201d]', line):
+        return False
+    if re.match(r"^\d{1,4}$", line):
+        return True
+    if re.match(r"^[A-Z][^.!?]{2,}$", line) and len(line.split()) <= 10:
+        return True
+    return False
+
+
+def parse_provisional_schedule(text: str, year: int) -> list[dict]:
+    """Parse Dornsife Provisional Schedule into dated rows (readings, essays, exams)."""
+    section = find_provisional_schedule_section(text)
+    if not section:
+        return []
+    section = PAGE_MARKER.sub("\n", section)
+    entries: list[dict] = []
+    current_theme = ""
+    current_date_iso = ""
+
+    def append_entry(entry: dict) -> None:
+        entries.append(entry)
+
+    def append_reading(text_val: str) -> None:
+        if not current_date_iso:
+            return
+        append_entry(
+            {
+                "date_iso": current_date_iso,
+                "theme": current_theme,
+                "text": text_val.strip(),
+                "kind": "reading",
+            }
+        )
+
+    for raw_line in section.splitlines():
+        line = raw_line.strip()
+        if not line or line.startswith("--"):
+            continue
+
+        theme_only = re.match(r"^([^:\d/]+):\s*$", line)
+        if theme_only and not re.search(r"\d/\d", line):
+            current_theme = theme_only.group(1).strip()
+            continue
+
+        theme_plain = _is_provisional_theme_header(line)
+        if theme_plain:
+            current_theme = line.strip()
+            continue
+
+        intro_m = re.match(r"^(.+?):\s*(\d{1,2}/\d{1,2})\s*$", line)
+        if intro_m and not re.match(r"^\d", intro_m.group(1)):
+            current_theme = intro_m.group(1).strip()
+            current_date_iso = _normalize_md_date(intro_m.group(2), year)
+            append_entry(
+                {
+                    "date_iso": current_date_iso,
+                    "theme": current_theme,
+                    "text": current_theme,
+                    "kind": "session",
+                }
+            )
+            continue
+
+        range_m = re.match(
+            r"^(\d{1,2}/\d{1,2})\s*[—–-]\s*(\d{1,2}/\d{1,2})(?:\s*\((.+)\))?\s*$",
+            line,
+        )
+        if range_m:
+            start_iso = _normalize_md_date(range_m.group(1), year)
+            end_iso = _normalize_md_date(range_m.group(2), year)
+            note = (range_m.group(3) or "").strip()
+            label = current_theme or "Class sessions"
+            if note:
+                label = f"{label} ({note})"
+            append_entry(
+                {
+                    "date_iso": start_iso,
+                    "date_end_iso": end_iso,
+                    "theme": current_theme,
+                    "text": label,
+                    "kind": "session",
+                }
+            )
+            current_date_iso = start_iso
+            continue
+
+        date_line = re.match(r"^(\d{1,2}/\d{1,2})\s*:?\s*(.*)$", line)
+        if date_line:
+            current_date_iso = _normalize_md_date(date_line.group(1), year)
+            rest = date_line.group(2).strip()
+            if rest:
+                append_entry(
+                    {
+                        "date_iso": current_date_iso,
+                        "theme": current_theme,
+                        "text": rest,
+                        "kind": _classify_provisional_line(rest),
+                    }
+                )
+            continue
+
+        bullet_m = re.match(r"^[\u2022\*]\s*(.+)$", line)
+        if bullet_m:
+            append_reading(bullet_m.group(1))
+            continue
+
+        if (
+            entries
+            and entries[-1].get("kind") == "reading"
+            and current_date_iso
+            and not _is_provisional_theme_header(line)
+        ):
+            entries[-1]["text"] = f"{entries[-1]['text']} {line}".strip()
+            continue
+
+        if current_date_iso and len(line) > 3:
+            append_entry(
+                {
+                    "date_iso": current_date_iso,
+                    "theme": current_theme,
+                    "text": line,
+                    "kind": _classify_provisional_line(line),
+                }
+            )
+
+    return entries
+
+
+def _requirements_line_for_category(cat: Category, entry: dict) -> bool:
+    low = cat.name.lower()
+    kind = entry.get("kind", "")
+    text = (entry.get("text") or "").lower()
+    if "reading notes" in low:
+        return kind in ("reading", "session") and kind != "holiday"
+    if "essay 1" in low:
+        return kind == "assignment" and re.search(r"\bessay\s*1\b", text)
+    if "essay 2" in low:
+        return kind == "assignment" and re.search(r"\bessay\s*2\b", text)
+    if "midterm" in low:
+        return kind == "exam" and "midterm" in text and "review" not in text
+    if "final" in low and "exam" in low:
+        return kind == "exam" and "final" in text
+    return False
+
+
+def build_requirements_assignments_by_category(
+    text: str, year: int, categories: list[Category]
+) -> dict[str, list[dict]]:
+    out: dict[str, list[dict]] = {c.name: [] for c in categories}
+    schedule = parse_provisional_schedule(text, year)
+
+    for cat in categories:
+        low = cat.name.lower()
+        if "reading notes" in low:
+            seen: set[tuple[str, str]] = set()
+            for entry in schedule:
+                kind = entry.get("kind", "")
+                body = entry.get("text") or ""
+                if kind == "holiday":
+                    continue
+                if kind in ("assignment", "exam") and "review" not in body.lower():
+                    continue
+                iso = entry.get("date_iso") or ""
+                theme = entry.get("theme") or ""
+                if kind == "exam" and "review" in body.lower():
+                    name = f"{iso[5:]} — {body}" if iso else body
+                    label = LABEL_READING
+                elif kind == "session" and theme:
+                    name = f"{iso[5:]} — {theme}" if iso else theme
+                    label = LABEL_READING
+                else:
+                    prefix = theme + " — " if theme else ""
+                    name = f"{iso[5:]} — {prefix}{body[:90]}"
+                    label = LABEL_READING
+                key = (iso, name[:80])
+                if key in seen:
+                    continue
+                seen.add(key)
+                out[cat.name].append(sub_assignment(name, "", iso, label))
+        elif "essay 1" in low:
+            for entry in schedule:
+                if re.search(r"\bessay\s*1\b", (entry.get("text") or ""), re.I):
+                    out[cat.name].append(
+                        sub_assignment("Essay 1", "", entry.get("date_iso", ""), LABEL_ASSIGNMENT)
+                    )
+                    break
+        elif "essay 2" in low:
+            for entry in schedule:
+                if re.search(r"\bessay\s*2\b", (entry.get("text") or ""), re.I):
+                    out[cat.name].append(
+                        sub_assignment("Essay 2", "", entry.get("date_iso", ""), LABEL_ASSIGNMENT)
+                    )
+                    break
+        elif "midterm" in low and "exam" in low:
+            for entry in schedule:
+                body = entry.get("text") or ""
+                if entry.get("kind") == "exam" and re.search(r"\bmidterm\b", body, re.I) and "review" not in body.lower():
+                    out[cat.name].append(
+                        sub_assignment("Midterm Exam (in class)", "", entry.get("date_iso", ""), LABEL_EXAM)
+                    )
+                    break
+            for entry in schedule:
+                if "midterm review" in (entry.get("text") or "").lower():
+                    out[cat.name].append(
+                        sub_assignment(
+                            "Midterm Review session",
+                            "",
+                            entry.get("date_iso", ""),
+                            LABEL_READING,
+                        )
+                    )
+        elif "final" in low and "exam" in low:
+            for entry in schedule:
+                body = (entry.get("text") or "").lower()
+                if "final review" in body:
+                    out[cat.name].append(
+                        sub_assignment("Final Review session", "", entry.get("date_iso", ""), LABEL_READING)
+                    )
+    return out
+
+
+def find_requirements_line(text: str, cat: Category) -> str:
+    block = find_requirements_block(text)
+    target = cat.name.lower()
+    for line in block.splitlines():
+        line = line.strip()
+        if line.lower().startswith(target.split()[0]) and re.search(r"\(\d+\s+points?\)", line, re.I):
+            return re.sub(r"^[\u2022\*]\s*", "", line)
+    return ""
+
+
+def gather_requirements_content(
+    text: str, cat: Category, year: int
+) -> tuple[dict, str, tuple[str, str]]:
+    matched: list[str] = []
+    sections: dict[str, list[str] | str] = {}
+    req_line = find_requirements_line(text, cat)
+    if req_line:
+        sections["Overview (Requirements)"] = req_line
+        matched.append(req_line)
+
+    schedule = parse_provisional_schedule(text, year)
+    sched_lines: list[str] = []
+    for entry in schedule:
+        if not _requirements_line_for_category(cat, entry):
+            if "reading notes" in cat.name.lower() and entry.get("kind") in ("reading", "session"):
+                sched_lines.append(
+                    f"{entry.get('date_iso', '')} | {entry.get('text', '')[:120]}"
+                )
+            continue
+        sched_lines.append(
+            f"{entry.get('date_iso', '')} | {entry.get('text', '')[:120]}"
+        )
+    if sched_lines and "reading notes" not in cat.name.lower():
+        sections["Provisional Schedule"] = sched_lines
+        matched.extend(sched_lines)
+    elif "reading notes" in cat.name.lower() and sched_lines:
+        sections["Provisional Schedule (readings)"] = sched_lines[:60]
+        matched.extend(sched_lines[:60])
+
+    ai_m = re.search(
+        r"AI[^\n]*\n(.+?)(?:\nStatement on University|\nAcademic Integrity|\Z)",
+        text,
+        re.I | re.S,
+    )
+    if ai_m and re.search(r"\bessay\b|\bexam\b|\bassignment\b", cat.name, re.I):
+        ai_block = re.sub(r"\s+", " ", ai_m.group(0)).strip()[:600]
+        sections["AI Policy"] = ai_block
+        matched.append(ai_block)
+
+    matched = dedupe_passages(matched)
+    verbatim = "\n\n---\n\n".join(matched)
+
+    start, due = "", ""
+    low = cat.name.lower()
+    for entry in schedule:
+        if "essay 1" in low and re.search(r"\bessay\s*1\b", entry.get("text") or "", re.I):
+            due = entry.get("date_iso") or ""
+        elif "essay 2" in low and re.search(r"\bessay\s*2\b", entry.get("text") or "", re.I):
+            due = entry.get("date_iso") or ""
+        elif "midterm" in low and entry.get("kind") == "exam" and "midterm" in (entry.get("text") or "").lower():
+            if "review" not in (entry.get("text") or "").lower():
+                due = entry.get("date_iso") or ""
+
+    return sections, verbatim, (start, due)
+
+
 def econ_dot_date_to_iso(raw: str, year: int) -> str:
     """Parse Sep.4 or Sep/14 style dates from ECON-351 calendar/prose."""
     raw = raw.strip()
@@ -2437,6 +2803,9 @@ def parse_categories(text: str) -> list[Category]:
         cats = parse_grading_policies_categories(text)
 
     if not cats:
+        cats = parse_requirements_categories(text)
+
+    if not cats:
         cats = parse_course_evaluation_categories(text)
 
     if re.search(r"\bExtra Credit\b", text, re.I):
@@ -2457,6 +2826,10 @@ def parse_grading_scale(text: str) -> dict:
             scale["a_threshold"] = f"{am.group(2)}% ({am.group(1)}-{am.group(2)})"
         elif am and am.group(3):
             scale["a_threshold"] = f"{am.group(3)}%+"
+        if scale["a_threshold"] == "N/A":
+            tab_a = re.search(r"\bA\s+(\d+)\s*[\-\u2013]\s*(\d+)", raw)
+            if tab_a:
+                scale["a_threshold"] = f"{tab_a.group(1)}% ({tab_a.group(1)}-{tab_a.group(2)})"
         if re.search(r"\bpts?\b|\bpoints\b", raw, re.I):
             scale["scale_type"] = "points"
     if scale["a_threshold"] == "N/A" and re.search(
@@ -3100,6 +3473,7 @@ def dissect(
     term = meta["term"]
     calendar_mode = is_point_course_calendar(text)
     grading_policies_mode = is_grading_policies_syllabus(text)
+    requirements_mode = is_requirements_syllabus(text)
     marshall_mode = is_marshall_syllabus(text)
     categories = parse_categories(text)
     if not categories and calendar_mode:
@@ -3110,10 +3484,15 @@ def dissect(
             "or a Course Calendar with point values like 'Midterm 1: 250 Points'."
         )
     grading_scale = parse_grading_scale(text)
-    if calendar_mode and grading_scale["a_threshold"] == "N/A":
+    if (calendar_mode or requirements_mode) and grading_scale["a_threshold"] == "N/A":
         total_pts = sum(c.weight or 0 for c in categories)
-        grading_scale["scale_type"] = "points"
-        grading_scale["raw_scale"] = f"Total graded points in calendar: {total_pts:g} (letter scale not in document)"
+        if requirements_mode:
+            grading_scale["scale_type"] = "points"
+            if not grading_scale.get("raw_scale"):
+                grading_scale["raw_scale"] = f"Total: {total_pts:g} points (500-point scale)"
+        elif calendar_mode:
+            grading_scale["scale_type"] = "points"
+            grading_scale["raw_scale"] = f"Total graded points in calendar: {total_pts:g} (letter scale not in document)"
     year = infer_year(term, text, source_hint)
     research_guide = parse_research_guide_text(text)
     assignment_map: dict[str, list[dict]] = {}
@@ -3124,6 +3503,8 @@ def dissect(
         )
     elif grading_policies_mode:
         assignment_map = build_econ351_assignments_by_category(text, year, categories)
+    elif requirements_mode:
+        assignment_map = build_requirements_assignments_by_category(text, year, categories)
     elif calendar_mode:
         assignment_map = build_calendar_assignments_by_category(text, year, categories)
     else:
@@ -3148,6 +3529,8 @@ def dissect(
             )
         elif grading_policies_mode:
             sections, verbatim, (start, due) = gather_econ351_content(text, cat, year)
+        elif requirements_mode:
+            sections, verbatim, (start, due) = gather_requirements_content(text, cat, year)
         else:
             sections, verbatim = gather_category_content(text, cat)
             supplement = parse_supplement_text(text)

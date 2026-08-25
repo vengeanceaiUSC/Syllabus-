@@ -891,5 +891,100 @@
       }
     ],
     "rmp_instructor": "Alejandro Martínez-Marquina"
+  },
+  "SPAN-290": {
+    "instructor": "Samuel Steinberg",
+    "quality": 4.5,
+    "difficulty": 2.2,
+    "would_take_again_pct": 100.0,
+    "num_ratings": 5,
+    "consensus": "STRENGTHS: Small sample but uniformly positive — 4.5 quality, 2.2 difficulty, 100% would take again. Students describe Prof. Steinberg as passionate, knowledgeable, and fair; essays and reading notes reward engagement with the material.\\n\\nWORKLOAD: Reading-heavy with regular reading notes plus two essays and two in-class exams (500-point scale). Provisional schedule packs film screenings and primary sources; BrightSpace distributes readings.\\n\\nBOTTOM LINE: Strong pick for Latin American/Iberian cultural studies if you keep up with readings and take essays seriously. AI use is prohibited — all written work must be your own.",
+    "url": "https://www.ratemyprofessors.com/professor/2132312",
+    "source": "Rate My Professors",
+    "as_of": "2026-08-25",
+    "avg_grade_gpa": 3.74,
+    "avg_grade_letter": "A-",
+    "grades_reported": 5,
+    "grade_distribution": {
+      "A": 3,
+      "A-": 1,
+      "B": 1
+    },
+    "reviews": [
+      {
+        "date": "2026-07-13",
+        "course": "SPAN381",
+        "grade": "A",
+        "quality": 5,
+        "difficulty": 2,
+        "would_take_again": true,
+        "tags": [
+          "Get ready to read",
+          "Amazing lectures",
+          "Hilarious"
+        ],
+        "comment": "Prof. Steinberg was engaging during lectures. We were assigned 2 readings per week, and I still passed the class by only attending lectures (no reading). If you follow along in class and take good notes, and refer to the slides him and the TAs post, you'll be in for an easy A and learn a ton!"
+      },
+      {
+        "date": "2024-05-18",
+        "course": "SPAN380",
+        "grade": "A",
+        "quality": 5,
+        "difficulty": 2,
+        "would_take_again": true,
+        "tags": [],
+        "comment": "Be prepared to share a little bit in class about the readings - even if you don't read them. The class was fairly easy, involved some in-class reading quizzes and weekly assignments, but nothing too bad. One in-class midterm and take home final. Somewhat approachable, but overall easy grader."
+      },
+      {
+        "date": "2020-12-16",
+        "course": "SPAN380",
+        "grade": "",
+        "quality": 5,
+        "difficulty": 4,
+        "would_take_again": true,
+        "tags": [
+          "Gives good feedback",
+          "Get ready to read",
+          "Hilarious"
+        ],
+        "comment": "hands down one of the best professors in the Spanish department. there's a ton of reading but it's worth it; fantastic curation of books, lectures are brilliant and his dry and subtle sense of humor keeps you engaged and laughing. all around wholesome fun that leaves you wishing covid was over so you could take it in person"
+      },
+      {
+        "date": "2017-01-11",
+        "course": "SPAN381",
+        "grade": "A-",
+        "quality": 4,
+        "difficulty": 2,
+        "would_take_again": true,
+        "tags": [
+          "GROUP PROJECTS"
+        ],
+        "comment": "He's great and speaks perfect Spanish. He isn't harsh if you don't speak perfectly or know every word. He grades pretty easily and I'm surprised I didn't get a solid A. Overall, would take him again."
+      },
+      {
+        "date": "2016-12-15",
+        "course": "SPAN380",
+        "grade": "A",
+        "quality": 5,
+        "difficulty": 2,
+        "would_take_again": true,
+        "tags": [
+          "Get ready to read",
+          "Hilarious",
+          "Amazing lectures"
+        ],
+        "comment": "A lot of reading (books), but lectures are very interesting. He is well-read and knows a lot of literature. Two papers and one presentation but he's an easy grader. Be prepared to discuss the books."
+      },
+      {
+        "date": "2016-04-22",
+        "course": "SPAN380",
+        "grade": "B",
+        "quality": 2,
+        "difficulty": 1,
+        "would_take_again": null,
+        "tags": [],
+        "comment": "Professor Steinberg is an amazing person and instructor he allows you to voice your opinions but also leads you along the way. He assigns alot of reading but it is totally worth it. Lectures are a must and participation is required but the hard work is worth the trouble."
+      }
+    ]
   }
 }
