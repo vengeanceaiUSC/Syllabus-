@@ -38,8 +38,10 @@ PALETTE = [
 ]
 
 HEADERS = [
-    "Category", "Weight", "Start Date", "Due Date", "Group Project", "Details",
+    "Category", "Weight", "Start Date", "Due Date", "Status", "Group Project", "Details",
 ]
+
+COMPLETED_STATUS = frozenset({"VORBEI"})
 
 THIN = Side(style="thin", color="D9D9D9")
 BORDER = Border(left=THIN, right=THIN, top=THIN, bottom=THIN)
@@ -303,7 +305,9 @@ def _due_sort_key(due: str, label: str, name: str, is_sub: bool = False) -> tupl
 
 
 def is_todo_item(item: dict) -> bool:
-    """Assignments to do - excludes Reading prep."""
+    """Assignments to do - excludes Reading prep and completed items."""
+    if item.get("status") in COMPLETED_STATUS:
+        return False
     if item.get("label") == "Reading":
         return False
     if item.get("label") in TODO_LABELS:
@@ -472,6 +476,7 @@ def iter_due_items(data: dict) -> list[dict]:
                     "name": sname,
                     "due_date": sd,
                     "label": label,
+                    "status": sub.get("status") or "",
                     "is_major": is_major,
                     "is_sub": True,
                     "is_graded": is_graded_cat,
@@ -1121,6 +1126,7 @@ def build(
             group: str,
             details: str,
             *,
+            status: str = "",
             is_sub: bool = False,
             sub_label: str = "",
         ) -> None:
@@ -1131,9 +1137,10 @@ def build(
             else:
                 category_value = name
                 details_value = details
-            values = [category_value, weight, start, due, group, details_value]
+            values = [category_value, weight, start, due, status, group, details_value]
             band = band_light if i % 2 == 0 else band_lighter
             sub_fill = PatternFill("solid", fgColor=tint(base_color, 0.96)) if is_sub else band
+            status_col = HEADERS.index("Status") + 1
             for col, value in enumerate(values, start=1):
                 c = ws.cell(row=row, column=col, value=value)
                 c.fill = sub_fill
@@ -1150,6 +1157,9 @@ def build(
                 if col == 2 and weight and not is_sub:
                     c.font = weight_font
                     c.fill = weight_fill
+                if col == status_col and value in COMPLETED_STATUS:
+                    c.font = Font(bold=True, color="375623")
+                    c.fill = PatternFill("solid", fgColor="E2EFDA")
                 if col == ncols and value and str(value).startswith("=HYPERLINK"):
                     c.font = Font(color="0563C1", underline="single")
             row += 1
@@ -1171,6 +1181,7 @@ def build(
                 sub.get("due_date") or "",
                 "",
                 "",
+                status=sub.get("status") or "",
                 is_sub=True,
                 sub_label=sub_label,
             )
@@ -1181,7 +1192,7 @@ def build(
         unit = "%" if not str(scale.get("scale_type", "")).lower().startswith("point") else " pts"
         ws.cell(row=row, column=2, value=f"{total:g}{unit}").font = weight_font
 
-    for col, width in enumerate([22, 14, 14, 14, 14, 42], start=1):
+    for col, width in enumerate([22, 14, 14, 14, 10, 14, 42], start=1):
         ws.column_dimensions[get_column_letter(col)].width = width
     ws.freeze_panes = ws.cell(row=header_row + 1, column=1)
 
