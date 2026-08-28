@@ -857,13 +857,15 @@
           "name": "Connect: Self-Assessment 3.04 - What Is Your Level",
           "start_date": "",
           "due_date": "2026-08-31",
-          "notes": "Homework"
+          "notes": "Homework",
+          "status": "VORBEI"
         },
         {
           "name": "Connect: Self-Assessment 5.01 - Assessing Your",
           "start_date": "",
           "due_date": "2026-09-02",
-          "notes": "Homework"
+          "notes": "Homework",
+          "status": "VORBEI"
         },
         {
           "name": "Connect: Sharpen Companion",
@@ -881,13 +883,15 @@
           "name": "Connect: Self-Assessment 11.02 - What is my",
           "start_date": "",
           "due_date": "2026-09-09",
-          "notes": "Homework"
+          "notes": "Homework",
+          "status": "VORBEI"
         },
         {
           "name": "Connect: Self-Assessment 12.01 - What kind of",
           "start_date": "",
           "due_date": "2026-09-16",
-          "notes": "Homework"
+          "notes": "Homework",
+          "status": "VORBEI"
         },
         {
           "name": "Connect: Self-Assessment 10.5 - Preferred Conflict",
