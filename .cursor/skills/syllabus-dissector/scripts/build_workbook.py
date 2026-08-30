@@ -987,7 +987,7 @@ def build_overview_sheet(
 def refresh_overview_sheet(wb: Workbook, workbook_path: Path, *, as_of: date | None = None) -> None:
     plan_csv = workbook_path.parent / "graduation-plan.csv"
     if plan_csv.exists():
-        import_graduation_plan_sheet(wb, plan_csv)
+        import_graduation_plan_sheet(wb, plan_csv, workbook_path)
     all_data = collect_class_json_files(workbook_path)
     if len(all_data) >= 1:
         build_overview_sheet(wb, all_data, as_of=as_of, workbook_path=workbook_path)
@@ -995,7 +995,7 @@ def refresh_overview_sheet(wb: Workbook, workbook_path: Path, *, as_of: date | N
         export_graduation_plan_workbook(plan_csv, workbook_path.parent / "graduation-plan.xlsx")
 
 
-def import_graduation_plan_sheet(wb: Workbook, csv_path: Path) -> None:
+def import_graduation_plan_sheet(wb: Workbook, csv_path: Path, workbook_path: Path | None = None) -> None:
     """Import a graduation-plan CSV as a styled worksheet (index 1, after Overview)."""
     if GRADUATION_PLAN_SHEET in wb.sheetnames:
         wb.remove(wb[GRADUATION_PLAN_SHEET])
@@ -1016,9 +1016,10 @@ def import_graduation_plan_sheet(wb: Workbook, csv_path: Path) -> None:
     band_light = PatternFill("solid", fgColor="E2EFDA")
     band_white = PatternFill("solid", fgColor="FFFFFF")
     term_fill = PatternFill("solid", fgColor="C6E0B4")
+    stars_fill = PatternFill("solid", fgColor="FFF2CC")
 
     headers = rows[0]
-    ncols = len(headers)
+    ncols = max(len(headers), 8)
     last_col = get_column_letter(ncols)
 
     ws.merge_cells(f"A1:{last_col}1")
@@ -1029,22 +1030,44 @@ def import_graduation_plan_sheet(wb: Workbook, csv_path: Path) -> None:
     title.alignment = Alignment(horizontal="left", vertical="center")
     ws.row_dimensions[1].height = 26
 
+    data_start_row = 3
+    stars_pdf = (
+        (workbook_path.parent / "sources" / "stars-report.pdf")
+        if workbook_path
+        else None
+    )
+    if stars_pdf and stars_pdf.exists():
+        ws.merge_cells(f"A2:{last_col}2")
+        stars_cell = ws.cell(row=2, column=1)
+        stars_cell.value = pdf_hyperlink(
+            "sources/stars-report.pdf",
+            "→ STARS Degree Progress Report (08/15/26) — click for full requirements",
+        )
+        stars_cell.font = Font(bold=True, size=11, color="C00000", underline="single")
+        stars_cell.fill = stars_fill
+        stars_cell.alignment = Alignment(horizontal="left", vertical="center")
+        ws.row_dimensions[2].height = 22
+        data_start_row = 4
+        header_row = 3
+    else:
+        header_row = 2
+
     for col, name in enumerate(headers, start=1):
-        c = ws.cell(row=2, column=col, value=name)
+        c = ws.cell(row=header_row, column=col, value=name)
         c.font = header_font
         c.fill = header_fill
         c.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
         c.border = BORDER
 
     current_term = ""
-    for i, row_vals in enumerate(rows[1:], start=3):
+    for i, row_vals in enumerate(rows[1:], start=data_start_row):
         if row_vals and row_vals[0].strip():
             current_term = row_vals[0].strip()
-        fill = band_light if i % 2 == 0 else band_white
+        fill = band_light if (i - data_start_row) % 2 == 0 else band_white
         for col, value in enumerate(row_vals, start=1):
             c = ws.cell(row=i, column=col, value=value.strip() if value else "")
             c.border = BORDER
-            c.alignment = Alignment(vertical="center", wrap_text=(col == 3))
+            c.alignment = Alignment(vertical="center", wrap_text=(col in (3, 8)))
             c.fill = fill
             if col == 1 and value.strip():
                 c.font = label_font
@@ -1059,16 +1082,16 @@ def import_graduation_plan_sheet(wb: Workbook, csv_path: Path) -> None:
                 c.value = sheet_link(sheet_guess, code)
                 c.font = Font(color="0563C1", underline="single")
 
-    widths = [14, 14, 42, 28, 8, 14, 16]
+    widths = [14, 14, 42, 28, 8, 14, 16, 36]
     for col, width in enumerate(widths[:ncols], start=1):
         ws.column_dimensions[get_column_letter(col)].width = width
-    ws.freeze_panes = ws.cell(row=3, column=1)
+    ws.freeze_panes = ws.cell(row=data_start_row, column=1)
 
 
 def export_graduation_plan_workbook(csv_path: Path, xlsx_path: Path) -> None:
     """Standalone graduation-plan.xlsx for easy download (single visible sheet)."""
     wb = Workbook()
-    import_graduation_plan_sheet(wb, csv_path)
+    import_graduation_plan_sheet(wb, csv_path, xlsx_path.parent)
     if "Sheet" in wb.sheetnames and GRADUATION_PLAN_SHEET in wb.sheetnames:
         wb.remove(wb["Sheet"])
     xlsx_path.parent.mkdir(parents=True, exist_ok=True)
