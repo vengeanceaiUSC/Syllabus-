@@ -570,6 +570,84 @@ def group_outline_rows(
     ws.sheet_properties.outlinePr.summaryBelow = False
 
 
+def append_graduation_plan_overview(
+    ws,
+    wb: Workbook,
+    csv_path: Path,
+    start_row: int,
+    *,
+    header_font: Font,
+    header_fill: PatternFill,
+    section_fill: PatternFill,
+    label_font: Font,
+    border: Border,
+    ncols: int,
+) -> int:
+    """Embed graduation-plan CSV on Overview so the plan is visible without switching tabs."""
+    if not csv_path.exists():
+        return start_row
+    with csv_path.open(newline="", encoding="utf-8-sig") as f:
+        rows = list(csv.reader(f))
+    if len(rows) < 2:
+        return start_row
+
+    last_col = get_column_letter(min(ncols, 8))
+    row = start_row
+    ws.merge_cells(f"A{row}:{last_col}{row}")
+    title = ws.cell(
+        row=row,
+        column=1,
+        value="Graduation Plan — full schedule through 128 units (also on Graduation Plan tab →)",
+    )
+    title.font = label_font
+    title.fill = section_fill
+    row += 1
+
+    display_headers = ["Term", "Course", "Title", "Requirement", "Units", "Sem Total", "Cumulative"]
+    plan_header_fill = PatternFill("solid", fgColor="548235")
+    plan_header_font = Font(bold=True, color="FFFFFF")
+    for col, name in enumerate(display_headers, start=1):
+        c = ws.cell(row=row, column=col, value=name)
+        c.font = plan_header_font
+        c.fill = plan_header_fill
+        c.border = border
+        c.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
+    row += 1
+
+    band_a = PatternFill("solid", fgColor="E2EFDA")
+    band_b = PatternFill("solid", fgColor="FFFFFF")
+    term_fill = PatternFill("solid", fgColor="C6E0B4")
+    for i, row_vals in enumerate(rows[1:]):
+        if not any(v.strip() for v in row_vals if v):
+            continue
+        fill = band_a if i % 2 == 0 else band_b
+        cells = [
+            row_vals[0] if len(row_vals) > 0 else "",
+            row_vals[1] if len(row_vals) > 1 else "",
+            row_vals[2] if len(row_vals) > 2 else "",
+            row_vals[3] if len(row_vals) > 3 else "",
+            row_vals[4] if len(row_vals) > 4 else "",
+            row_vals[5] if len(row_vals) > 5 else "",
+            row_vals[6] if len(row_vals) > 6 else "",
+        ]
+        for col, value in enumerate(cells, start=1):
+            c = ws.cell(row=row, column=col, value=value.strip() if value else "")
+            c.fill = term_fill if col == 1 and value.strip() else fill
+            c.border = border
+            c.alignment = Alignment(vertical="center", wrap_text=(col == 3))
+            if col == 1 and value.strip():
+                c.font = Font(bold=True)
+        code = cells[1].strip()
+        if code:
+            sheet_guess = code.upper().replace(" ", "-")
+            if sheet_guess in wb.sheetnames:
+                c = ws.cell(row=row, column=2)
+                c.value = sheet_link(sheet_guess, code)
+                c.font = Font(color="0563C1", underline="single")
+        row += 1
+    return row + 1
+
+
 def build_overview_sheet(
     wb: Workbook,
     all_data: list[dict],
@@ -663,6 +741,21 @@ def build_overview_sheet(
         plan_cell.alignment = Alignment(horizontal="left", vertical="center")
         ws.row_dimensions[row].height = 24
         row += 1
+
+    if workbook_path:
+        plan_csv = workbook_path.parent / "graduation-plan.csv"
+        row = append_graduation_plan_overview(
+            ws,
+            wb,
+            plan_csv,
+            row,
+            header_font=header_font,
+            header_fill=header_fill,
+            section_fill=section_fill,
+            label_font=label_font,
+            border=BORDER,
+            ncols=ncols,
+        )
 
     terms = sorted({s["term"] for s in summaries if s["term"]})
     if terms:
