@@ -18,6 +18,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import csv
 import json
 import re
 import sys
@@ -47,6 +48,7 @@ THIN = Side(style="thin", color="D9D9D9")
 BORDER = Border(left=THIN, right=THIN, top=THIN, bottom=THIN)
 
 OVERVIEW_SHEET = "Overview"
+GRADUATION_PLAN_SHEET = "Graduation Plan"
 CONNECT_PREP_MARK = "Personal Assessments (Connect)"
 OVERVIEW_AS_OF: date | None = None
 TODO_LABELS = frozenset({"Homework", "Assignment", "Exam", "Certification", "Research"})
@@ -973,6 +975,79 @@ def refresh_overview_sheet(wb: Workbook, workbook_path: Path, *, as_of: date | N
     all_data = collect_class_json_files(workbook_path)
     if len(all_data) >= 1:
         build_overview_sheet(wb, all_data, as_of=as_of, workbook_path=workbook_path)
+    plan_csv = workbook_path.parent / "graduation-plan.csv"
+    if plan_csv.exists():
+        import_graduation_plan_sheet(wb, plan_csv)
+
+
+def import_graduation_plan_sheet(wb: Workbook, csv_path: Path) -> None:
+    """Import a graduation-plan CSV as a styled worksheet (index 1, after Overview)."""
+    if GRADUATION_PLAN_SHEET in wb.sheetnames:
+        wb.remove(wb[GRADUATION_PLAN_SHEET])
+    insert_at = 1 if OVERVIEW_SHEET in wb.sheetnames else 0
+    ws = wb.create_sheet(title=GRADUATION_PLAN_SHEET, index=insert_at)
+    ws.sheet_properties.tabColor = "548235"
+
+    with csv_path.open(newline="", encoding="utf-8-sig") as f:
+        rows = list(csv.reader(f))
+    if not rows:
+        return
+
+    title_fill = PatternFill("solid", fgColor="548235")
+    header_fill = PatternFill("solid", fgColor="70AD47")
+    header_font = Font(bold=True, color="FFFFFF")
+    title_font = Font(bold=True, size=14, color="FFFFFF")
+    label_font = Font(bold=True)
+    band_light = PatternFill("solid", fgColor="E2EFDA")
+    band_white = PatternFill("solid", fgColor="FFFFFF")
+    term_fill = PatternFill("solid", fgColor="C6E0B4")
+
+    headers = rows[0]
+    ncols = len(headers)
+    last_col = get_column_letter(ncols)
+
+    ws.merge_cells(f"A1:{last_col}1")
+    title = ws["A1"]
+    title.value = "Graduation Plan — Marshall BBA (128 units)"
+    title.font = title_font
+    title.fill = title_fill
+    title.alignment = Alignment(horizontal="left", vertical="center")
+    ws.row_dimensions[1].height = 26
+
+    for col, name in enumerate(headers, start=1):
+        c = ws.cell(row=2, column=col, value=name)
+        c.font = header_font
+        c.fill = header_fill
+        c.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
+        c.border = BORDER
+
+    current_term = ""
+    for i, row_vals in enumerate(rows[1:], start=3):
+        if row_vals and row_vals[0].strip():
+            current_term = row_vals[0].strip()
+        fill = band_light if i % 2 == 0 else band_white
+        for col, value in enumerate(row_vals, start=1):
+            c = ws.cell(row=i, column=col, value=value.strip() if value else "")
+            c.border = BORDER
+            c.alignment = Alignment(vertical="center", wrap_text=(col == 3))
+            c.fill = fill
+            if col == 1 and value.strip():
+                c.font = label_font
+                c.fill = term_fill
+        if not row_vals:
+            continue
+        code = (row_vals[1] if len(row_vals) > 1 else "").strip()
+        if code:
+            sheet_guess = code.upper().replace(" ", "-")
+            if sheet_guess in wb.sheetnames:
+                c = ws.cell(row=i, column=2)
+                c.value = sheet_link(sheet_guess, code)
+                c.font = Font(color="0563C1", underline="single")
+
+    widths = [14, 14, 42, 28, 8, 14, 16]
+    for col, width in enumerate(widths[:ncols], start=1):
+        ws.column_dimensions[get_column_letter(col)].width = width
+    ws.freeze_panes = ws.cell(row=3, column=1)
 
 
 def build(
