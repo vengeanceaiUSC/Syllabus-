@@ -3943,6 +3943,24 @@ def parse_syllabus_metadata(text: str, source_hint: str = "") -> dict[str, str]:
         if not meta.get("instructor"):
             meta["instructor"] = "George Braunegg"
 
+    if re.search(r"ANTH\s*202", head, re.I) and re.search(r"LECTURE SESSIONS:", head, re.I):
+        meta.setdefault("code", "ANTH-202")
+        meta.setdefault(
+            "format",
+            "Hybrid — mostly in-person (not a virtual/online-only class)",
+        )
+        lec = re.search(r"LECTURE SESSIONS:\s*([^\n]+)", head, re.I)
+        lab = re.search(r"LAB SECTIONS[^:]*:\s*([^\n]+)", head, re.I)
+        parts = []
+        if lec:
+            parts.append(f"Lectures {lec.group(1).strip()}")
+        if lab:
+            parts.append(f"Lab/discussion {lab.group(1).strip()}")
+        parts.append(
+            "Quizzes & exams online via Brightspace; some film weeks async; Week 12 Thu lecture on Zoom"
+        )
+        meta.setdefault("meetings", "; ".join(parts))
+
     return meta
 
 

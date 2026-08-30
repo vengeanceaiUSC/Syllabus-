@@ -1031,21 +1031,29 @@ def build(
     row = 2
     source_url = cls.get("source_url") or ""
     if source_url:
+        if link_base:
+            see_target = source_url
+        else:
+            see_target = f"sources/{Path(source_url).name}"
         ws.merge_cells(f"A{row}:{last_col}{row}")
         see_cell = ws.cell(row=row, column=1)
-        see_cell.value = pdf_hyperlink(source_url, "SEE HERE")
+        see_cell.value = pdf_hyperlink(see_target, "SEE HERE")
         see_cell.font = Font(bold=True, size=20, color="C00000", underline="single")
         see_cell.fill = PatternFill("solid", fgColor="FFF2CC")
         see_cell.alignment = Alignment(horizontal="center", vertical="center")
         ws.row_dimensions[row].height = 40
         row += 1
 
-    for label, value in [
-        ("Instructor", cls.get("instructor")),
-        ("Term", cls.get("term")),
-    ]:
+    for label, key in (
+        ("Instructor", "instructor"),
+        ("Term", "term"),
+        ("Format", "format"),
+        ("Meetings", "meetings"),
+    ):
+        value = cls.get(key)
         if value:
             ws.cell(row=row, column=1, value=label).font = label_font
+            ws.merge_cells(start_row=row, start_column=2, end_row=row, end_column=ncols)
             ws.cell(row=row, column=2, value=value)
             row += 1
 
