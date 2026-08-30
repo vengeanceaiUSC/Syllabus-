@@ -1,16 +1,16 @@
 Term,Course Code,Course Title,Requirement Satisfied,Units,Semester Total,Cumulative Total,Notes
 Prior Credit,,Transfer / Prior USC Work,,,,51.0,
-Fall 2026,BUAD 281,Introduction to Managerial Accounting,Accounting / Marshall Core,3.0,15.0,66.0,In progress per STARS (08/15/26)
+Fall 2026,BUAD 281,Introduction to Managerial Accounting,Accounting / Marshall Core,3.0,15.0,66.0,In progress per STARS
 ,BUAD 304,Organizational Behavior and Leadership,Marshall Core,4.0,,,
 ,ECON 351,Microeconomics for Business,Economics / Marshall Core,4.0,,,
-,HIST 103,The Emergence of Modern Europe,GE Category B (Humanistic Inquiry),4.0,,,
-Spring 2027,BUAD 302,Communication Strategy for Business,Marshall Core,4.0,12.0,78.0,Rebalanced — lighter than finance/stats stack
-,GE-C Course,Approved Social Analysis (e.g. ANTH 202),GE Category C,4.0,,,Fulfills remaining GE-C; non-quant
-,Elective,General Free Elective,Degree Units,4.0,,,Buffer — keeps load at 12 not 15
-Fall 2027,BUAD 306,Business Finance,Marshall Core,4.0,12.0,90.0,Quant course — paired with macro only
-,ECON 352,Macroeconomics for Business,Economics Requirement,4.0,,,Prereq ECON 351 (Fall 26)
+,REL 137,Intro to Islam,GE Category B (Humanistic Inquiry),4.0,,,Swapped from HIST 103 — still 4 units GE-B
+Spring 2027,BUAD 302,Communication Strategy for Business,Marshall Core,4.0,12.0,78.0,Only 1 Marshall course this term (≤2 rule)
+,GE-C Course,Approved Social Analysis (e.g. ANTH 202),GE Category C,4.0,,,Non-Marshall — fulfills remaining GE-C
+,ECON 352,Macroeconomics for Business,Economics Requirement,4.0,,,Quant but NOT Marshall; prereq ECON 351
+Fall 2027,BUAD 306,Business Finance,Marshall Core,4.0,12.0,90.0,Single heavy Marshall term — finance only
 ,GE-D Course,Approved Life Sciences Course,GE Category D,4.0,,,
-Spring 2028,BUAD 310,Applied Business Statistics,Marshall Core,4.0,12.0,102.0,Stats moved here — not stacked with 306
+,Elective,General Free Elective,Degree Units,4.0,,,Light buffer alongside finance
+Spring 2028,BUAD 310,Applied Business Statistics,Marshall Core,4.0,12.0,102.0,Stats + ops paired away from Spring 27
 ,BUAD 311,Operations Management,Marshall Core,4.0,,,
 ,WRIT 340,Advanced Writing,Upper Division Writing,4.0,,,STARS: still needed
 Fall 2028,BUAD 425,Data Analysis for Decision Making,Marshall Core,2.0,14.0,116.0,
