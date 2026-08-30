@@ -612,6 +612,19 @@ def build_overview_sheet(
     ws.row_dimensions[row].height = 28
     row += 1
 
+    if GRADUATION_PLAN_SHEET in wb.sheetnames:
+        ws.merge_cells(f"A{row}:{last_col}{row}")
+        plan_cell = ws.cell(
+            row=row,
+            column=1,
+            value=sheet_link(GRADUATION_PLAN_SHEET, "→ Graduation Plan — 128-unit BBA degree map (click here)"),
+        )
+        plan_cell.font = Font(bold=True, size=12, color="548235", underline="single")
+        plan_cell.fill = PatternFill("solid", fgColor="E2EFDA")
+        plan_cell.alignment = Alignment(horizontal="left", vertical="center")
+        ws.row_dimensions[row].height = 24
+        row += 1
+
     terms = sorted({s["term"] for s in summaries if s["term"]})
     if terms:
         ws.merge_cells(f"A{row}:{last_col}{row}")
@@ -972,12 +985,14 @@ def build_overview_sheet(
 
 
 def refresh_overview_sheet(wb: Workbook, workbook_path: Path, *, as_of: date | None = None) -> None:
-    all_data = collect_class_json_files(workbook_path)
-    if len(all_data) >= 1:
-        build_overview_sheet(wb, all_data, as_of=as_of, workbook_path=workbook_path)
     plan_csv = workbook_path.parent / "graduation-plan.csv"
     if plan_csv.exists():
         import_graduation_plan_sheet(wb, plan_csv)
+    all_data = collect_class_json_files(workbook_path)
+    if len(all_data) >= 1:
+        build_overview_sheet(wb, all_data, as_of=as_of, workbook_path=workbook_path)
+    if plan_csv.exists():
+        export_graduation_plan_workbook(plan_csv, workbook_path.parent / "graduation-plan.xlsx")
 
 
 def import_graduation_plan_sheet(wb: Workbook, csv_path: Path) -> None:
@@ -1048,6 +1063,16 @@ def import_graduation_plan_sheet(wb: Workbook, csv_path: Path) -> None:
     for col, width in enumerate(widths[:ncols], start=1):
         ws.column_dimensions[get_column_letter(col)].width = width
     ws.freeze_panes = ws.cell(row=3, column=1)
+
+
+def export_graduation_plan_workbook(csv_path: Path, xlsx_path: Path) -> None:
+    """Standalone graduation-plan.xlsx for easy download (single visible sheet)."""
+    wb = Workbook()
+    import_graduation_plan_sheet(wb, csv_path)
+    if "Sheet" in wb.sheetnames and GRADUATION_PLAN_SHEET in wb.sheetnames:
+        wb.remove(wb["Sheet"])
+    xlsx_path.parent.mkdir(parents=True, exist_ok=True)
+    wb.save(str(xlsx_path))
 
 
 def build(
