@@ -101,6 +101,14 @@ KNOWN_PROFESSORS: dict[str, dict] = {
         "rmp_instructor": "Andrzej Brylak",
         "professor_id": "2745347",
     },
+    "HBIO-205": {
+        "instructor": "Helen Soultanakis",
+        "professor_id": "2845131",
+    },
+    "HBIO-210": {
+        "instructor": "Helen Soultanakis",
+        "professor_id": "2845131",
+    },
 }
 
 

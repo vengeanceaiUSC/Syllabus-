@@ -1,4 +1,4 @@
-Term,Course Code,Course Title,Requirement Satisfied,Units,Semester Total,Cumulative Total,Notes
+Term,Course Code,Course Title,Requirement Satisfied,Units,Semester Total,Cumulative Total,Notes,GE-D Consider (Prof / Class)
 Prior Credit,,Transfer / Prior USC Work,,,,51.0,
 Fall 2026,BUAD 304,Organizational Behavior and Leadership,Marshall Core,4.0,12.0,63.0,BUAD 281 moved to Spring 2027
 ,ECON 351,Microeconomics for Business,Economics / Marshall Core,4.0,,,
@@ -6,7 +6,7 @@ Fall 2026,BUAD 304,Organizational Behavior and Leadership,Marshall Core,4.0,12.0
 Spring 2027,BUAD 281,Introduction to Managerial Accounting,Accounting / Marshall Core,3.0,15.0,78.0,Marshall #1
 ,BUAD 302,Communication Strategy for Business,Marshall Core,4.0,,,Marshall #2 (≤2 rule met)
 ,GE-C Course,Approved Social Analysis (e.g. ANTH 202),GE Category C,4.0,,,
-,GE-D Course,Approved Life Sciences Course,GE Category D,4.0,,,Replaces Fall 2027 free elective slot
+,GE-D Course,Approved Life Sciences Course,GE Category D,4.0,,,Replaces Fall 2027 free elective slot,"HBIO-205 Science of Sport · Prof. Soultanakis (Fall sec 38411) · HBIO-210 Mediterranean Lifestyles · Prof. Soultanakis (Fall sec 38452) · RMP 2.8 quality / 2.8 difficulty · no papers · 2 MC midterms (drop lower) + MC final · memorize slides/study guides"
 Fall 2027,BUAD 306,Business Finance,Marshall Core,4.0,12.0,90.0,
 ,ECON 352,Macroeconomics for Business,Economics Requirement,4.0,,,Prereq ECON 351
 ,WRIT 340,Advanced Writing,Upper Division Writing,4.0,,,STARS: still needed

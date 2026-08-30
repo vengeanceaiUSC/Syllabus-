@@ -1770,5 +1770,484 @@
         "comment": "Dr. Mayfield made a great TA for ANTH202. Her lab lectures are often group-oriented with fun in-class projects. She has a great habit of treating these projects as a kind of game. Quiz bowls, archaeology case studies, drawing sites, and analyzing pottery shards are all things you'll do."
       }
     ]
+  },
+  "HBIO-205": {
+    "instructor": "Helen Soultanakis",
+    "quality": 2.8,
+    "difficulty": 2.8,
+    "would_take_again_pct": 54.5,
+    "num_ratings": 21,
+    "consensus": "STRENGTHS: Many GE takers call HBIO-205 the easiest GE-D — 2 MC midterms (drops lower) + MC final (~50 questions), slides posted online, study guides provided. No papers. Labs often described as fun (experiments, physical activity). Self-reported avg grade A- (n=15 grades on RMP).\n\nCAVEATS: Overall RMP quality is mediocre (2.8/5) — frequent complaint is monotone slide-reading; attendance optional. Content skews anatomy/biology over sport. Memorize slides + study guides. Polarized older reviews cite heavy memorization or vague study guides.\n\nBOTTOM LINE: Strong exam-only GE-D pick if you self-study from slides and don't need engaging lectures.",
+    "url": "https://www.ratemyprofessors.com/professor/2845131",
+    "source": "Rate My Professors",
+    "as_of": "2026-08-30",
+    "avg_grade_gpa": 3.68,
+    "avg_grade_letter": "A-",
+    "grades_reported": 15,
+    "grade_distribution": {
+      "A": 10,
+      "B+": 3,
+      "C+": 1,
+      "B": 1
+    },
+    "reviews": [
+      {
+        "date": "2026-08-26",
+        "course": "HBIO202",
+        "grade": "A",
+        "quality": 3,
+        "difficulty": 1,
+        "would_take_again": true,
+        "tags": [],
+        "comment": "Every time I went to her lecture I walked out with a headache they were so monotonous and boring and her mic always spikes. She is really sweet though and its the easiest A ever so just take it if you need the GE. Beware of the lab for this class because it's lowkey evil and if you've ever had body image issues stay far away"
+      },
+      {
+        "date": "2026-04-27",
+        "course": "HBIO202",
+        "grade": "A",
+        "quality": 2,
+        "difficulty": 3,
+        "would_take_again": true,
+        "tags": [],
+        "comment": "Theres a textbook but its not super helpful. Lectures not mandatory so I didn't go often because I learned the informatoin better on my own. Tests based on lecture slides which she posted so memorize those and your good. Two tests, one cumulative final, extra credit opportunities. Lab kinda sucked."
+      },
+      {
+        "date": "2026-02-26",
+        "course": "HBIO205",
+        "grade": "A",
+        "quality": 1,
+        "difficulty": 3,
+        "would_take_again": null,
+        "tags": [],
+        "comment": "Professor Soultanakis doesn't really teach, she just reads off the slides. I skipped every lecture adn just studied hard for the test. Theres 2 midterms and she drops the lowest one which is good."
+      },
+      {
+        "date": "2026-01-08",
+        "course": "HBIO205",
+        "grade": "A",
+        "quality": 4,
+        "difficulty": 2,
+        "would_take_again": true,
+        "tags": [
+          "Group projects",
+          "Respected"
+        ],
+        "comment": "It was a big class but less than half of students would show up every lecture. This class was fairly easy even if it's not related to your major. She keeps the highest grade from 2 midterms (so you really need to only try on one midterm + the final) Exams are also super easy, 50 mcq and are very straight forward. Just use the study guide"
+      },
+      {
+        "date": "2025-12-16",
+        "course": "HBIO205",
+        "grade": "Not sure yet",
+        "quality": 4,
+        "difficulty": 1,
+        "would_take_again": true,
+        "tags": [
+          "EXTRA CREDIT",
+          "Group projects"
+        ],
+        "comment": "Taken as a GE, easiest class I have taken. Do not needed to go to class, posts the slides and reads right off them in lecture. All of the tests (midterm/final) are multiple choice 50 questions. Chill grader grading, no need to stress over class. Lab is really fun and you get to do a lot of cool experiments and testing other classes do not offer."
+      },
+      {
+        "date": "2025-12-16",
+        "course": "HBIO205",
+        "grade": "A",
+        "quality": 3,
+        "difficulty": 2,
+        "would_take_again": true,
+        "tags": [
+          "Lecture heavy"
+        ],
+        "comment": "Easy class, but she just reads off the slides. Overall a easy ge for life science for someone like myself who doesn't really like biology. One midterm gets dropped and the final was really easy"
+      },
+      {
+        "date": "2025-12-05",
+        "course": "HBIO205",
+        "grade": "A",
+        "quality": 4,
+        "difficulty": 2,
+        "would_take_again": true,
+        "tags": [
+          "Group projects",
+          "Clear grading criteria",
+          "Caring"
+        ],
+        "comment": "A lot of assignments but an easy GE-D. The exams are multiple choice and very chill. Caring prof."
+      },
+      {
+        "date": "2025-11-06",
+        "course": "HBIO202",
+        "grade": "A",
+        "quality": 3,
+        "difficulty": 2,
+        "would_take_again": true,
+        "tags": [
+          "Clear grading criteria"
+        ],
+        "comment": "Attendance isn't mandatory and the lectures are basically her reading off of slides which are all posted and in the textbook. 2 midterms but the lower grade is dropped. Some projects but graded very easily."
+      },
+      {
+        "date": "2025-06-24",
+        "course": "HBIO205",
+        "grade": "",
+        "quality": 5,
+        "difficulty": 3,
+        "would_take_again": true,
+        "tags": [],
+        "comment": "I thought the professor was a very good teacher. She truly meant it when she said that she wants all students to do well in the course. If you study her study guides for the midterms and final, I assure that you'll do well in this class."
+      },
+      {
+        "date": "2025-01-15",
+        "course": "HBIO205",
+        "grade": "A",
+        "quality": 2,
+        "difficulty": 3,
+        "would_take_again": true,
+        "tags": [
+          "Group projects",
+          "Lecture heavy",
+          "Graded by few things"
+        ],
+        "comment": "She was a nice teacher although she only gave lectures and then boom there was the midterm. Wish she gave more practice problems, but I was left stressing wondering what types of questions she'd even ask. The in-class projects were easy. She expected us to memorize WAY too much info for midterms/final. She also reads off slides."
+      },
+      {
+        "date": "2025-01-12",
+        "course": "HBIO205",
+        "grade": "B+",
+        "quality": 3,
+        "difficulty": 3,
+        "would_take_again": null,
+        "tags": [
+          "Group projects",
+          "Lecture heavy"
+        ],
+        "comment": "Class was really lecture heavy although the lectures weren't mandatory. Essentially for HBIO you're learning human anatomy."
+      },
+      {
+        "date": "2025-01-12",
+        "course": "HBIO205",
+        "grade": "A",
+        "quality": 2,
+        "difficulty": 3,
+        "would_take_again": true,
+        "tags": [
+          "Lecture heavy"
+        ],
+        "comment": "She uploads all the lectures online, so honestly, going to class is not that useful because she just reads off of the slides. The content is very focused on biology and anatomy so studying is mainly about memorizing the content, but you'll be fine. There are 3 exams but she drops the lowest grade which is really great. The lab is fun."
+      },
+      {
+        "date": "2024-10-08",
+        "course": "HBIO202",
+        "grade": "",
+        "quality": 3,
+        "difficulty": 1,
+        "would_take_again": true,
+        "tags": [],
+        "comment": "Very easy class"
+      },
+      {
+        "date": "2024-05-17",
+        "course": "HBIO202",
+        "grade": "B+",
+        "quality": 3,
+        "difficulty": 4,
+        "would_take_again": null,
+        "tags": [
+          "Group projects",
+          "Lecture heavy",
+          "Graded by few things"
+        ],
+        "comment": "The Teacher definitely knows what she is talking about, but sounds bored when doing her lectures. She pretty much reads off the slides in a monotone manner. The material, however, is very good, and what is covered is great life info. The test covers a lot of material, but really, she only tests on stuff that may be applicable following the class."
+      },
+      {
+        "date": "2024-01-30",
+        "course": "HBIO202",
+        "grade": "B+",
+        "quality": 2,
+        "difficulty": 2,
+        "would_take_again": null,
+        "tags": [],
+        "comment": "Science of Sport is a lot of work for a GE and the professor just reads off the slides. That being said it's not too hard. I completely checked out halfway through and still did fine."
+      },
+      {
+        "date": "2023-11-29",
+        "course": "HBIO205",
+        "grade": "Incomplete",
+        "quality": 1,
+        "difficulty": 5,
+        "would_take_again": null,
+        "tags": [],
+        "comment": "Soultanakis reads off lecture slides every class and does not specify which material is actually important to remember. Her study guides are not very helpful, as they span an endless amount of material. Her 205 course is \"Science of Sport\" but there is very little sports application or material taught. Instead, it is a bio/anatomy-centered class."
+      },
+      {
+        "date": "2023-11-03",
+        "course": "HBIO205",
+        "grade": "",
+        "quality": 3,
+        "difficulty": 4,
+        "would_take_again": null,
+        "tags": [],
+        "comment": "Professor Soultanakis is not very good at explaining things. This class has a LOT of biology and anatomy implemented into it, and you do some physical activity in your labs. The tests are HARD but she curves them a lot which is nice. Her slides have a lot of typos and you can tell she isn't putting much time into this class."
+      },
+      {
+        "date": "2023-10-27",
+        "course": "HBIO202",
+        "grade": "Not sure yet",
+        "quality": 1,
+        "difficulty": 3,
+        "would_take_again": null,
+        "tags": [],
+        "comment": "Prof Soultankis is probably the worst professor I've had at USC. She reads directly off of 50-60 slide PowerPoints which she doesn't make herself. She does the bare minimum. You're better off reading the slides on your own time than going to class because that's all she does anyway. The class is pretty east but don't expect to learn much."
+      },
+      {
+        "date": "2023-09-27",
+        "course": "HBIO205",
+        "grade": "Not sure yet",
+        "quality": 1,
+        "difficulty": 4,
+        "would_take_again": null,
+        "tags": [
+          "Lecture heavy"
+        ],
+        "comment": "This professor should not be a professor. There is no point in even going to the lectures, as they will be no different than the slides she posted. She will not explain or expand on any ideas. She offers no additional information other than what's on the slides. I was really looking forward to taking nutrition, but this was a huge disappointment."
+      },
+      {
+        "date": "2023-09-14",
+        "course": "HBIO205",
+        "grade": "C+",
+        "quality": 5,
+        "difficulty": 3,
+        "would_take_again": null,
+        "tags": [],
+        "comment": "Dr. Soultanakis was the best part of HBIO 250. Unlike the actual course, she tried to help students succeed and get good grades. Her lectures were very insightful and the activities in her class were fun. In the discussion section, there are group and individual presentations which helped me understand the material more than the lecture section."
+      },
+      {
+        "date": "2023-04-11",
+        "course": "HBIO205",
+        "grade": "A",
+        "quality": 5,
+        "difficulty": 2,
+        "would_take_again": true,
+        "tags": [
+          "EXTRA CREDIT",
+          "Clear grading criteria"
+        ],
+        "comment": "I absolutely love this professor. Taking her nutrition class for my life science GE and its a very straightforward class. 2 midterms and one final on scantron. a few in class assignments and also gives extra credit opportunities. Just review her lecture slides and you will do fine on the exams"
+      },
+      {
+        "date": "2023-03-22",
+        "course": "HBIO205",
+        "grade": "B",
+        "quality": 1,
+        "difficulty": 4,
+        "would_take_again": null,
+        "tags": [
+          "Tough grader",
+          "Test heavy"
+        ],
+        "comment": "Helen made it abundantly clear every class that she would rather be somewhere else. She would barely touch on the content in her brief review powerpoints, then give weekly quizzes about the most minute details of our readings. Avoid at all costs!"
+      }
+    ]
+  },
+  "HBIO-210": {
+    "instructor": "Helen Soultanakis",
+    "quality": 2.8,
+    "difficulty": 2.8,
+    "would_take_again_pct": 54.5,
+    "num_ratings": 21,
+    "consensus": "Same instructor as HBIO-205 (Helen Soultanakis). No HBIO-210-specific RMP reviews yet — profile inferred from HBIO-205 + HBIO-202: exam-only MCQ structure (2 midterms drop lower + final), slides online, no papers, optional attendance. Fall 2026 section 38452 (TTh 3:30pm). RMP 2.8 quality / 2.8 difficulty.",
+    "url": "https://www.ratemyprofessors.com/professor/2845131",
+    "source": "Rate My Professors",
+    "as_of": "2026-08-30",
+    "avg_grade_gpa": 3.68,
+    "avg_grade_letter": "A-",
+    "grades_reported": 15,
+    "grade_distribution": {
+      "A": 10,
+      "B+": 3,
+      "C+": 1,
+      "B": 1
+    },
+    "reviews": [
+      {
+        "date": "2026-02-26",
+        "course": "HBIO205",
+        "grade": "A",
+        "quality": 1,
+        "difficulty": 3,
+        "would_take_again": null,
+        "tags": [],
+        "comment": "Professor Soultanakis doesn't really teach, she just reads off the slides. I skipped every lecture adn just studied hard for the test. Theres 2 midterms and she drops the lowest one which is good."
+      },
+      {
+        "date": "2026-01-08",
+        "course": "HBIO205",
+        "grade": "A",
+        "quality": 4,
+        "difficulty": 2,
+        "would_take_again": true,
+        "tags": [
+          "Group projects",
+          "Respected"
+        ],
+        "comment": "It was a big class but less than half of students would show up every lecture. This class was fairly easy even if it's not related to your major. She keeps the highest grade from 2 midterms (so you really need to only try on one midterm + the final) Exams are also super easy, 50 mcq and are very straight forward. Just use the study guide"
+      },
+      {
+        "date": "2025-12-16",
+        "course": "HBIO205",
+        "grade": "Not sure yet",
+        "quality": 4,
+        "difficulty": 1,
+        "would_take_again": true,
+        "tags": [
+          "EXTRA CREDIT",
+          "Group projects"
+        ],
+        "comment": "Taken as a GE, easiest class I have taken. Do not needed to go to class, posts the slides and reads right off them in lecture. All of the tests (midterm/final) are multiple choice 50 questions. Chill grader grading, no need to stress over class. Lab is really fun and you get to do a lot of cool experiments and testing other classes do not offer."
+      },
+      {
+        "date": "2025-12-16",
+        "course": "HBIO205",
+        "grade": "A",
+        "quality": 3,
+        "difficulty": 2,
+        "would_take_again": true,
+        "tags": [
+          "Lecture heavy"
+        ],
+        "comment": "Easy class, but she just reads off the slides. Overall a easy ge for life science for someone like myself who doesn't really like biology. One midterm gets dropped and the final was really easy"
+      },
+      {
+        "date": "2025-12-05",
+        "course": "HBIO205",
+        "grade": "A",
+        "quality": 4,
+        "difficulty": 2,
+        "would_take_again": true,
+        "tags": [
+          "Group projects",
+          "Clear grading criteria",
+          "Caring"
+        ],
+        "comment": "A lot of assignments but an easy GE-D. The exams are multiple choice and very chill. Caring prof."
+      },
+      {
+        "date": "2025-06-24",
+        "course": "HBIO205",
+        "grade": "",
+        "quality": 5,
+        "difficulty": 3,
+        "would_take_again": true,
+        "tags": [],
+        "comment": "I thought the professor was a very good teacher. She truly meant it when she said that she wants all students to do well in the course. If you study her study guides for the midterms and final, I assure that you'll do well in this class."
+      },
+      {
+        "date": "2025-01-15",
+        "course": "HBIO205",
+        "grade": "A",
+        "quality": 2,
+        "difficulty": 3,
+        "would_take_again": true,
+        "tags": [
+          "Group projects",
+          "Lecture heavy",
+          "Graded by few things"
+        ],
+        "comment": "She was a nice teacher although she only gave lectures and then boom there was the midterm. Wish she gave more practice problems, but I was left stressing wondering what types of questions she'd even ask. The in-class projects were easy. She expected us to memorize WAY too much info for midterms/final. She also reads off slides."
+      },
+      {
+        "date": "2025-01-12",
+        "course": "HBIO205",
+        "grade": "B+",
+        "quality": 3,
+        "difficulty": 3,
+        "would_take_again": null,
+        "tags": [
+          "Group projects",
+          "Lecture heavy"
+        ],
+        "comment": "Class was really lecture heavy although the lectures weren't mandatory. Essentially for HBIO you're learning human anatomy."
+      },
+      {
+        "date": "2025-01-12",
+        "course": "HBIO205",
+        "grade": "A",
+        "quality": 2,
+        "difficulty": 3,
+        "would_take_again": true,
+        "tags": [
+          "Lecture heavy"
+        ],
+        "comment": "She uploads all the lectures online, so honestly, going to class is not that useful because she just reads off of the slides. The content is very focused on biology and anatomy so studying is mainly about memorizing the content, but you'll be fine. There are 3 exams but she drops the lowest grade which is really great. The lab is fun."
+      },
+      {
+        "date": "2023-11-29",
+        "course": "HBIO205",
+        "grade": "Incomplete",
+        "quality": 1,
+        "difficulty": 5,
+        "would_take_again": null,
+        "tags": [],
+        "comment": "Soultanakis reads off lecture slides every class and does not specify which material is actually important to remember. Her study guides are not very helpful, as they span an endless amount of material. Her 205 course is \"Science of Sport\" but there is very little sports application or material taught. Instead, it is a bio/anatomy-centered class."
+      },
+      {
+        "date": "2023-11-03",
+        "course": "HBIO205",
+        "grade": "",
+        "quality": 3,
+        "difficulty": 4,
+        "would_take_again": null,
+        "tags": [],
+        "comment": "Professor Soultanakis is not very good at explaining things. This class has a LOT of biology and anatomy implemented into it, and you do some physical activity in your labs. The tests are HARD but she curves them a lot which is nice. Her slides have a lot of typos and you can tell she isn't putting much time into this class."
+      },
+      {
+        "date": "2023-09-27",
+        "course": "HBIO205",
+        "grade": "Not sure yet",
+        "quality": 1,
+        "difficulty": 4,
+        "would_take_again": null,
+        "tags": [
+          "Lecture heavy"
+        ],
+        "comment": "This professor should not be a professor. There is no point in even going to the lectures, as they will be no different than the slides she posted. She will not explain or expand on any ideas. She offers no additional information other than what's on the slides. I was really looking forward to taking nutrition, but this was a huge disappointment."
+      },
+      {
+        "date": "2023-09-14",
+        "course": "HBIO205",
+        "grade": "C+",
+        "quality": 5,
+        "difficulty": 3,
+        "would_take_again": null,
+        "tags": [],
+        "comment": "Dr. Soultanakis was the best part of HBIO 250. Unlike the actual course, she tried to help students succeed and get good grades. Her lectures were very insightful and the activities in her class were fun. In the discussion section, there are group and individual presentations which helped me understand the material more than the lecture section."
+      },
+      {
+        "date": "2023-04-11",
+        "course": "HBIO205",
+        "grade": "A",
+        "quality": 5,
+        "difficulty": 2,
+        "would_take_again": true,
+        "tags": [
+          "EXTRA CREDIT",
+          "Clear grading criteria"
+        ],
+        "comment": "I absolutely love this professor. Taking her nutrition class for my life science GE and its a very straightforward class. 2 midterms and one final on scantron. a few in class assignments and also gives extra credit opportunities. Just review her lecture slides and you will do fine on the exams"
+      },
+      {
+        "date": "2023-03-22",
+        "course": "HBIO205",
+        "grade": "B",
+        "quality": 1,
+        "difficulty": 4,
+        "would_take_again": null,
+        "tags": [
+          "Tough grader",
+          "Test heavy"
+        ],
+        "comment": "Helen made it abundantly clear every class that she would rather be somewhere else. She would barely touch on the content in her brief review powerpoints, then give weekly quizzes about the most minute details of our readings. Avoid at all costs!"
+      }
+    ],
+    "rmp_note": "No HBIO210-specific reviews; HBIO205 reviews shown"
   }
 }

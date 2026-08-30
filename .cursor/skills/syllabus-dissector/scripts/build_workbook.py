@@ -591,7 +591,7 @@ def append_graduation_plan_overview(
     if len(rows) < 2:
         return start_row
 
-    last_col = get_column_letter(min(ncols, 8))
+    last_col = get_column_letter(min(ncols, 9))
     row = start_row
     ws.merge_cells(f"A{row}:{last_col}{row}")
     title = ws.cell(
@@ -603,7 +603,7 @@ def append_graduation_plan_overview(
     title.fill = section_fill
     row += 1
 
-    display_headers = ["Term", "Course", "Title", "Requirement", "Units", "Sem Total", "Cumulative"]
+    display_headers = ["Term", "Course", "Title", "Requirement", "Units", "Sem Total", "Cumulative", "Notes", "GE-D Consider"]
     plan_header_fill = PatternFill("solid", fgColor="548235")
     plan_header_font = Font(bold=True, color="FFFFFF")
     for col, name in enumerate(display_headers, start=1):
@@ -629,12 +629,14 @@ def append_graduation_plan_overview(
             row_vals[4] if len(row_vals) > 4 else "",
             row_vals[5] if len(row_vals) > 5 else "",
             row_vals[6] if len(row_vals) > 6 else "",
+            row_vals[7] if len(row_vals) > 7 else "",
+            row_vals[8] if len(row_vals) > 8 else "",
         ]
         for col, value in enumerate(cells, start=1):
             c = ws.cell(row=row, column=col, value=value.strip() if value else "")
             c.fill = term_fill if col == 1 and value.strip() else fill
             c.border = border
-            c.alignment = Alignment(vertical="center", wrap_text=(col == 3))
+            c.alignment = Alignment(vertical="center", wrap_text=(col in (3, 8, 9)))
             if col == 1 and value.strip():
                 c.font = Font(bold=True)
         code = cells[1].strip()
@@ -1207,7 +1209,7 @@ def import_graduation_plan_sheet(wb: Workbook, csv_path: Path, workbook_path: Pa
         for col, value in enumerate(row_vals, start=1):
             c = ws.cell(row=i, column=col, value=value.strip() if value else "")
             c.border = BORDER
-            c.alignment = Alignment(vertical="center", wrap_text=(col in (3, 8)))
+            c.alignment = Alignment(vertical="center", wrap_text=(col in (3, 8, 9)))
             c.fill = fill
             if col == 1 and value.strip():
                 c.font = label_font
@@ -1222,7 +1224,7 @@ def import_graduation_plan_sheet(wb: Workbook, csv_path: Path, workbook_path: Pa
                 c.value = sheet_link(sheet_guess, code)
                 c.font = Font(color="0563C1", underline="single")
 
-    widths = [14, 14, 42, 28, 8, 14, 16, 36]
+    widths = [14, 14, 42, 28, 8, 14, 16, 36, 52]
     for col, width in enumerate(widths[:ncols], start=1):
         ws.column_dimensions[get_column_letter(col)].width = width
     ws.freeze_panes = ws.cell(row=data_start_row, column=1)
