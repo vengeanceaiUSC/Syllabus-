@@ -49,6 +49,15 @@ BORDER = Border(left=THIN, right=THIN, top=THIN, bottom=THIN)
 
 OVERVIEW_SHEET = "Overview"
 GRADUATION_PLAN_SHEET = "Graduation Plan"
+# Hosted STARS PDF — works from a standalone downloaded workbook (no local sources/ folder).
+DEFAULT_STARS_REPORT_URL = (
+    "https://raw.githubusercontent.com/vengeanceaiUSC/Syllabus-"
+    "/cursor/add-syllabus-dissector-skill-a676/output/sources/stars-report.pdf"
+)
+DEFAULT_GRADUATION_PLAN_URL = (
+    "https://raw.githubusercontent.com/vengeanceaiUSC/Syllabus-"
+    "/cursor/add-syllabus-dissector-skill-a676/output/graduation-plan.xlsx"
+)
 CONNECT_PREP_MARK = "Personal Assessments (Connect)"
 OVERVIEW_AS_OF: date | None = None
 TODO_LABELS = frozenset({"Homework", "Assignment", "Exam", "Certification", "Research"})
@@ -617,7 +626,37 @@ def build_overview_sheet(
         plan_cell = ws.cell(
             row=row,
             column=1,
-            value=sheet_link(GRADUATION_PLAN_SHEET, "→ Graduation Plan — 128-unit BBA degree map (click here)"),
+            value=pdf_hyperlink(
+                DEFAULT_GRADUATION_PLAN_URL,
+                "→ Download Graduation Plan (.xlsx) — standalone file",
+            ),
+        )
+        plan_cell.font = Font(bold=True, size=12, color="548235", underline="single")
+        plan_cell.fill = PatternFill("solid", fgColor="E2EFDA")
+        plan_cell.alignment = Alignment(horizontal="left", vertical="center")
+        ws.row_dimensions[row].height = 24
+        row += 1
+        ws.merge_cells(f"A{row}:{last_col}{row}")
+        stars_cell = ws.cell(
+            row=row,
+            column=1,
+            value=pdf_hyperlink(
+                DEFAULT_STARS_REPORT_URL,
+                "→ Download STARS Report (PDF) — degree requirements",
+            ),
+        )
+        stars_cell.font = Font(bold=True, size=12, color="C00000", underline="single")
+        stars_cell.fill = PatternFill("solid", fgColor="FFF2CC")
+        stars_cell.alignment = Alignment(horizontal="left", vertical="center")
+        ws.row_dimensions[row].height = 24
+        row += 1
+
+    if GRADUATION_PLAN_SHEET in wb.sheetnames:
+        ws.merge_cells(f"A{row}:{last_col}{row}")
+        plan_cell = ws.cell(
+            row=row,
+            column=1,
+            value=sheet_link(GRADUATION_PLAN_SHEET, "→ Open Graduation Plan tab (in this workbook)"),
         )
         plan_cell.font = Font(bold=True, size=12, color="548235", underline="single")
         plan_cell.fill = PatternFill("solid", fgColor="E2EFDA")
@@ -1037,18 +1076,26 @@ def import_graduation_plan_sheet(wb: Workbook, csv_path: Path, workbook_path: Pa
         else None
     )
     if stars_pdf and stars_pdf.exists():
+        stars_url = DEFAULT_STARS_REPORT_URL
         ws.merge_cells(f"A2:{last_col}2")
         stars_cell = ws.cell(row=2, column=1)
         stars_cell.value = pdf_hyperlink(
-            "sources/stars-report.pdf",
-            "→ STARS Degree Progress Report (08/15/26) — click for full requirements",
+            stars_url,
+            "→ Download STARS Report (PDF) — opens in browser",
         )
         stars_cell.font = Font(bold=True, size=11, color="C00000", underline="single")
         stars_cell.fill = stars_fill
         stars_cell.alignment = Alignment(horizontal="left", vertical="center")
         ws.row_dimensions[2].height = 22
-        data_start_row = 4
-        header_row = 3
+        ws.merge_cells(f"A3:{last_col}3")
+        url_cell = ws.cell(row=3, column=1)
+        url_cell.value = stars_url
+        url_cell.font = Font(size=9, color="404040")
+        url_cell.fill = stars_fill
+        url_cell.alignment = Alignment(wrap_text=True)
+        ws.row_dimensions[3].height = 28
+        data_start_row = 5
+        header_row = 4
     else:
         header_row = 2
 
