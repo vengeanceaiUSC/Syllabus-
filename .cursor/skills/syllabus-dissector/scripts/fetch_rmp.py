@@ -92,6 +92,10 @@ KNOWN_PROFESSORS: dict[str, dict] = {
         "instructor": "Samuel Steinberg",
         "professor_id": "2132312",
     },
+    "ANTH-202": {
+        "instructor": "Tracie Mayfield",
+        "professor_id": "2432970",
+    },
     "JS-310": {
         "instructor": "Andrzej Brylak / Yulia Dubasova",
         "rmp_instructor": "Andrzej Brylak",

@@ -1170,5 +1170,605 @@
       }
     ],
     "rmp_instructor": "Andrzej Brylak"
+  },
+  "ANTH-202": {
+    "instructor": "Tracie Mayfield",
+    "quality": 4.6,
+    "difficulty": 2.1,
+    "would_take_again_pct": 81.8,
+    "num_ratings": 43,
+    "consensus": "",
+    "url": "https://www.ratemyprofessors.com/professor/2432970",
+    "source": "Rate My Professors",
+    "as_of": "2026-08-30",
+    "avg_grade_gpa": 3.93,
+    "avg_grade_letter": "A-",
+    "grades_reported": 27,
+    "grade_distribution": {
+      "A": 20,
+      "A+": 4,
+      "B": 1,
+      "A-": 1,
+      "B+": 1
+    },
+    "reviews": [
+      {
+        "date": "2026-06-04",
+        "course": "ANTH202",
+        "grade": "A+",
+        "quality": 5,
+        "difficulty": 2,
+        "would_take_again": true,
+        "tags": [
+          "Gives good feedback",
+          "Hilarious",
+          "Caring"
+        ],
+        "comment": "I love Dr. Mayfield! She is so easy to talk to and genuinely wants students to do well. Stay on track with the assignments, and ask her for help whenever you need it. I also took ANTH 343 with her, and really enjoyed it! If she taught another class, I would take that one too. Get in her class if you can, you won't regret it!!!"
+      },
+      {
+        "date": "2026-05-29",
+        "course": "ANTH202",
+        "grade": "A",
+        "quality": 5,
+        "difficulty": 2,
+        "would_take_again": true,
+        "tags": [
+          "Participation matters",
+          "Gives good feedback",
+          "Respected"
+        ],
+        "comment": "Quite a chill and fair class. Your grade is basically two exams (which are both easy if you keep up with the readings and films) and an essay (which is spread out over several weeks and the topic is your choice). Overall, a laid-back class and an easy A if you put in the effort."
+      },
+      {
+        "date": "2026-05-28",
+        "course": "ANTH202",
+        "grade": "A",
+        "quality": 5,
+        "difficulty": 1,
+        "would_take_again": true,
+        "tags": [
+          "EXTRA CREDIT",
+          "Respected",
+          "Accessible outside class"
+        ],
+        "comment": "Easy A if you are willing to put into effort. She replied to my emails very quickly. Exams were online and not cumulative. Overall, this is a manageable GE. Definitely recommend!"
+      },
+      {
+        "date": "2026-05-27",
+        "course": "ANTH202",
+        "grade": "A",
+        "quality": 5,
+        "difficulty": 2,
+        "would_take_again": true,
+        "tags": [],
+        "comment": "love her. so passionate and an easy GE."
+      },
+      {
+        "date": "2026-02-06",
+        "course": "ANTH201",
+        "grade": "Rather not say",
+        "quality": 2,
+        "difficulty": 5,
+        "would_take_again": null,
+        "tags": [
+          "Tough grader",
+          "Get ready to read",
+          "Participation matters"
+        ],
+        "comment": "Not considerate or reasonable. Haphazard assignments, bad communication, and overall not worth your time or effort. Very hard and not even engaging."
+      },
+      {
+        "date": "2026-02-03",
+        "course": "ANTH202",
+        "grade": "",
+        "quality": 1,
+        "difficulty": 5,
+        "would_take_again": null,
+        "tags": [
+          "Tough grader",
+          "Lots of homework"
+        ],
+        "comment": "Disrespectful, rude, overly demanding/harsh grader. Fail's to prepare enough material for the lectures. Lots of youtube videos and harsh grading. Overall lackluster in terms of being anything worthy of your time or interest. Take something else!"
+      },
+      {
+        "date": "2026-01-09",
+        "course": "ANTH202",
+        "grade": "A",
+        "quality": 5,
+        "difficulty": 4,
+        "would_take_again": true,
+        "tags": [
+          "Get ready to read",
+          "Participation matters",
+          "Test heavy"
+        ],
+        "comment": "She is so sweet and an amazing prof however do not take this class for an easy A. previous reviews made this class seem very easy and its not. you really have to put the work in. Yes you take your tests at home and they are open note but you really have to know your stuff to succeed. they are not easy. a lot of reading and content to know!"
+      },
+      {
+        "date": "2025-12-25",
+        "course": "ANTH202",
+        "grade": "A",
+        "quality": 4,
+        "difficulty": 4,
+        "would_take_again": null,
+        "tags": [
+          "Get ready to read",
+          "Participation matters",
+          "Respected"
+        ],
+        "comment": "The only reason I rated it as more difficult is because you really do have to put in the work for the class. Others made it sound very easy, but it is not, and she was clear about that from day one. You have weekly at-home quizzes, lots of reading and videos, and attendance is graded! It was a great class but don't expect an easy A."
+      },
+      {
+        "date": "2025-06-01",
+        "course": "ANTH202",
+        "grade": "A",
+        "quality": 4,
+        "difficulty": 3,
+        "would_take_again": null,
+        "tags": [
+          "Get ready to read",
+          "EXTRA CREDIT",
+          "Accessible outside class"
+        ],
+        "comment": "It is overall not hard to do well in the class. Go to the labs and do all the assigned readings. Professor Mayfield does her best to prepare everyone for the final paper and online exams. She was also very quick to respond to emails and very accessible. With quite a bit to read every week, the difficulty can vary depending on interest in topic."
+      },
+      {
+        "date": "2025-05-17",
+        "course": "ANTH202",
+        "grade": "Not sure yet",
+        "quality": 3,
+        "difficulty": 4,
+        "would_take_again": true,
+        "tags": [
+          "Tough grader",
+          "Get ready to read",
+          "Clear grading criteria"
+        ],
+        "comment": "Overall, Tracie Mayfield is a great professor. If you show up to classes and keep up with the syllabus, you'll probably do fine. However, the class has an insane amount of reading, for frankly a topic that isn't really interesting. Try and get a good lecture time because you have to show up. There's prob better choices but 202 isn't horrible."
+      },
+      {
+        "date": "2025-04-29",
+        "course": "ANTH202",
+        "grade": "A",
+        "quality": 5,
+        "difficulty": 1,
+        "would_take_again": true,
+        "tags": [
+          "EXTRA CREDIT",
+          "Clear grading criteria"
+        ],
+        "comment": "If you are looking to take an easy GE, this is by far the best choice. Half the lectures are online and you only have to show up to less than half the lectures. Professor Mayfield is super chill and funny and you will get an A if you complete the course requirements"
+      },
+      {
+        "date": "2024-12-27",
+        "course": "ANTH202",
+        "grade": "A",
+        "quality": 5,
+        "difficulty": 1,
+        "would_take_again": true,
+        "tags": [
+          "EXTRA CREDIT",
+          "Clear grading criteria",
+          "Accessible outside class"
+        ],
+        "comment": "BEST GE AT USC. All you need is a pulse to get an A. You learn a TON and only need to go to a 50 minute discussion per week. Just follow her directions and you can get a perfect score on everything."
+      },
+      {
+        "date": "2024-12-18",
+        "course": "ANTH202",
+        "grade": "A",
+        "quality": 5,
+        "difficulty": 1,
+        "would_take_again": true,
+        "tags": [
+          "EXTRA CREDIT",
+          "Clear grading criteria",
+          "Caring"
+        ],
+        "comment": "My only complaint is I wish I could have had more class time with Dr. Mayfield! She uses a flipped classroom model where she lectures during discussion (but not every week) and lecture time is like work time. This wasn't the best for me since I enjoy lecture and don't learn as well independently but overall loved the class! She is so caring!"
+      },
+      {
+        "date": "2024-12-14",
+        "course": "ANTH201",
+        "grade": "",
+        "quality": 5,
+        "difficulty": 1,
+        "would_take_again": true,
+        "tags": [],
+        "comment": "She's so nice and funny one of the best professors for sure"
+      },
+      {
+        "date": "2024-12-11",
+        "course": "ANTH201",
+        "grade": "A",
+        "quality": 5,
+        "difficulty": 2,
+        "would_take_again": true,
+        "tags": [
+          "EXTRA CREDIT",
+          "Clear grading criteria",
+          "Gives good feedback"
+        ],
+        "comment": "Amazing teacher! Took her for GESM-130. Very passionate about what she teaches. She assigns a midterm, final exam and final project in which she grades leniantly. Attendance isn't mandatory but starts taking points off after 5 absences. Answers emails really well even at 3 AM she will answer your emails. Overall fun, enjoyable easy A."
+      },
+      {
+        "date": "2024-12-07",
+        "course": "ANTH202",
+        "grade": "Not sure yet",
+        "quality": 5,
+        "difficulty": 3,
+        "would_take_again": true,
+        "tags": [
+          "Get ready to read",
+          "EXTRA CREDIT",
+          "Clear grading criteria"
+        ],
+        "comment": "Great lectures, great person, clear grading rubric and well-defined expectations from class. Would love to take her again!"
+      },
+      {
+        "date": "2024-04-24",
+        "course": "ANTH263G",
+        "grade": "B",
+        "quality": 2,
+        "difficulty": 2,
+        "would_take_again": null,
+        "tags": [],
+        "comment": "Not helpful when I need assistance and dismissive"
+      },
+      {
+        "date": "2023-12-16",
+        "course": "ANTH202",
+        "grade": "A+",
+        "quality": 5,
+        "difficulty": 2,
+        "would_take_again": true,
+        "tags": [
+          "EXTRA CREDIT",
+          "Caring",
+          "Lecture heavy"
+        ],
+        "comment": "The best GE C you could take. You do have to watch the online lectures and attend the lab sections, but that's all. The midterm and final are open notes, book, google, everything, and are super doable if you take notes on the online lectures and the lab sections' classes. One 7-8 page double spaced paper due in the final week of classes."
+      },
+      {
+        "date": "2023-06-30",
+        "course": "ANTH202",
+        "grade": "A-",
+        "quality": 5,
+        "difficulty": 2,
+        "would_take_again": true,
+        "tags": [
+          "Participation matters",
+          "Caring",
+          "Accessible outside class"
+        ],
+        "comment": "Prof Mayfield was amazing. She is so kind, funny, caring, and informative. The class teaches you how to manage your time with the flipped classroom model, but it's manageable once you get a schedule going for yourself. Once a week, mandatory discussions, with the rest being readings and recordings. Definitely easy, but take it for Prof Mayfield!"
+      },
+      {
+        "date": "2023-05-09",
+        "course": "ANTH202",
+        "grade": "A",
+        "quality": 5,
+        "difficulty": 2,
+        "would_take_again": true,
+        "tags": [
+          "Clear grading criteria",
+          "Gives good feedback",
+          "Caring"
+        ],
+        "comment": "So grateful I took this class for my GE! Best choice I could've made. Just show up to lab sections and you'll be fine. Professor Mayfield is so caring and attentive to her students, the nicest and most knowledgeable teacher I've had this year. She makes tough concepts easy. Take her!!"
+      },
+      {
+        "date": "2023-01-08",
+        "course": "ANTH201",
+        "grade": "A",
+        "quality": 5,
+        "difficulty": 2,
+        "would_take_again": true,
+        "tags": [
+          "EXTRA CREDIT",
+          "Hilarious",
+          "Caring"
+        ],
+        "comment": "Amazing professor! Take. This. Class. Easy A, thoughtful professor, the material is explained very well, and there's one paper you work on throughout the semester (can be as easy as the history of soccer or the history of ice cream)."
+      },
+      {
+        "date": "2023-01-03",
+        "course": "ANTH201",
+        "grade": "A",
+        "quality": 5,
+        "difficulty": 1,
+        "would_take_again": true,
+        "tags": [
+          "Hilarious",
+          "Caring"
+        ],
+        "comment": "Literally the nicest human I've ever met. She led my ANTH 201 discussion section, and she was always willing to help us with our essays and other questions. She cares a lot about her students. She prepared us SO WELL for the exams (which are online & open-note). She constantly sends out reminders to help students stay organized and updated."
+      },
+      {
+        "date": "2022-12-09",
+        "course": "ANTH202",
+        "grade": "Not sure yet",
+        "quality": 5,
+        "difficulty": 2,
+        "would_take_again": true,
+        "tags": [],
+        "comment": "Amazing professor! Just a great person overall, she is so understandable and flexible. She is so passionate about her studies that it makes you want to excel at all. Do not hesitate to take a Dr. Mayfield course, that is if you are lucky enough to get a spot!"
+      },
+      {
+        "date": "2021-12-24",
+        "course": "ANTH202",
+        "grade": "A",
+        "quality": 5,
+        "difficulty": 1,
+        "would_take_again": true,
+        "tags": [],
+        "comment": "Professor Mayfield is a saint. By far the best professor I've had at USC. Super understanding and flexible with her students but also really knowledgable about the class topics. Taking her class really eased my schedule and allowed me to not get overwhelmed by my others. If you get the chance TAKE ONE OF HER CLASSES."
+      },
+      {
+        "date": "2021-12-23",
+        "course": "ANTH202",
+        "grade": "Not sure yet",
+        "quality": 5,
+        "difficulty": 1,
+        "would_take_again": true,
+        "tags": [
+          "Respected",
+          "Inspirational"
+        ],
+        "comment": "I really loved her class! Despite being on zoom it was stress free and I genuinely learned a lot! Multiple choice midterm was slightly challenging but that was the only hard thing we did. Weekly quizzes that we could take over and over until we got 100% were dope. She is inspirational and knowledgeable"
+      },
+      {
+        "date": "2021-12-11",
+        "course": "ANTH201",
+        "grade": "Not sure yet",
+        "quality": 4,
+        "difficulty": 3,
+        "would_take_again": true,
+        "tags": [
+          "Respected",
+          "Get ready to read",
+          "Inspirational"
+        ],
+        "comment": "I really like her! It was hard to engage in class bc of zoom but that wasnt in dr mayfields control. I can see she has a clear passion for what she does."
+      },
+      {
+        "date": "2021-12-05",
+        "course": "ANTH201",
+        "grade": "",
+        "quality": 5,
+        "difficulty": 2,
+        "would_take_again": true,
+        "tags": [
+          "Caring"
+        ],
+        "comment": "Really love this professor. Although the content of ANTH201 isn't particularly difficult, Mayfield is passionate about what she teaches. She is very caring and is easy on grading, attendance, etc."
+      },
+      {
+        "date": "2021-12-02",
+        "course": "ANTH202",
+        "grade": "A+",
+        "quality": 5,
+        "difficulty": 1,
+        "would_take_again": true,
+        "tags": [
+          "Get ready to read",
+          "Participation matters",
+          "EXTRA CREDIT"
+        ],
+        "comment": "Prof Mayfield is very kind, and cares a lot about her students. Her class gives a good amount of homework, but her lectures were asynchronous (you only have to go to the discussion sections), so there is plenty of time to do the work. There are weekly quizzes with unlimited retakes. She is very clear about what you need to do to get a good grade."
+      },
+      {
+        "date": "2021-05-12",
+        "course": "ANTH202",
+        "grade": "A",
+        "quality": 5,
+        "difficulty": 2,
+        "would_take_again": true,
+        "tags": [
+          "Respected",
+          "Accessible outside class",
+          "Clear grading criteria"
+        ],
+        "comment": "Wonderful teacher with tons of accomplishments under her belt. Tons of opportunities for extra credit and is lenient. Pretty light course load, at least when online."
+      },
+      {
+        "date": "2021-04-27",
+        "course": "ANTH202",
+        "grade": "A+",
+        "quality": 5,
+        "difficulty": 2,
+        "would_take_again": true,
+        "tags": [
+          "Gives good feedback",
+          "Accessible outside class",
+          "Get ready to read"
+        ],
+        "comment": "Great professor online, would love to have her in person. Do the readings and pay attention in discussion and you'll get an A. She makes all assignments, tests, papers very straightforward and is easy to access outside of class."
+      },
+      {
+        "date": "2020-12-07",
+        "course": "ANTH202",
+        "grade": "A",
+        "quality": 5,
+        "difficulty": 2,
+        "would_take_again": false,
+        "tags": [
+          "Gives good feedback",
+          "Respected",
+          "EXTRA CREDIT"
+        ],
+        "comment": "To be honest, I was not interested in historical archeology, which is the main content taught. The names of the historical sites are hard to memorize, which could be confusing. I don't think I do really well but Mayfield is really nice providing enough chances for you to pass, or to get an A. Not hard to archieve good grades if that's your goal."
+      },
+      {
+        "date": "2020-11-21",
+        "course": "ANTH202",
+        "grade": "A",
+        "quality": 5,
+        "difficulty": 1,
+        "would_take_again": true,
+        "tags": [
+          "Get ready to read",
+          "Caring",
+          "EXTRA CREDIT"
+        ],
+        "comment": "Mayfield is like Jesus: if Jesus can turn water into wine Mayfield can turn your grade to be fine"
+      },
+      {
+        "date": "2020-11-20",
+        "course": "ANTH314",
+        "grade": "A",
+        "quality": 5,
+        "difficulty": 2,
+        "would_take_again": true,
+        "tags": [],
+        "comment": "Dr. Mayfield is phenomenal, and 314 is a great GE. If you enjoy history, this class should be pretty easy for you. Lots of extra credit and some pretty fascinating material. Also, the TA Dr. Heller is AMAZING. Dude should be teaching his own course."
+      },
+      {
+        "date": "2020-11-20",
+        "course": "ANTH202",
+        "grade": "Not sure yet",
+        "quality": 5,
+        "difficulty": 1,
+        "would_take_again": true,
+        "tags": [
+          "Get ready to read",
+          "Clear grading criteria",
+          "Caring"
+        ],
+        "comment": "Tracie is an absolute gem. Her course material really expanded my understanding of archaeology. She assigns a fair amount of reading per week but it's nothing too difficult or intimidating (imo they're also engaging). As for exams we go over it during class so no stress. You will get a good grade if you do the work. TAKE HER, she's a lovely person!"
+      },
+      {
+        "date": "2020-11-19",
+        "course": "ANTH202",
+        "grade": "Not sure yet",
+        "quality": 5,
+        "difficulty": 1,
+        "would_take_again": true,
+        "tags": [
+          "Clear grading criteria",
+          "Amazing lectures",
+          "EXTRA CREDIT"
+        ],
+        "comment": "THE BEST CHOICE FOR AN ONLINE GE! SO MUCH EXTRA CREDIT to keep up and extremely understanding during COVID. No surprises in multiple choice and test (we go over everything) and Professor Mayfield is extremely engaging with students. You can make this class into anything you want it to be, I wrote my final paper around urban studies Take it trust me"
+      },
+      {
+        "date": "2020-11-16",
+        "course": "ANTH314",
+        "grade": "B+",
+        "quality": 3,
+        "difficulty": 4,
+        "would_take_again": false,
+        "tags": [
+          "Lots of homework",
+          "Participation matters",
+          "Lecture heavy"
+        ],
+        "comment": "Tracie Mayfield is obviously passionate about what she teaches, but she often assigns too much reading every week and expects you to remember tiny details when it comes to the midterm and the final. I enjoyed the subject of the class but it was difficult to keep up. The lectures were also boring and so was the reading."
+      },
+      {
+        "date": "2020-11-14",
+        "course": "ANTH202",
+        "grade": "Not sure yet",
+        "quality": 5,
+        "difficulty": 2,
+        "would_take_again": true,
+        "tags": [
+          "Caring",
+          "EXTRA CREDIT"
+        ],
+        "comment": "She is THE BEST!! Super sweet and caring professor, and gives a ton of extra credit opportunities. Weekly quizzes, a midterm, a final, and a paper, but the quizzes were never hard (and you can take them as many times as you wanted). The professor is easily accessible outside of class. Tests were manageable since they were open note. TAKE HER CLASS!"
+      },
+      {
+        "date": "2020-11-11",
+        "course": "ANTH202",
+        "grade": "",
+        "quality": 5,
+        "difficulty": 4,
+        "would_take_again": true,
+        "tags": [
+          "Accessible outside class",
+          "Clear grading criteria",
+          "EXTRA CREDIT"
+        ],
+        "comment": "BEST GE PROFESSOR. A lot of work but her caring and on-task personality makes up for it. She provides so many opportunities for extra credit and she is always available outside of class. Although midterm was a little hard, you just gotta review the materials (usually the quizzes and lectures). Course is eh, but the professor is amazing."
+      },
+      {
+        "date": "2020-06-04",
+        "course": "ANTH202",
+        "grade": "A",
+        "quality": 4,
+        "difficulty": 1,
+        "would_take_again": false,
+        "tags": [],
+        "comment": "She gives a lot of extra credit! Your grade is participation, a 12 page paper, and two exams but the exams are open note and open book. Some of the things we were tested on were pretty random and I would not have done well if it wasn't open book. The lectures are not that exciting, but she takes attendance , but she gives u 5 &quot;freebies&quot;"
+      },
+      {
+        "date": "2020-05-20",
+        "course": "ANTH202",
+        "grade": "A",
+        "quality": 5,
+        "difficulty": 1,
+        "would_take_again": true,
+        "tags": [
+          "Inspirational",
+          "Hilarious",
+          "Lecture heavy"
+        ],
+        "comment": "Mayfield was a casual and engaging lecturer, who really just wants you to be passionate about archaeology. Her lectures and readings had a lot of information, but the exams were all open-book, so it didn't take much work to get an A in the class. ANTH 202's a great GE."
+      },
+      {
+        "date": "2020-05-03",
+        "course": "ANTH202",
+        "grade": "",
+        "quality": 5,
+        "difficulty": 3,
+        "would_take_again": true,
+        "tags": [
+          "Accessible outside class",
+          "Graded by few things",
+          "Hilarious"
+        ],
+        "comment": "She's great-- knows what she's talking about and how to make you enjoy listening to her. Lots of extra credit, but very few things you get graded on. Basically one final paper and its drafts, along with the final and midterm. Still, an interesting and pretty easy GE."
+      },
+      {
+        "date": "2020-01-16",
+        "course": "ANTH202",
+        "grade": "",
+        "quality": 5,
+        "difficulty": 1,
+        "would_take_again": true,
+        "tags": [],
+        "comment": "Awesome professor"
+      },
+      {
+        "date": "2019-11-20",
+        "course": "ANTH263G",
+        "grade": "",
+        "quality": 5,
+        "difficulty": 2,
+        "would_take_again": true,
+        "tags": [
+          "Lots of homework",
+          "Participation matters",
+          "EXTRA CREDIT"
+        ],
+        "comment": "Dr. Mayfield is super passionate about the topic and an awesome teacher! She grades easily but is really invested in making sure you know the topic. You can miss up to five lectures/discussions but lectures are usually just watching movies like black panther. Reading is slightly heavy and you have to do a writeup each week but you can skim &amp; dogood"
+      },
+      {
+        "date": "2018-11-30",
+        "course": "ANTH202",
+        "grade": "",
+        "quality": 5,
+        "difficulty": 3,
+        "would_take_again": true,
+        "tags": [
+          "Gives good feedback",
+          "Hilarious",
+          "GROUP PROJECTS"
+        ],
+        "comment": "Dr. Mayfield made a great TA for ANTH202. Her lab lectures are often group-oriented with fun in-class projects. She has a great habit of treating these projects as a kind of game. Quiz bowls, archaeology case studies, drawing sites, and analyzing pottery shards are all things you'll do."
+      }
+    ]
   }
 }

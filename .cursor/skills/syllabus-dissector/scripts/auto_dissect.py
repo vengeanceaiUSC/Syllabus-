@@ -141,6 +141,14 @@ def make_aliases(name: str) -> list[str]:
         aliases.update({"essay", "essays"})
     if "weekly quiz" in low:
         aliases.update({"weekly quiz", "weekly quizzes", "quiz"})
+    if "field trip" in low or "archaeology center" in low:
+        aliases.update({"field trip", "archaeology center", "usc archaeology center"})
+    if "peer review" in low:
+        aliases.update({"peer review", "peer-review", "discussion board peer-review"})
+    if "research design" in low:
+        aliases.update({"research design worksheet", "rdw", "worksheet"})
+    if "final paper" in low or "analytical case" in low:
+        aliases.update({"final paper", "analytical case study", "case study"})
     if "oral exam" in low or "oral presentation" in low:
         aliases.update({"oral exam", "oral presentation", "oral presentations"})
     return sorted(aliases, key=len, reverse=True)
@@ -2123,6 +2131,402 @@ def parse_grading_policies_categories(text: str) -> list[Category]:
     return cats
 
 
+def is_percentage_list_syllabus(text: str) -> bool:
+    """Syllabi with GRADING SCALE + ASSIGNMENTS percentage list (e.g. ANTH 202)."""
+    return bool(
+        re.search(r"GRADING SCALE\s*\n\s*ASSIGNMENTS\s*\n", text, re.I)
+        and re.search(r"attendance and participation\s+\d+\s*%", text, re.I)
+    )
+
+
+def find_percentage_list_block(text: str) -> str:
+    m = re.search(r"GRADING SCALE\s*\n\s*ASSIGNMENTS\s*\n", text, re.I)
+    if not m:
+        return ""
+    snippet = text[m.end() : m.end() + 1200]
+    end = re.search(r"\n1\)\s+\d+%\s+", snippet)
+    if end:
+        return snippet[: end.start()]
+    end = re.search(r"\n100%\s*\n", snippet)
+    return snippet[: end.start()] if end else snippet[:800]
+
+
+def _normalize_percentage_list_name(raw: str) -> str:
+    low = raw.strip().lower()
+    direct = {
+        "attendance and participation": "Attendance and Participation",
+        "usc archaeology center field trip": "USC Archaeology Center Field Trip",
+        "weekly quizzes": "Weekly Quizzes",
+        "midterm exam": "Midterm Exam",
+        "final exam": "Final Exam",
+    }
+    if low in direct:
+        return direct[low]
+    if low.startswith("analytical case study-"):
+        suffix = raw.split("-", 1)[1].strip()
+        sl = suffix.lower()
+        if "research design worksheet 1" in sl:
+            return "Research Design Worksheet 1 (Topic)"
+        if "peer review 1" in sl:
+            return "Peer Review 1 (Topic)"
+        if "research design worksheet 2" in sl:
+            return "Research Design Worksheet 2 (Opening & Bibliography)"
+        if "peer review 2" in sl:
+            return "Peer Review 2 (Opening & Bibliography)"
+        if "final paper" in sl:
+            return "Final Paper"
+        return suffix
+    return raw.strip()
+
+
+def parse_percentage_list_categories(text: str) -> list[Category]:
+    block = find_percentage_list_block(text)
+    if not block:
+        return []
+    cats: list[Category] = []
+    for line in block.splitlines():
+        line = line.strip()
+        cm = re.match(r"^(.+?)\s+(\d+(?:\.\d+)?)\s*%\s*$", line, re.I)
+        if not cm:
+            continue
+        raw_name = cm.group(1).strip()
+        if raw_name.lower() in ("100", "grade calculator link"):
+            continue
+        name = _normalize_percentage_list_name(raw_name)
+        cats.append(
+            Category(
+                name=name,
+                weight=float(cm.group(2)),
+                weight_unit="percent",
+                aliases=make_aliases(name),
+            )
+        )
+    return cats
+
+
+ANTH_MONTH = {
+    "jan": 1,
+    "feb": 2,
+    "mar": 3,
+    "apr": 4,
+    "may": 5,
+    "jun": 6,
+    "jul": 7,
+    "aug": 8,
+    "sep": 9,
+    "oct": 10,
+    "nov": 11,
+    "dec": 12,
+}
+
+
+def _anth_month_num(token: str) -> int:
+    return ANTH_MONTH.get(re.sub(r"[^a-z]", "", token.lower())[:3], 0)
+
+
+def _anth_parse_week_range(range_str: str, year: int) -> tuple[str, str]:
+    """Return ISO start/end for (AUG. 24-30) or (NOV. 30-DEC. 6)."""
+    s = range_str.strip().upper()
+    cross = re.match(r"([A-Z]+)\.?\s*(\d+)\s*-\s*([A-Z]+)\.?\s*(\d+)", s)
+    if cross:
+        sm, sd, em, ed = cross.groups()
+        start = f"{year}-{_anth_month_num(sm):02d}-{int(sd):02d}"
+        end = f"{year}-{_anth_month_num(em):02d}-{int(ed):02d}"
+        return start, end
+    simple = re.match(r"([A-Z]+)\.?\s*(\d+)\s*-\s*(\d+)", s)
+    if simple:
+        mon, d1, d2 = simple.groups()
+        mnum = _anth_month_num(mon)
+        return f"{year}-{mnum:02d}-{int(d1):02d}", f"{year}-{mnum:02d}-{int(d2):02d}"
+    return "", ""
+
+
+def _anth_friday_in_range(range_str: str, year: int) -> str:
+    from datetime import date, timedelta
+
+    start_iso, end_iso = _anth_parse_week_range(range_str, year)
+    if not start_iso or not end_iso:
+        return ""
+    sy, sm, sd = map(int, start_iso.split("-"))
+    ey, em, ed = map(int, end_iso.split("-"))
+    cur = date(sy, sm, sd)
+    end = date(ey, em, ed)
+    while cur <= end:
+        if cur.weekday() == 4:
+            return cur.isoformat()
+        cur += timedelta(days=1)
+    return end.isoformat()
+
+
+def parse_anth_course_schedule(text: str, year: int) -> list[dict]:
+    """Parse MOD/Week blocks from ANTH 202 COURSE SCHEDULE."""
+    m = re.search(r"COURSE SCHEDULE\s*\n", text, re.I)
+    if not m:
+        return []
+    section = text[m.end() :]
+    end = re.search(r"\nWant an A or a B\?", section, re.I)
+    section = section[: end.start()] if end else section[:8000]
+    section = PAGE_MARKER.sub("\n", section)
+
+    weeks: list[dict] = []
+    week_matches = list(re.finditer(r"Week\s+(\d+)\b", section, re.I))
+    for idx, wm in enumerate(week_matches):
+        week_num = int(wm.group(1))
+        block_start = wm.start()
+        block_end = week_matches[idx + 1].start() if idx + 1 < len(week_matches) else len(section)
+        block = section[block_start:block_end]
+        range_m = re.search(
+            r"\(([A-Z]+\.?\s*\d+(?:\s*-\s*(?:[A-Z]+\.?\s*)?\d+)+)\)",
+            block[:500],
+            re.I,
+        )
+        if not range_m:
+            continue
+        flag_body = re.split(r"\nMOD\s+\d+", block, maxsplit=1)[0]
+        before = section[max(0, block_start - 600) : block_start]
+        mod_m = re.search(r"MOD\s+(\d+)\s+(.+?)\s*$", before, re.M | re.I)
+        mod_num = int(mod_m.group(1)) if mod_m else week_num
+        theme = re.sub(r"\s+", " ", (mod_m.group(2) if mod_m else "")).strip()[:120]
+        range_str = range_m.group(1).strip()
+        low_body = flag_body.lower()
+        weeks.append(
+            {
+                "mod": mod_num,
+                "week": week_num,
+                "theme": theme,
+                "range": range_str,
+                "range_start": _anth_parse_week_range(range_str, year)[0],
+                "range_end": _anth_parse_week_range(range_str, year)[1],
+                "quiz_friday": _anth_friday_in_range(range_str, year),
+                "no_quiz": "no quiz this week" in low_body,
+                "no_classes": "no classes this week" in low_body,
+                "body": block,
+            }
+        )
+    by_week: dict[int, dict] = {}
+    for w in weeks:
+        prev = by_week.get(w["week"])
+        if not prev or (w["range"] and not prev.get("range")):
+            by_week[w["week"]] = w
+    return sorted(by_week.values(), key=lambda x: x["week"])
+
+
+def _anth_numbered_assignment_block(text: str, num: int) -> str:
+    m = re.search(rf"\n{num}\)\s+\d+%\s+", text)
+    if not m:
+        return ""
+    rest = text[m.start() + 1 :]
+    nxt = re.search(r"\n\d\)\s+\d+%\s+", rest[3:])
+    chunk = rest[: nxt.start() + 3] if nxt else rest[:3500]
+    return chunk.strip()
+
+
+def build_percentage_list_assignments_by_category(
+    text: str, year: int, categories: list[Category]
+) -> dict[str, list[dict]]:
+    out: dict[str, list[dict]] = {c.name: [] for c in categories}
+    weeks = parse_anth_course_schedule(text, year)
+
+    for cat in categories:
+        low = cat.name.lower()
+        if "attendance" in low and "participation" in low:
+            out[cat.name].append(
+                sub_assignment(
+                    "Attendance & participation — 24 of 30 classes for full credit (6 absences excused)",
+                    "2026-08-24",
+                    "2026-12-10",
+                    LABEL_ASSIGNMENT,
+                )
+            )
+        elif "field trip" in low:
+            out[cat.name].append(
+                sub_assignment(
+                    "USC Archaeology Center field trip — lab section Nov 3 (ACB 330)",
+                    "",
+                    "2026-11-03",
+                    LABEL_ASSIGNMENT,
+                )
+            )
+        elif "weekly quiz" in low:
+            for w in weeks:
+                if w.get("no_quiz") or w.get("no_classes"):
+                    continue
+                if not w.get("quiz_friday"):
+                    continue
+                out[cat.name].append(
+                    sub_assignment(
+                        f"Week {w['week']} quiz — {w.get('theme', '')[:70]} (due Fri 7pm Brightspace)",
+                        "",
+                        w["quiz_friday"],
+                        LABEL_HOMEWORK,
+                    )
+                )
+        elif low == "midterm exam":
+            out[cat.name].append(
+                sub_assignment(
+                    "Midterm Exam — online open-book via Brightspace (Oct 13, 2:00–3:20pm window)",
+                    "",
+                    "2026-10-13",
+                    LABEL_EXAM,
+                )
+            )
+        elif low == "final exam":
+            out[cat.name].append(
+                sub_assignment(
+                    "Final Exam — online open-book via Brightspace (Dec 10, 2:00–4:00pm window; not cumulative)",
+                    "",
+                    "2026-12-10",
+                    LABEL_EXAM,
+                )
+            )
+        elif "research design worksheet 1" in low:
+            out[cat.name].append(
+                sub_assignment(
+                    "Research Design Worksheet 1 (Topic) — submit via Brightspace",
+                    "",
+                    "2026-09-25",
+                    LABEL_ASSIGNMENT,
+                )
+            )
+        elif "peer review 1" in low:
+            out[cat.name].append(
+                sub_assignment(
+                    "Peer Review Workshop 1 (Topic) — discussion board + comment list",
+                    "",
+                    "2026-10-02",
+                    LABEL_ASSIGNMENT,
+                )
+            )
+        elif "research design worksheet 2" in low:
+            out[cat.name].append(
+                sub_assignment(
+                    "Research Design Worksheet 2 (Opening paragraph & bibliography)",
+                    "",
+                    "2026-11-13",
+                    LABEL_ASSIGNMENT,
+                )
+            )
+        elif "peer review 2" in low:
+            out[cat.name].append(
+                sub_assignment(
+                    "Peer Review Workshop 2 (Opening paragraph & bibliography)",
+                    "",
+                    "2026-11-20",
+                    LABEL_ASSIGNMENT,
+                )
+            )
+        elif "final paper" in low:
+            out[cat.name].append(
+                sub_assignment(
+                    "Analytical case study final paper — due Fri 7pm (hard deadline Dec 8 11:59pm study days)",
+                    "",
+                    "2026-12-04",
+                    LABEL_ASSIGNMENT,
+                )
+            )
+        elif low == "extra credit":
+            out[cat.name].append(
+                sub_assignment(
+                    "Extra credit — NHM exhibitions comparative analysis (up to +3 course points)",
+                    "",
+                    "2026-12-08",
+                    LABEL_ASSIGNMENT,
+                )
+            )
+    return out
+
+
+def gather_percentage_list_content(
+    text: str, cat: Category, year: int
+) -> tuple[dict, str, tuple[str, str]]:
+    matched: list[str] = []
+    sections: dict[str, list[str] | str] = {}
+
+    block = find_percentage_list_block(text)
+    for line in block.splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        if normalize(cat.name) in normalize(line) or any(
+            normalize(a) in normalize(line) for a in cat.aliases if len(a) >= 8
+        ):
+            sections["Overview (Grading breakdown)"] = line
+            matched.append(line)
+            break
+
+    num_map = {
+        "attendance and participation": 1,
+        "usc archaeology center field trip": 2,
+        "weekly quizzes": 3,
+        "midterm exam": 4,
+        "final exam": 4,
+        "research design worksheet 1": 5,
+        "peer review 1": 5,
+        "research design worksheet 2": 5,
+        "peer review 2": 5,
+        "final paper": 5,
+    }
+    low = cat.name.lower()
+    sec_num = None
+    for key, num in num_map.items():
+        if key in low:
+            sec_num = num
+            break
+    if sec_num:
+        chunk = _anth_numbered_assignment_block(text, sec_num)
+        if chunk:
+            sections["Assignment Description"] = chunk[:4000]
+            matched.append(chunk)
+
+    if low == "extra credit":
+        m = re.search(r"EXTRA CREDIT\d*\s*\n(.+?)(?:\nEMAIL\b|\nLate Submission)", text, re.I | re.S)
+        if m:
+            sections["Extra Credit Assignment"] = m.group(1).strip()[:4000]
+            matched.append(m.group(1).strip())
+
+    sched_lines: list[str] = []
+    for w in parse_anth_course_schedule(text, year):
+        sched_lines.append(
+            f"Week {w['week']} ({w['range']}): {w.get('theme', '')}"
+            + (" | NO QUIZ" if w.get("no_quiz") else "")
+            + (" | NO CLASSES" if w.get("no_classes") else "")
+        )
+    if sched_lines and ("quiz" in low or "exam" in low or "worksheet" in low or "peer" in low or "paper" in low):
+        sections["Course Schedule (high-level)"] = sched_lines
+        matched.extend(sched_lines[:20])
+
+    matched = dedupe_passages(matched)
+    verbatim = "\n\n---\n\n".join(matched)
+
+    start, due = "", ""
+    if "attendance" in low:
+        start, due = "2026-08-24", "2026-12-10"
+    elif "field trip" in low:
+        due = "2026-11-03"
+    elif "weekly quiz" in low:
+        fridays = [
+            w["quiz_friday"]
+            for w in parse_anth_course_schedule(text, year)
+            if w.get("quiz_friday") and not w.get("no_quiz") and not w.get("no_classes")
+        ]
+        if fridays:
+            due = sorted(fridays)[-1]
+    elif low == "midterm exam":
+        due = "2026-10-13"
+    elif low == "final exam":
+        due = "2026-12-10"
+    elif "worksheet 1" in low or "peer review 1" in low:
+        due = "2026-09-25" if "worksheet 1" in low else "2026-10-02"
+    elif "worksheet 2" in low or "peer review 2" in low:
+        due = "2026-11-13" if "worksheet 2" in low else "2026-11-20"
+    elif "final paper" in low:
+        due = "2026-12-04"
+    elif low == "extra credit":
+        due = "2026-12-08"
+
+    return sections, verbatim, (start, due)
+
+
 def is_requirements_syllabus(text: str) -> bool:
     """Dornsife-style syllabi: Requirements (N points) + Provisional Schedule."""
     return bool(
@@ -3030,6 +3434,9 @@ def parse_categories(text: str) -> list[Category]:
         cats = parse_assessment_breakdown_categories(text)
 
     if not cats:
+        cats = parse_percentage_list_categories(text)
+
+    if not cats:
         cats = parse_requirements_categories(text)
 
     if not cats:
@@ -3043,6 +3450,14 @@ def parse_categories(text: str) -> list[Category]:
 
 def parse_grading_scale(text: str) -> dict:
     scale = {"a_threshold": "N/A", "raw_scale": "", "scale_type": "percentage"}
+    if is_percentage_list_syllabus(text):
+        calc = re.search(r"GRADE CALCULATOR LINK:\s*(\S+)", text, re.I)
+        scale["raw_scale"] = (
+            "Letter grade scale not listed in syllabus; use grade calculator"
+            + (f" ({calc.group(1)})" if calc else "")
+            + ". Instructor may bump grade near cutoff if extra credit ≥90%, strong participation, on-time work, and attendance above minimum."
+        )
+        return scale
     gm = GRADING_SCALE.search(text)
     if gm:
         scale["raw_scale"] = gm.group(1).strip().replace("\n", " ")
@@ -3435,6 +3850,11 @@ def parse_syllabus_metadata(text: str, source_hint: str = "") -> dict[str, str]:
     head = text[:15000]
     skip_codes = {"PDF", "LO", "ISO", "ARES", "ONLY", "NOT", "THE", "AND", "LL"}
 
+    em = re.search(r"ANTH\s*202\s*[-–]\s*([^\n]+)", head, re.I)
+    if em:
+        meta["code"] = "ANTH-202"
+        meta["name"] = em.group(1).strip()[:100]
+
     em = re.search(r"ECON\s*351x?\s*[–-]\s*([^\n]+)", head, re.I)
     if em:
         meta["code"] = "ECON-351"
@@ -3453,7 +3873,7 @@ def parse_syllabus_metadata(text: str, source_hint: str = "") -> dict[str, str]:
 
     hint = source_hint.lower()
     if not meta.get("code") and hint:
-        hm = re.search(r"(hist|buad|acct|econ|math|writ|chem|phys)[-_ ]?(\d{3})", hint, re.I)
+        hm = re.search(r"(hist|buad|acct|econ|math|writ|chem|phys|anth|span)[-_ ]?(\d{3})", hint, re.I)
         if hm:
             meta["code"] = f"{hm.group(1).upper()}-{hm.group(2)}"
 
@@ -3475,19 +3895,21 @@ def parse_syllabus_metadata(text: str, source_hint: str = "") -> dict[str, str]:
         meta["instructor"] = im.group(1).strip()
 
     for pat in (
-        r"Professors?:?\s*([^\n]+)",
-        r"Professor:?\s*([^\n]+)",
-        r"Instructor:?\s*([^\n]+)",
-        r"Faculty:?\s*([^\n]+)",
+        r"^Professors?:?\s*([^\n]+)",
+        r"^Professor:?\s*([^\n]+)",
+        r"^Instructor:?\s*([^\n]+)",
+        r"^Faculty:?\s*([^\n]+)",
     ):
-        im = re.search(pat, head, re.I)
+        im = re.search(pat, head, re.I | re.M)
         if im:
             name = im.group(1).strip()
+            name = re.sub(r"^Dr\.?\s+", "", name, flags=re.I).strip()
             name = re.sub(r",\s*(MBA|PhD|EdD|JD)[^,\n]*", "", name, flags=re.I).strip()
             if (
                 3 < len(name) < 70
                 and "module" not in name.lower()
                 and "teaching assistant" not in name.lower()
+                and "office hours" not in name.lower()
             ):
                 meta["instructor"] = name
                 break
@@ -3498,7 +3920,9 @@ def parse_syllabus_metadata(text: str, source_hint: str = "") -> dict[str, str]:
             head[:3000],
         )
         if im and "teaching assistant" not in im.group(0).lower():
-            meta["instructor"] = im.group(1).strip()
+            name = re.sub(r"^Dr\.?\s+", "", im.group(1).strip(), flags=re.I)
+            if "professor" not in name.lower() and "student" not in name.lower():
+                meta["instructor"] = name
 
     if not meta.get("name"):
         tm2 = re.search(r"Course (?:Title|Name):?\s*([^\n]+)", head, re.I)
@@ -3506,7 +3930,8 @@ def parse_syllabus_metadata(text: str, source_hint: str = "") -> dict[str, str]:
             meta["name"] = tm2.group(1).strip()[:100]
 
     bad_instructor = re.compile(
-        r"course calendar|teaching assistant|brightspace|module|syllabus|assignments",
+        r"course calendar|teaching assistant|brightspace|module|syllabus|assignments|"
+        r"office hours|have a very|^and ",
         re.I,
     )
     if meta.get("instructor") and bad_instructor.search(meta["instructor"]):
@@ -3711,6 +4136,7 @@ def dissect(
     class_name = meta["name"]
     instructor = meta["instructor"]
     term = meta["term"]
+    percentage_list_mode = is_percentage_list_syllabus(text)
     calendar_mode = is_point_course_calendar(text)
     grading_policies_mode = is_grading_policies_syllabus(text)
     requirements_mode = is_requirements_syllabus(text)
@@ -3748,6 +4174,8 @@ def dissect(
         assignment_map = build_requirements_assignments_by_category(text, year, categories)
     elif assessment_mode:
         assignment_map = build_assessment_assignments_by_category(text, categories)
+    elif percentage_list_mode:
+        assignment_map = build_percentage_list_assignments_by_category(text, year, categories)
     elif calendar_mode:
         assignment_map = build_calendar_assignments_by_category(text, year, categories)
     else:
@@ -3776,6 +4204,8 @@ def dissect(
             sections, verbatim, (start, due) = gather_requirements_content(text, cat, year)
         elif assessment_mode:
             sections, verbatim, (start, due) = gather_assessment_content(text, cat)
+        elif percentage_list_mode:
+            sections, verbatim, (start, due) = gather_percentage_list_content(text, cat, year)
         else:
             sections, verbatim = gather_category_content(text, cat)
             supplement = parse_supplement_text(text)
