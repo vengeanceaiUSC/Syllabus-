@@ -1,0 +1,558 @@
+{
+  "class": {
+    "code": "ECON-351",
+    "name": "Microeconomics for Business",
+    "instructor": "Alejandro Martínez-Marquina / João Ramos",
+    "term": "Fall 2026",
+    "source_url": "https://raw.githubusercontent.com/vengeanceaiUSC/Syllabus-/cursor/add-syllabus-dissector-skill-a676/output/sources/econ-351-source.pdf"
+  },
+  "grading_scale": {
+    "a_threshold": "85%+ (rough guideline)",
+    "raw_scale": "Each course requirement receives a numerical score but not a letter grade. The overall numerical score in the course is converted into a letter grade at the end of the semester in accordance with the Marshall School guidelines. The instructor’s evaluation of the performance of each individual student is the final basis for assigning grades. Each student will be given a grade based on the student's performance in class and demonstrated mastery of the course learning objectives. In the past, students with grades below 60% received either a D or an F (below 50%) in the course. Students with grades between 60% and 70% received a C, 70% and 85% a B, and above 85% an A. However, I emphasize again that these are only rough guidelines – grades will be determined as specified above.",
+    "scale_type": "percentage"
+  },
+  "categories": [
+    {
+      "name": "First midterm exam",
+      "weight": 20.0,
+      "weight_unit": "percent",
+      "start_date": "",
+      "due_date": "2026-09-14",
+      "is_group_project": false,
+      "assignments": [
+        {
+          "name": "Midterm 1 — covers Chapters 4 and 9",
+          "start_date": "",
+          "due_date": "2026-09-14",
+          "notes": "Exam"
+        }
+      ],
+      "sections": {
+        "Overview (Grading Policies)": "First midterm exam 20 20.0%",
+        "Course Calendar (schedule)": [
+          "Exam date: 2026-09-14",
+          "Coverage: Chapters 4 and 9"
+        ],
+        "Related Mentions": [
+          "Makeup Tests - There will be no make-up tests. By enrolling in the course you are committing to",
+          "take the midterms and final on the scheduled dates. If an exam is missed for an approved reason,",
+          "the weight for that exam will be shifted to the other exams (i.e. so that the other exams will be",
+          "worth 26.6% each). Approval for a missed exam will be rare, and only with appropriate written",
+          "documentation from an authoritative source indicating why the student was unable to appear for the",
+          "exam. Normally, only a doctor’s certification of a severe medical problem will suffice.",
+          "Exams - The four midterms exams (there is no final) are not cumulative. Each exam will only",
+          "directly test the subject matter covered after the previous exam. Note, however, that some material",
+          "builds on previous material as we will make clear in class. Anything that is covered in class or the",
+          "homework is fair game for the exams. If there is something in the text We did not cover, you will not",
+          "be asked about it.",
+          "First midterm exam 20 20.0%",
+          "Coverage: Chapters 4 and 9",
+          "Exam date: 2026-09-14"
+        ]
+      },
+      "extracted_text": "Makeup Tests - There will be no make-up tests. By enrolling in the course you are committing to\ntake the midterms and final on the scheduled dates. If an exam is missed for an approved reason,\nthe weight for that exam will be shifted to the other exams (i.e. so that the other exams will be\nworth 26.6% each). Approval for a missed exam will be rare, and only with appropriate written\ndocumentation from an authoritative source indicating why the student was unable to appear for the\nexam. Normally, only a doctor’s certification of a severe medical problem will suffice.\n\n---\n\nExams - The four midterms exams (there is no final) are not cumulative. Each exam will only\ndirectly test the subject matter covered after the previous exam. Note, however, that some material\nbuilds on previous material as we will make clear in class. Anything that is covered in class or the\nhomework is fair game for the exams. If there is something in the text We did not cover, you will not\nbe asked about it.\n\n---\n\nFirst midterm exam 20 20.0%\n\n---\n\nCoverage: Chapters 4 and 9\n\n---\n\nExam date: 2026-09-14"
+    },
+    {
+      "name": "Second midterm exam",
+      "weight": 20.0,
+      "weight_unit": "percent",
+      "start_date": "",
+      "due_date": "2026-10-12",
+      "is_group_project": false,
+      "assignments": [
+        {
+          "name": "Midterm 2 — covers Chapters 3, 5, and 6",
+          "start_date": "",
+          "due_date": "2026-10-12",
+          "notes": "Exam"
+        }
+      ],
+      "sections": {
+        "Overview (Grading Policies)": "Second midterm exam 20 20.0%",
+        "Course Calendar (schedule)": [
+          "Exam date: 2026-10-12",
+          "Coverage: Chapters 3, 5, and 6"
+        ],
+        "Related Mentions": [
+          "Makeup Tests - There will be no make-up tests. By enrolling in the course you are committing to",
+          "take the midterms and final on the scheduled dates. If an exam is missed for an approved reason,",
+          "the weight for that exam will be shifted to the other exams (i.e. so that the other exams will be",
+          "worth 26.6% each). Approval for a missed exam will be rare, and only with appropriate written",
+          "documentation from an authoritative source indicating why the student was unable to appear for the",
+          "exam. Normally, only a doctor’s certification of a severe medical problem will suffice.",
+          "Exams - The four midterms exams (there is no final) are not cumulative. Each exam will only",
+          "directly test the subject matter covered after the previous exam. Note, however, that some material",
+          "builds on previous material as we will make clear in class. Anything that is covered in class or the",
+          "homework is fair game for the exams. If there is something in the text We did not cover, you will not",
+          "be asked about it.",
+          "Coverage: Chapters 3, 5, and 6",
+          "Second midterm exam 20 20.0%",
+          "Exam date: 2026-10-12"
+        ]
+      },
+      "extracted_text": "Makeup Tests - There will be no make-up tests. By enrolling in the course you are committing to\ntake the midterms and final on the scheduled dates. If an exam is missed for an approved reason,\nthe weight for that exam will be shifted to the other exams (i.e. so that the other exams will be\nworth 26.6% each). Approval for a missed exam will be rare, and only with appropriate written\ndocumentation from an authoritative source indicating why the student was unable to appear for the\nexam. Normally, only a doctor’s certification of a severe medical problem will suffice.\n\n---\n\nExams - The four midterms exams (there is no final) are not cumulative. Each exam will only\ndirectly test the subject matter covered after the previous exam. Note, however, that some material\nbuilds on previous material as we will make clear in class. Anything that is covered in class or the\nhomework is fair game for the exams. If there is something in the text We did not cover, you will not\nbe asked about it.\n\n---\n\nCoverage: Chapters 3, 5, and 6\n\n---\n\nSecond midterm exam 20 20.0%\n\n---\n\nExam date: 2026-10-12"
+    },
+    {
+      "name": "Third midterm exam",
+      "weight": 20.0,
+      "weight_unit": "percent",
+      "start_date": "",
+      "due_date": "2026-11-04",
+      "is_group_project": false,
+      "assignments": [
+        {
+          "name": "Midterm 3 — covers Chapters 7, 8, and 10",
+          "start_date": "",
+          "due_date": "2026-11-04",
+          "notes": "Exam"
+        }
+      ],
+      "sections": {
+        "Overview (Grading Policies)": "Third midterm exam 20 20.0%",
+        "Course Calendar (schedule)": [
+          "Exam date: 2026-11-04",
+          "Coverage: Chapters 7, 8, and 10"
+        ],
+        "Related Mentions": [
+          "Makeup Tests - There will be no make-up tests. By enrolling in the course you are committing to",
+          "take the midterms and final on the scheduled dates. If an exam is missed for an approved reason,",
+          "the weight for that exam will be shifted to the other exams (i.e. so that the other exams will be",
+          "worth 26.6% each). Approval for a missed exam will be rare, and only with appropriate written",
+          "documentation from an authoritative source indicating why the student was unable to appear for the",
+          "exam. Normally, only a doctor’s certification of a severe medical problem will suffice.",
+          "Exams - The four midterms exams (there is no final) are not cumulative. Each exam will only",
+          "directly test the subject matter covered after the previous exam. Note, however, that some material",
+          "builds on previous material as we will make clear in class. Anything that is covered in class or the",
+          "homework is fair game for the exams. If there is something in the text We did not cover, you will not",
+          "be asked about it.",
+          "Coverage: Chapters 7, 8, and 10",
+          "Third midterm exam 20 20.0%",
+          "Exam date: 2026-11-04"
+        ]
+      },
+      "extracted_text": "Makeup Tests - There will be no make-up tests. By enrolling in the course you are committing to\ntake the midterms and final on the scheduled dates. If an exam is missed for an approved reason,\nthe weight for that exam will be shifted to the other exams (i.e. so that the other exams will be\nworth 26.6% each). Approval for a missed exam will be rare, and only with appropriate written\ndocumentation from an authoritative source indicating why the student was unable to appear for the\nexam. Normally, only a doctor’s certification of a severe medical problem will suffice.\n\n---\n\nExams - The four midterms exams (there is no final) are not cumulative. Each exam will only\ndirectly test the subject matter covered after the previous exam. Note, however, that some material\nbuilds on previous material as we will make clear in class. Anything that is covered in class or the\nhomework is fair game for the exams. If there is something in the text We did not cover, you will not\nbe asked about it.\n\n---\n\nCoverage: Chapters 7, 8, and 10\n\n---\n\nThird midterm exam 20 20.0%\n\n---\n\nExam date: 2026-11-04"
+    },
+    {
+      "name": "Fourth midterm exam",
+      "weight": 20.0,
+      "weight_unit": "percent",
+      "start_date": "",
+      "due_date": "2026-12-02",
+      "is_group_project": false,
+      "assignments": [
+        {
+          "name": "Midterm 4 — covers Chapters 11, 12, and 13",
+          "start_date": "",
+          "due_date": "2026-12-02",
+          "notes": "Exam"
+        }
+      ],
+      "sections": {
+        "Course Calendar (schedule)": [
+          "Exam date: 2026-12-02",
+          "Coverage: Chapters 11, 12, and 13"
+        ],
+        "Related Mentions": [
+          "Makeup Tests - There will be no make-up tests. By enrolling in the course you are committing to",
+          "take the midterms and final on the scheduled dates. If an exam is missed for an approved reason,",
+          "the weight for that exam will be shifted to the other exams (i.e. so that the other exams will be",
+          "worth 26.6% each). Approval for a missed exam will be rare, and only with appropriate written",
+          "documentation from an authoritative source indicating why the student was unable to appear for the",
+          "exam. Normally, only a doctor’s certification of a severe medical problem will suffice.",
+          "Exams - The four midterms exams (there is no final) are not cumulative. Each exam will only",
+          "directly test the subject matter covered after the previous exam. Note, however, that some material",
+          "builds on previous material as we will make clear in class. Anything that is covered in class or the",
+          "homework is fair game for the exams. If there is something in the text We did not cover, you will not",
+          "be asked about it.",
+          "Coverage: Chapters 11, 12, and 13",
+          "Exam date: 2026-12-02"
+        ]
+      },
+      "extracted_text": "Makeup Tests - There will be no make-up tests. By enrolling in the course you are committing to\ntake the midterms and final on the scheduled dates. If an exam is missed for an approved reason,\nthe weight for that exam will be shifted to the other exams (i.e. so that the other exams will be\nworth 26.6% each). Approval for a missed exam will be rare, and only with appropriate written\ndocumentation from an authoritative source indicating why the student was unable to appear for the\nexam. Normally, only a doctor’s certification of a severe medical problem will suffice.\n\n---\n\nExams - The four midterms exams (there is no final) are not cumulative. Each exam will only\ndirectly test the subject matter covered after the previous exam. Note, however, that some material\nbuilds on previous material as we will make clear in class. Anything that is covered in class or the\nhomework is fair game for the exams. If there is something in the text We did not cover, you will not\nbe asked about it.\n\n---\n\nCoverage: Chapters 11, 12, and 13\n\n---\n\nExam date: 2026-12-02"
+    },
+    {
+      "name": "AI Forecast Project",
+      "weight": 10.0,
+      "weight_unit": "percent",
+      "start_date": "",
+      "due_date": "2026-12-11",
+      "is_group_project": false,
+      "assignments": [
+        {
+          "name": "AI Forecast Project — Part I",
+          "start_date": "",
+          "due_date": "2026-10-02",
+          "notes": "Assignment"
+        },
+        {
+          "name": "AI Forecast Project — Part II",
+          "start_date": "",
+          "due_date": "2026-12-11",
+          "notes": "Assignment"
+        }
+      ],
+      "sections": {
+        "Overview (Grading Policies)": "AI Forecast Project 10 10.0%",
+        "Course Calendar (schedule)": [
+          "• AI Project data made available",
+          "• Read Chapter 5; • Discussion of Chapter 5; • Complete the Chapter 5 homework on; Brightspace (due Oct.2); • AI Project – Part I due October 2 Chapter 5:; Market Equilib-; rium",
+          "• AI Project – Part II due December 11 AI Project"
+        ],
+        "Related Mentions": [
+          "Final Project – The AI Forecasting project consists of two parts. In each, students will use AI tools to",
+          "analyze a dataset and make predictions. The project is individual, and students will be evaluated on the",
+          "accuracy of their predictions. We will provide detailed guidelines later in the course. The goal is to give",
+          "students a hands-on first experience with data analysis and a chance to apply the concepts of the class in a",
+          "real-world setting.",
+          "• Read Chapter 5; • Discussion of Chapter 5; • Complete the Chapter 5 homework on; Brightspace (due Oct.2); • AI Project – Part I due October 2 Chapter 5:; Market Equilib-; rium",
+          "• AI Project – Part II due December 11 AI Project",
+          "• AI Project data made available",
+          "AI Forecast Project 10 10.0%"
+        ]
+      },
+      "extracted_text": "Final Project – The AI Forecasting project consists of two parts. In each, students will use AI tools to\nanalyze a dataset and make predictions. The project is individual, and students will be evaluated on the\naccuracy of their predictions. We will provide detailed guidelines later in the course. The goal is to give\nstudents a hands-on first experience with data analysis and a chance to apply the concepts of the class in a\nreal-world setting.\n\n---\n\n• Read Chapter 5; • Discussion of Chapter 5; • Complete the Chapter 5 homework on; Brightspace (due Oct.2); • AI Project – Part I due October 2 Chapter 5:; Market Equilib-; rium\n\n---\n\n• AI Project – Part II due December 11 AI Project\n\n---\n\n• AI Project data made available\n\n---\n\nAI Forecast Project 10 10.0%"
+    },
+    {
+      "name": "Homework",
+      "weight": 10.0,
+      "weight_unit": "percent",
+      "start_date": "",
+      "due_date": "2026-11-27",
+      "is_group_project": false,
+      "assignments": [
+        {
+          "name": "Week 1: Aug.24/26 - Read the syllabus",
+          "start_date": "",
+          "due_date": "2026-08-24",
+          "notes": "Reading"
+        },
+        {
+          "name": "Week 1: Aug.24/26 - Read Chapters 2 and 4",
+          "start_date": "",
+          "due_date": "2026-08-24",
+          "notes": "Reading"
+        },
+        {
+          "name": "Week 1: Aug.24/26 - Complete the math self-assessment on Brightspace",
+          "start_date": "",
+          "due_date": "2026-08-24",
+          "notes": "Reading"
+        },
+        {
+          "name": "Week 2: Aug.31/Sep.2 - Finish reading Chapter 4 (in-class dis- cussion)",
+          "start_date": "",
+          "due_date": "2026-09-04",
+          "notes": "Reading"
+        },
+        {
+          "name": "Week 2: Aug.31/Sep.2 - Begin Chapter 9: Uncertainty",
+          "start_date": "",
+          "due_date": "2026-09-04",
+          "notes": "Reading"
+        },
+        {
+          "name": "Homework 1 (Chapter 4) — Brightspace, due 11:59 pm",
+          "start_date": "",
+          "due_date": "2026-09-04",
+          "notes": "Homework"
+        },
+        {
+          "name": "Week 3: Sep.7/9 - No class Monday Sep.7 (Labor Day)",
+          "start_date": "",
+          "due_date": "2026-09-11",
+          "notes": "Reading"
+        },
+        {
+          "name": "Week 3: Sep.7/9 - Discussion of Chapter 9",
+          "start_date": "",
+          "due_date": "2026-09-11",
+          "notes": "Reading"
+        },
+        {
+          "name": "Homework 2 (Chapter 9) — Brightspace, due 11:59 pm",
+          "start_date": "",
+          "due_date": "2026-09-11",
+          "notes": "Homework"
+        },
+        {
+          "name": "Homework 3 — Brightspace, due 11:59 pm",
+          "start_date": "",
+          "due_date": "2026-09-18",
+          "notes": "Homework"
+        },
+        {
+          "name": "Week 5: Sep.21/23 - Finish reading Chapter 3",
+          "start_date": "",
+          "due_date": "2026-09-25",
+          "notes": "Reading"
+        },
+        {
+          "name": "Week 5: Sep.21/23 - Discussion of Chapter 3",
+          "start_date": "",
+          "due_date": "2026-09-25",
+          "notes": "Reading"
+        },
+        {
+          "name": "Week 5: Sep.21/23 - Complete the Chapter 3 - Part II home- work on Brightspace (due Sep.25)",
+          "start_date": "",
+          "due_date": "2026-09-25",
+          "notes": "Reading"
+        },
+        {
+          "name": "Homework 4 (Chapter 3) — Brightspace, due 11:59 pm",
+          "start_date": "",
+          "due_date": "2026-09-25",
+          "notes": "Homework"
+        },
+        {
+          "name": "Week 6: Sep.28/30 - Read Chapter 5",
+          "start_date": "",
+          "due_date": "2026-10-02",
+          "notes": "Reading"
+        },
+        {
+          "name": "Week 6: Sep.28/30 - Discussion of Chapter 5",
+          "start_date": "",
+          "due_date": "2026-10-02",
+          "notes": "Reading"
+        },
+        {
+          "name": "Week 6: Sep.28/30 - AI Project – Part I due October 2",
+          "start_date": "",
+          "due_date": "2026-10-02",
+          "notes": "Reading"
+        },
+        {
+          "name": "Homework 5 (Chapter 5) — Brightspace, due 11:59 pm",
+          "start_date": "",
+          "due_date": "2026-10-02",
+          "notes": "Homework"
+        },
+        {
+          "name": "Week 7: Oct.5/7 - Read Chapter 6",
+          "start_date": "",
+          "due_date": "2026-10-09",
+          "notes": "Reading"
+        },
+        {
+          "name": "Week 7: Oct.5/7 - Midterm review on Oct.7",
+          "start_date": "",
+          "due_date": "2026-10-09",
+          "notes": "Reading"
+        },
+        {
+          "name": "Homework 6 (Chapter 6) — Brightspace, due 11:59 pm",
+          "start_date": "",
+          "due_date": "2026-10-09",
+          "notes": "Homework"
+        },
+        {
+          "name": "Homework 7 — Brightspace, due 11:59 pm",
+          "start_date": "",
+          "due_date": "2026-10-16",
+          "notes": "Homework"
+        },
+        {
+          "name": "Week 9: Oct.19/21 - Read Chapter 8",
+          "start_date": "",
+          "due_date": "2026-10-23",
+          "notes": "Reading"
+        },
+        {
+          "name": "Homework 8 (Chapter 8) — Brightspace, due 11:59 pm",
+          "start_date": "",
+          "due_date": "2026-10-23",
+          "notes": "Homework"
+        },
+        {
+          "name": "Week 10: Oct.26/28 - Read Chapter 10",
+          "start_date": "",
+          "due_date": "2026-10-30",
+          "notes": "Reading"
+        },
+        {
+          "name": "Homework 9 (Chapter 10) — Brightspace, due 11:59 pm",
+          "start_date": "",
+          "due_date": "2026-10-30",
+          "notes": "Homework"
+        },
+        {
+          "name": "Week 12: Nov.9/11 - No class Wednesday Nov.11 (Veterans Day)",
+          "start_date": "",
+          "due_date": "2026-11-13",
+          "notes": "Reading"
+        },
+        {
+          "name": "Week 12: Nov.9/11 - Read Chapter 11",
+          "start_date": "",
+          "due_date": "2026-11-13",
+          "notes": "Reading"
+        },
+        {
+          "name": "Homework 10 (Chapter 11) — Brightspace, due 11:59 pm",
+          "start_date": "",
+          "due_date": "2026-11-13",
+          "notes": "Homework"
+        },
+        {
+          "name": "Week 13: Nov.16/18 - Read Chapter 12",
+          "start_date": "",
+          "due_date": "2026-11-20",
+          "notes": "Reading"
+        },
+        {
+          "name": "Homework 11 (Chapter 12) — Brightspace, due 11:59 pm",
+          "start_date": "",
+          "due_date": "2026-11-20",
+          "notes": "Homework"
+        },
+        {
+          "name": "Week 14: Nov.23 - No class Wednesday Nov.25 (Thanks- giving)",
+          "start_date": "",
+          "due_date": "2026-11-27",
+          "notes": "Reading"
+        },
+        {
+          "name": "Week 14: Nov.23 - Read Chapter 13",
+          "start_date": "",
+          "due_date": "2026-11-27",
+          "notes": "Reading"
+        },
+        {
+          "name": "Week 14: Nov.23 - Complete the Chapter 12+13 home- work on Brightspace (due Nov.27)",
+          "start_date": "",
+          "due_date": "2026-11-27",
+          "notes": "Reading"
+        },
+        {
+          "name": "Homework 12 (Chapter 13) — Brightspace, due 11:59 pm",
+          "start_date": "",
+          "due_date": "2026-11-27",
+          "notes": "Homework"
+        },
+        {
+          "name": "Finals Week: - AI Project – Part II due December 11",
+          "start_date": "",
+          "due_date": "",
+          "notes": "Reading"
+        }
+      ],
+      "sections": {
+        "Overview (Grading Policies)": "Homework 10 10.0%",
+        "Course Calendar (schedule)": [
+          "Due: 2026-08-24 | Week 1: Aug.24/26 - Read the syllabus",
+          "Due: 2026-08-24 | Week 1: Aug.24/26 - Read Chapters 2 and 4",
+          "Due: 2026-08-24 | Week 1: Aug.24/26 - Complete the math self-assessment on Brightspace",
+          "Due: 2026-09-04 | Week 2: Aug.31/Sep.2 - Finish reading Chapter 4 (in-class dis- cussion)",
+          "Due: 2026-09-04 | Week 2: Aug.31/Sep.2 - Begin Chapter 9: Uncertainty",
+          "Due: 2026-09-04 | Homework 1 (Chapter 4) — Brightspace, due 11:59 pm",
+          "Due: 2026-09-11 | Week 3: Sep.7/9 - No class Monday Sep.7 (Labor Day)",
+          "Due: 2026-09-11 | Week 3: Sep.7/9 - Discussion of Chapter 9",
+          "Due: 2026-09-11 | Homework 2 (Chapter 9) — Brightspace, due 11:59 pm",
+          "Due: 2026-09-18 | Homework 3 — Brightspace, due 11:59 pm",
+          "Due: 2026-09-25 | Week 5: Sep.21/23 - Finish reading Chapter 3",
+          "Due: 2026-09-25 | Week 5: Sep.21/23 - Discussion of Chapter 3",
+          "Due: 2026-09-25 | Week 5: Sep.21/23 - Complete the Chapter 3 - Part II home- work on Brightspace (due Sep.25)",
+          "Due: 2026-09-25 | Homework 4 (Chapter 3) — Brightspace, due 11:59 pm",
+          "Due: 2026-10-02 | Week 6: Sep.28/30 - Read Chapter 5",
+          "Due: 2026-10-02 | Week 6: Sep.28/30 - Discussion of Chapter 5",
+          "Due: 2026-10-02 | Week 6: Sep.28/30 - AI Project – Part I due October 2",
+          "Due: 2026-10-02 | Homework 5 (Chapter 5) — Brightspace, due 11:59 pm",
+          "Due: 2026-10-09 | Week 7: Oct.5/7 - Read Chapter 6",
+          "Due: 2026-10-09 | Week 7: Oct.5/7 - Midterm review on Oct.7",
+          "Due: 2026-10-09 | Homework 6 (Chapter 6) — Brightspace, due 11:59 pm",
+          "Due: 2026-10-16 | Homework 7 — Brightspace, due 11:59 pm",
+          "Due: 2026-10-23 | Week 9: Oct.19/21 - Read Chapter 8",
+          "Due: 2026-10-23 | Homework 8 (Chapter 8) — Brightspace, due 11:59 pm",
+          "Due: 2026-10-30 | Week 10: Oct.26/28 - Read Chapter 10",
+          "Due: 2026-10-30 | Homework 9 (Chapter 10) — Brightspace, due 11:59 pm",
+          "Due: 2026-11-13 | Week 12: Nov.9/11 - No class Wednesday Nov.11 (Veterans Day)",
+          "Due: 2026-11-13 | Week 12: Nov.9/11 - Read Chapter 11",
+          "Due: 2026-11-13 | Homework 10 (Chapter 11) — Brightspace, due 11:59 pm",
+          "Due: 2026-11-20 | Week 13: Nov.16/18 - Read Chapter 12",
+          "Due: 2026-11-20 | Homework 11 (Chapter 12) — Brightspace, due 11:59 pm",
+          "Due: 2026-11-27 | Week 14: Nov.23 - No class Wednesday Nov.25 (Thanks- giving)",
+          "Due: 2026-11-27 | Week 14: Nov.23 - Read Chapter 13",
+          "Due: 2026-11-27 | Week 14: Nov.23 - Complete the Chapter 12+13 home- work on Brightspace (due Nov.27)",
+          "Due: 2026-11-27 | Homework 12 (Chapter 13) — Brightspace, due 11:59 pm",
+          "Due:  | Finals Week: - AI Project – Part II due December 11"
+        ],
+        "Related Mentions": [
+          "Homework - We will have 12 graded homework assignments. Each graded homework will be completed",
+          "via Brightspace and will be worth 1 point (up to the limit of 10 homework points in the semester). The",
+          "goal of each homework is to check your understanding of the material each week.",
+          "Each homework will usually be posted on Brightspace on a Monday evening or Tuesday morning, then it",
+          "will be due on the Friday at 11:59pm. The idea is that we will cover the material during the week, and",
+          "you will finish the homework by the end of the week.",
+          "A student receives 1 point for the homework if the homework is submitted on time (before the due date)",
+          "and the student correctly answered at least half of the questions on the homework. A homework that is",
+          "submitted late or a homework that does not correctly answer at least half of the questions receives zero",
+          "points. The homework must be turned in electronically via Brightspace before the due date. Any assign-",
+          "ment turned in late, even if by only a few minutes, will not receive the point.",
+          "ECON 351x Syllabus 2026/Fall - Page 3",
+          "Note that a student may receive at most 10 homework points in the semester, even if they correctly submit",
+          "all 12 homework assignments. This means that 2 homework assignments are dropped. The goal of this",
+          "policy is to allow students some flexibility. Sometimes, for different reasons, a student is not able to sub-",
+          "mit a correctly answered homework on time. In this case, the student can still earn the maximum of 10",
+          "homework points in the semester by correctly submitting the other homework assignments on time.",
+          "Due: 2026-09-25 | Week 5: Sep.21/23 - Complete the Chapter 3 - Part II home- work on Brightspace (due Sep.25)",
+          "Due: 2026-11-27 | Week 14: Nov.23 - Complete the Chapter 12+13 home- work on Brightspace (due Nov.27)",
+          "Due: 2026-09-04 | Week 2: Aug.31/Sep.2 - Finish reading Chapter 4 (in-class dis- cussion)",
+          "Due: 2026-08-24 | Week 1: Aug.24/26 - Complete the math self-assessment on Brightspace",
+          "Due: 2026-11-13 | Week 12: Nov.9/11 - No class Wednesday Nov.11 (Veterans Day)",
+          "Due: 2026-11-27 | Week 14: Nov.23 - No class Wednesday Nov.25 (Thanks- giving)",
+          "Due: 2026-10-02 | Week 6: Sep.28/30 - AI Project – Part I due October 2",
+          "Due: 2026-11-13 | Homework 10 (Chapter 11) — Brightspace, due 11:59 pm",
+          "Due: 2026-11-20 | Homework 11 (Chapter 12) — Brightspace, due 11:59 pm",
+          "Due: 2026-11-27 | Homework 12 (Chapter 13) — Brightspace, due 11:59 pm",
+          "Due: 2026-09-04 | Week 2: Aug.31/Sep.2 - Begin Chapter 9: Uncertainty",
+          "Due: 2026-09-11 | Week 3: Sep.7/9 - No class Monday Sep.7 (Labor Day)",
+          "Due: 2026-10-30 | Homework 9 (Chapter 10) — Brightspace, due 11:59 pm",
+          "Due: 2026-09-04 | Homework 1 (Chapter 4) — Brightspace, due 11:59 pm",
+          "Due: 2026-09-11 | Homework 2 (Chapter 9) — Brightspace, due 11:59 pm",
+          "Due: 2026-09-25 | Homework 4 (Chapter 3) — Brightspace, due 11:59 pm",
+          "Due: 2026-10-02 | Homework 5 (Chapter 5) — Brightspace, due 11:59 pm",
+          "Due: 2026-10-09 | Homework 6 (Chapter 6) — Brightspace, due 11:59 pm",
+          "Due: 2026-10-23 | Homework 8 (Chapter 8) — Brightspace, due 11:59 pm",
+          "Due: 2026-09-25 | Week 5: Sep.21/23 - Finish reading Chapter 3",
+          "Due: 2026-09-25 | Week 5: Sep.21/23 - Discussion of Chapter 3",
+          "Due: 2026-10-02 | Week 6: Sep.28/30 - Discussion of Chapter 5",
+          "Due: 2026-08-24 | Week 1: Aug.24/26 - Read Chapters 2 and 4",
+          "Due: 2026-09-11 | Week 3: Sep.7/9 - Discussion of Chapter 9",
+          "Due: 2026-10-09 | Week 7: Oct.5/7 - Midterm review on Oct.7",
+          "Due:  | Finals Week: - AI Project – Part II due December 11",
+          "Due: 2026-09-18 | Homework 3 — Brightspace, due 11:59 pm",
+          "Due: 2026-10-16 | Homework 7 — Brightspace, due 11:59 pm",
+          "Due: 2026-08-24 | Week 1: Aug.24/26 - Read the syllabus",
+          "Due: 2026-10-30 | Week 10: Oct.26/28 - Read Chapter 10",
+          "Due: 2026-11-20 | Week 13: Nov.16/18 - Read Chapter 12",
+          "Due: 2026-11-13 | Week 12: Nov.9/11 - Read Chapter 11",
+          "Due: 2026-10-02 | Week 6: Sep.28/30 - Read Chapter 5",
+          "Due: 2026-10-23 | Week 9: Oct.19/21 - Read Chapter 8",
+          "Due: 2026-11-27 | Week 14: Nov.23 - Read Chapter 13",
+          "Due: 2026-10-09 | Week 7: Oct.5/7 - Read Chapter 6",
+          "Homework 10 10.0%"
+        ]
+      },
+      "extracted_text": "Homework - We will have 12 graded homework assignments. Each graded homework will be completed\nvia Brightspace and will be worth 1 point (up to the limit of 10 homework points in the semester). The\ngoal of each homework is to check your understanding of the material each week.\nEach homework will usually be posted on Brightspace on a Monday evening or Tuesday morning, then it\nwill be due on the Friday at 11:59pm. The idea is that we will cover the material during the week, and\nyou will finish the homework by the end of the week.\nA student receives 1 point for the homework if the homework is submitted on time (before the due date)\nand the student correctly answered at least half of the questions on the homework. A homework that is\nsubmitted late or a homework that does not correctly answer at least half of the questions receives zero\npoints. The homework must be turned in electronically via Brightspace before the due date. Any assign-\nment turned in late, even if by only a few minutes, will not receive the point.\nECON 351x Syllabus 2026/Fall - Page 3\n\n\n\nNote that a student may receive at most 10 homework points in the semester, even if they correctly submit\nall 12 homework assignments. This means that 2 homework assignments are dropped. The goal of this\npolicy is to allow students some flexibility. Sometimes, for different reasons, a student is not able to sub-\nmit a correctly answered homework on time. In this case, the student can still earn the maximum of 10\nhomework points in the semester by correctly submitting the other homework assignments on time.\n\n---\n\nDue: 2026-09-25 | Week 5: Sep.21/23 - Complete the Chapter 3 - Part II home- work on Brightspace (due Sep.25)\n\n---\n\nDue: 2026-11-27 | Week 14: Nov.23 - Complete the Chapter 12+13 home- work on Brightspace (due Nov.27)\n\n---\n\nDue: 2026-09-04 | Week 2: Aug.31/Sep.2 - Finish reading Chapter 4 (in-class dis- cussion)\n\n---\n\nDue: 2026-08-24 | Week 1: Aug.24/26 - Complete the math self-assessment on Brightspace\n\n---\n\nDue: 2026-11-13 | Week 12: Nov.9/11 - No class Wednesday Nov.11 (Veterans Day)\n\n---\n\nDue: 2026-11-27 | Week 14: Nov.23 - No class Wednesday Nov.25 (Thanks- giving)\n\n---\n\nDue: 2026-10-02 | Week 6: Sep.28/30 - AI Project – Part I due October 2\n\n---\n\nDue: 2026-11-13 | Homework 10 (Chapter 11) — Brightspace, due 11:59 pm\n\n---\n\nDue: 2026-11-20 | Homework 11 (Chapter 12) — Brightspace, due 11:59 pm\n\n---\n\nDue: 2026-11-27 | Homework 12 (Chapter 13) — Brightspace, due 11:59 pm\n\n---\n\nDue: 2026-09-04 | Week 2: Aug.31/Sep.2 - Begin Chapter 9: Uncertainty\n\n---\n\nDue: 2026-09-11 | Week 3: Sep.7/9 - No class Monday Sep.7 (Labor Day)\n\n---\n\nDue: 2026-10-30 | Homework 9 (Chapter 10) — Brightspace, due 11:59 pm\n\n---\n\nDue: 2026-09-04 | Homework 1 (Chapter 4) — Brightspace, due 11:59 pm\n\n---\n\nDue: 2026-09-11 | Homework 2 (Chapter 9) — Brightspace, due 11:59 pm\n\n---\n\nDue: 2026-09-25 | Homework 4 (Chapter 3) — Brightspace, due 11:59 pm\n\n---\n\nDue: 2026-10-02 | Homework 5 (Chapter 5) — Brightspace, due 11:59 pm\n\n---\n\nDue: 2026-10-09 | Homework 6 (Chapter 6) — Brightspace, due 11:59 pm\n\n---\n\nDue: 2026-10-23 | Homework 8 (Chapter 8) — Brightspace, due 11:59 pm\n\n---\n\nDue: 2026-09-25 | Week 5: Sep.21/23 - Finish reading Chapter 3\n\n---\n\nDue: 2026-09-25 | Week 5: Sep.21/23 - Discussion of Chapter 3\n\n---\n\nDue: 2026-10-02 | Week 6: Sep.28/30 - Discussion of Chapter 5\n\n---\n\nDue: 2026-08-24 | Week 1: Aug.24/26 - Read Chapters 2 and 4\n\n---\n\nDue: 2026-09-11 | Week 3: Sep.7/9 - Discussion of Chapter 9\n\n---\n\nDue: 2026-10-09 | Week 7: Oct.5/7 - Midterm review on Oct.7\n\n---\n\nDue:  | Finals Week: - AI Project – Part II due December 11\n\n---\n\nDue: 2026-09-18 | Homework 3 — Brightspace, due 11:59 pm\n\n---\n\nDue: 2026-10-16 | Homework 7 — Brightspace, due 11:59 pm\n\n---\n\nDue: 2026-08-24 | Week 1: Aug.24/26 - Read the syllabus\n\n---\n\nDue: 2026-10-30 | Week 10: Oct.26/28 - Read Chapter 10\n\n---\n\nDue: 2026-11-20 | Week 13: Nov.16/18 - Read Chapter 12\n\n---\n\nDue: 2026-11-13 | Week 12: Nov.9/11 - Read Chapter 11\n\n---\n\nDue: 2026-10-02 | Week 6: Sep.28/30 - Read Chapter 5\n\n---\n\nDue: 2026-10-23 | Week 9: Oct.19/21 - Read Chapter 8\n\n---\n\nDue: 2026-11-27 | Week 14: Nov.23 - Read Chapter 13\n\n---\n\nDue: 2026-10-09 | Week 7: Oct.5/7 - Read Chapter 6\n\n---\n\nHomework 10 10.0%"
+    },
+    {
+      "name": "Extra Credit",
+      "weight": null,
+      "weight_unit": "percent",
+      "start_date": "",
+      "due_date": "",
+      "is_group_project": false,
+      "assignments": [],
+      "sections": {
+        "Related Mentions": [
+          "WSJ Future View - Extra credit – The Wall Street Journal has an opinion series that showcases student",
+          "opinions on timely and important topics and gives students the opportunity to contribute to the national",
+          "conversation. A few selected articles get published weekly on www.wsj.com/news/types/future-view.",
+          "If you get selected and showcase insights from the class, you will obtain an extra 10% credit."
+        ]
+      },
+      "extracted_text": "WSJ Future View - Extra credit – The Wall Street Journal has an opinion series that showcases student\nopinions on timely and important topics and gives students the opportunity to contribute to the national\nconversation. A few selected articles get published weekly on www.wsj.com/news/types/future-view.\nIf you get selected and showcase insights from the class, you will obtain an extra 10% credit."
+    }
+  ]
+}

@@ -1,0 +1,416 @@
+{
+  "class": {
+    "code": "SPAN-290",
+    "name": "Introduction to Latin American and Iberian Studies",
+    "instructor": "Samuel Steinberg",
+    "term": "Fall 2026",
+    "source_url": "https://raw.githubusercontent.com/vengeanceaiUSC/Syllabus-/cursor/add-syllabus-dissector-skill-a676/output/sources/span-290-source.pdf"
+  },
+  "grading_scale": {
+    "a_threshold": "95% (95-100)",
+    "raw_scale": "A 95-100 A- 90-94 B+ 87-89 B 83-86 B- 80-82 C+ 77-79 C 73-76 C- 70-72 D+ 67-69 D 63-66 D- 60-62 F 59 and below",
+    "scale_type": "percentage"
+  },
+  "categories": [
+    {
+      "name": "Reading Notes",
+      "weight": 100.0,
+      "weight_unit": "points",
+      "start_date": "",
+      "due_date": "",
+      "is_group_project": false,
+      "assignments": [
+        {
+          "name": "08-25 — Introduction to Course",
+          "start_date": "",
+          "due_date": "2026-08-25",
+          "notes": "Reading"
+        },
+        {
+          "name": "08-27 — New Worlds — El requerimiento",
+          "start_date": "",
+          "due_date": "2026-08-27",
+          "notes": "Reading"
+        },
+        {
+          "name": "08-27 — New Worlds — Christopher Columbus, “Digest of Columbus’s Log-Book on his First Voyage Made by Bartolomé",
+          "start_date": "",
+          "due_date": "2026-08-27",
+          "notes": "Reading"
+        },
+        {
+          "name": "09-01 — New Worlds — Hernán Cortés, Second Letter",
+          "start_date": "",
+          "due_date": "2026-09-01",
+          "notes": "Reading"
+        },
+        {
+          "name": "09-01 — New Worlds — Octavio Paz, “The Sons of La Malinche”",
+          "start_date": "",
+          "due_date": "2026-09-01",
+          "notes": "Reading"
+        },
+        {
+          "name": "09-03 — Al-Andalus — María Rosa Menocal, The Ornament of the World (selections)",
+          "start_date": "",
+          "due_date": "2026-09-03",
+          "notes": "Reading"
+        },
+        {
+          "name": "09-03 — Al-Andalus — Borges, “Averroes's Search”",
+          "start_date": "",
+          "due_date": "2026-09-03",
+          "notes": "Reading"
+        },
+        {
+          "name": "09-03 — Al-Andalus — The Edict of Expulsion",
+          "start_date": "",
+          "due_date": "2026-09-03",
+          "notes": "Reading"
+        },
+        {
+          "name": "09-08 — Al-Andalus — Antonio de Villegas, The Abencerraje",
+          "start_date": "",
+          "due_date": "2026-09-08",
+          "notes": "Reading"
+        },
+        {
+          "name": "09-10 — Siglo de oro — Lazarillo de Tormes",
+          "start_date": "",
+          "due_date": "2026-09-10",
+          "notes": "Reading"
+        },
+        {
+          "name": "09-15 — Siglo de oro — Cervantes, Don Quixote (selections)",
+          "start_date": "",
+          "due_date": "2026-09-15",
+          "notes": "Reading"
+        },
+        {
+          "name": "09-15 — Siglo de oro — Borges, “Pierre Menard”",
+          "start_date": "",
+          "due_date": "2026-09-15",
+          "notes": "Reading"
+        },
+        {
+          "name": "09-17 — Race and Gender in Colonial Spanish America — Sor Juana Inés de la Cruz, “Ballad 2” and “Redondilla 92”",
+          "start_date": "",
+          "due_date": "2026-09-17",
+          "notes": "Reading"
+        },
+        {
+          "name": "09-17 — Race and Gender in Colonial Spanish America — Manuel Fernández de la Cruz, “A Letter from Sor Filotea to Sor Jua",
+          "start_date": "",
+          "due_date": "2026-09-17",
+          "notes": "Reading"
+        },
+        {
+          "name": "09-22 — Race and Gender in Colonial Spanish America — Miguel Cabrera, Paintings",
+          "start_date": "",
+          "due_date": "2026-09-22",
+          "notes": "Reading"
+        },
+        {
+          "name": "09-22 — Race and Gender in Colonial Spanish America — Ilona Katzew, Casta Painting: Images of Race in Eighteenth-Century",
+          "start_date": "",
+          "due_date": "2026-09-22",
+          "notes": "Reading"
+        },
+        {
+          "name": "09-22 — The Wars of Independence — Francisco Goya, Los desastres de la Guerra (images)",
+          "start_date": "",
+          "due_date": "2026-09-22",
+          "notes": "Reading"
+        },
+        {
+          "name": "09-24 — The Wars of Independence — Simón Bolívar, “Letter from Jamaica”",
+          "start_date": "",
+          "due_date": "2026-09-24",
+          "notes": "Reading"
+        },
+        {
+          "name": "09-24 — The Wars of Independence — Andrés Bello, “Address Delivered at the Inauguration of the University of Chile”",
+          "start_date": "",
+          "due_date": "2026-09-24",
+          "notes": "Reading"
+        },
+        {
+          "name": "09-29 — The Wars of Independence — Midterm Review",
+          "start_date": "",
+          "due_date": "2026-09-29",
+          "notes": "Reading"
+        },
+        {
+          "name": "10-06 — The Birth of Postcolonial America — Domingo de Sarmiento, Selections from Civilization or Barbarism",
+          "start_date": "",
+          "due_date": "2026-10-06",
+          "notes": "Reading"
+        },
+        {
+          "name": "10-13 — The Birth of Postcolonial America — Lucio V. Mansilla, A Visit to the Ranquel Indians (selections)",
+          "start_date": "",
+          "due_date": "2026-10-13",
+          "notes": "Reading"
+        },
+        {
+          "name": "10-13 — The Birth of Postcolonial America — Borges, “Story of the Warrior and the Captive”",
+          "start_date": "",
+          "due_date": "2026-10-13",
+          "notes": "Reading"
+        },
+        {
+          "name": "10-15 — Our America",
+          "start_date": "",
+          "due_date": "2026-10-15",
+          "notes": "Reading"
+        },
+        {
+          "name": "10-15 — Our America — José Martí, “Our América”",
+          "start_date": "",
+          "due_date": "2026-10-15",
+          "notes": "Reading"
+        },
+        {
+          "name": "10-15 — Our America — Rubén Darío, “To Roosevelt”",
+          "start_date": "",
+          "due_date": "2026-10-15",
+          "notes": "Reading"
+        },
+        {
+          "name": "10-20 — 1898 — Miguel de Unamuno, The Tragic Sense of Life in Men and Nations (selections)",
+          "start_date": "",
+          "due_date": "2026-10-20",
+          "notes": "Reading"
+        },
+        {
+          "name": "10-27 — Tales of Civilization and Barbarism — José Enrique Rodó, Ariel (selections)",
+          "start_date": "",
+          "due_date": "2026-10-27",
+          "notes": "Reading"
+        },
+        {
+          "name": "10-27 — Tales of Civilization and Barbarism — José Fernández Retamar, Caliban (selections)",
+          "start_date": "",
+          "due_date": "2026-10-27",
+          "notes": "Reading"
+        },
+        {
+          "name": "10-29 — Tales of Civilization and Barbarism — Castro, “Speech to Intellectuals”",
+          "start_date": "",
+          "due_date": "2026-10-29",
+          "notes": "Reading"
+        },
+        {
+          "name": "10-29 — Tales of Civilization and Barbarism — Film: Tomás Gutiérrez Alea, Memories of Underdevelopment (screened at home",
+          "start_date": "",
+          "due_date": "2026-10-29",
+          "notes": "Reading"
+        },
+        {
+          "name": "11-03 — Race and the Anthropological Imagination — José Vasconcelos, The Cosmic Race (selections)",
+          "start_date": "",
+          "due_date": "2026-11-03",
+          "notes": "Reading"
+        },
+        {
+          "name": "11-03 — Race and the Anthropological Imagination — Oswald de Andrade, Cannibalist Manifesto",
+          "start_date": "",
+          "due_date": "2026-11-03",
+          "notes": "Reading"
+        },
+        {
+          "name": "11-05 — Race and the Anthropological Imagination — Film: José Luis Sáenz de Heredia, Raza (selections screened during le",
+          "start_date": "",
+          "due_date": "2026-11-05",
+          "notes": "Reading"
+        },
+        {
+          "name": "11-10 — After the Spanish Republic I",
+          "start_date": "",
+          "due_date": "2026-11-10",
+          "notes": "Reading"
+        },
+        {
+          "name": "11-10 — After the Spanish Republic I — Film: Guillermo del Toro, Pan’s Labyrinth",
+          "start_date": "",
+          "due_date": "2026-11-10",
+          "notes": "Reading"
+        },
+        {
+          "name": "11-17 — After the Spanish Republic II",
+          "start_date": "",
+          "due_date": "2026-11-17",
+          "notes": "Reading"
+        },
+        {
+          "name": "11-17 — After the Spanish Republic II — Film: Pedro Almodóvar, All About My Mother",
+          "start_date": "",
+          "due_date": "2026-11-17",
+          "notes": "Reading"
+        },
+        {
+          "name": "11-24 — Literature Today — Bolaño, Amulet",
+          "start_date": "",
+          "due_date": "2026-11-24",
+          "notes": "Reading"
+        },
+        {
+          "name": "12-01 — Literature Today — Bolaño, Amulet",
+          "start_date": "",
+          "due_date": "2026-12-01",
+          "notes": "Reading"
+        },
+        {
+          "name": "12-03 — FINAL REVIEW",
+          "start_date": "",
+          "due_date": "2026-12-03",
+          "notes": "Reading"
+        }
+      ],
+      "sections": {
+        "Provisional Schedule (readings)": [
+          "2026-08-25 | Introduction to Course",
+          "2026-08-27 | El requerimiento",
+          "2026-08-27 | Christopher Columbus, “Digest of Columbus’s Log-Book on his First Voyage Made by Bartolomé de las Casas”",
+          "2026-09-01 | Hernán Cortés, Second Letter",
+          "2026-09-01 | Octavio Paz, “The Sons of La Malinche”",
+          "2026-09-03 | María Rosa Menocal, The Ornament of the World (selections)",
+          "2026-09-03 | Borges, “Averroes's Search”",
+          "2026-09-03 | The Edict of Expulsion",
+          "2026-09-08 | Antonio de Villegas, The Abencerraje",
+          "2026-09-10 | Lazarillo de Tormes",
+          "2026-09-15 | Cervantes, Don Quixote (selections)",
+          "2026-09-15 | Borges, “Pierre Menard”",
+          "2026-09-17 | Sor Juana Inés de la Cruz, “Ballad 2” and “Redondilla 92”",
+          "2026-09-17 | Manuel Fernández de la Cruz, “A Letter from Sor Filotea to Sor Juana Inés de la Cruz”",
+          "2026-09-17 | Sor Juana Inés de la Cruz, “Response of the Poet to the Very Eminent Sor Filotea de la Cruz”",
+          "2026-09-22 | Miguel Cabrera, Paintings",
+          "2026-09-22 | Ilona Katzew, Casta Painting: Images of Race in Eighteenth-Century Mexico (selections)",
+          "2026-09-22 | Francisco Goya, Los desastres de la Guerra (images)",
+          "2026-09-24 | Simón Bolívar, “Letter from Jamaica”",
+          "2026-09-24 | Andrés Bello, “Address Delivered at the Inauguration of the University of Chile”",
+          "2026-09-29 | Midterm Review",
+          "2026-10-06 | Domingo de Sarmiento, Selections from Civilization or Barbarism",
+          "2026-10-13 | Lucio V. Mansilla, A Visit to the Ranquel Indians (selections)",
+          "2026-10-13 | Borges, “Story of the Warrior and the Captive”",
+          "2026-10-15 | (Guest lecture, P. Brodsky)",
+          "2026-10-15 | José Martí, “Our América”",
+          "2026-10-15 | Rubén Darío, “To Roosevelt”",
+          "2026-10-20 | Miguel de Unamuno, The Tragic Sense of Life in Men and Nations (selections)",
+          "2026-10-27 | José Enrique Rodó, Ariel (selections)",
+          "2026-10-27 | José Fernández Retamar, Caliban (selections)",
+          "2026-10-29 | Castro, “Speech to Intellectuals”",
+          "2026-10-29 | Film: Tomás Gutiérrez Alea, Memories of Underdevelopment (screened at home)",
+          "2026-11-03 | José Vasconcelos, The Cosmic Race (selections)",
+          "2026-11-03 | Oswald de Andrade, Cannibalist Manifesto",
+          "2026-11-05 | Film: José Luis Sáenz de Heredia, Raza (selections screened during lecture)",
+          "2026-11-10 | After the Spanish Republic I",
+          "2026-11-10 | Film: Guillermo del Toro, Pan’s Labyrinth",
+          "2026-11-17 | After the Spanish Republic II (Guest lecture, F. Rotger)",
+          "2026-11-17 | Film: Pedro Almodóvar, All About My Mother",
+          "2026-11-24 | Bolaño, Amulet",
+          "2026-12-01 | Bolaño, Amulet"
+        ]
+      },
+      "extracted_text": "2026-08-27 | Christopher Columbus, “Digest of Columbus’s Log-Book on his First Voyage Made by Bartolomé de las Casas”\n\n---\n\n2026-09-17 | Sor Juana Inés de la Cruz, “Response of the Poet to the Very Eminent Sor Filotea de la Cruz”\n\n---\n\n2026-09-22 | Ilona Katzew, Casta Painting: Images of Race in Eighteenth-Century Mexico (selections)\n\n---\n\n2026-09-17 | Manuel Fernández de la Cruz, “A Letter from Sor Filotea to Sor Juana Inés de la Cruz”\n\n---\n\n2026-09-24 | Andrés Bello, “Address Delivered at the Inauguration of the University of Chile”\n\n---\n\n2026-10-20 | Miguel de Unamuno, The Tragic Sense of Life in Men and Nations (selections)\n\n---\n\n2026-10-29 | Film: Tomás Gutiérrez Alea, Memories of Underdevelopment (screened at home)\n\n---\n\n2026-11-05 | Film: José Luis Sáenz de Heredia, Raza (selections screened during lecture)\n\n---\n\n2026-10-06 | Domingo de Sarmiento, Selections from Civilization or Barbarism\n\n---\n\n2026-10-13 | Lucio V. Mansilla, A Visit to the Ranquel Indians (selections)\n\n---\n\n2026-09-03 | María Rosa Menocal, The Ornament of the World (selections)\n\n---\n\n2026-09-17 | Sor Juana Inés de la Cruz, “Ballad 2” and “Redondilla 92”\n\n---\n\n2026-11-17 | After the Spanish Republic II (Guest lecture, F. Rotger)\n\n---\n\n2026-09-22 | Francisco Goya, Los desastres de la Guerra (images)\n\n---\n\n2026-10-13 | Borges, “Story of the Warrior and the Captive”\n\n---\n\n2026-11-03 | José Vasconcelos, The Cosmic Race (selections)\n\n---\n\n2026-10-27 | José Fernández Retamar, Caliban (selections)\n\n---\n\n2026-11-17 | Film: Pedro Almodóvar, All About My Mother\n\n---\n\n2026-11-10 | Film: Guillermo del Toro, Pan’s Labyrinth\n\n---\n\n2026-11-03 | Oswald de Andrade, Cannibalist Manifesto\n\n---\n\n2026-09-01 | Octavio Paz, “The Sons of La Malinche”\n\n---\n\n2026-10-27 | José Enrique Rodó, Ariel (selections)\n\n---\n\n2026-09-08 | Antonio de Villegas, The Abencerraje\n\n---\n\n2026-09-24 | Simón Bolívar, “Letter from Jamaica”\n\n---\n\n2026-09-15 | Cervantes, Don Quixote (selections)\n\n---\n\n2026-10-29 | Castro, “Speech to Intellectuals”\n\n---\n\n2026-09-01 | Hernán Cortés, Second Letter\n\n---\n\n2026-11-10 | After the Spanish Republic I\n\n---\n\n2026-09-03 | Borges, “Averroes's Search”\n\n---\n\n2026-10-15 | (Guest lecture, P. Brodsky)\n\n---\n\n2026-10-15 | Rubén Darío, “To Roosevelt”\n\n---\n\n2026-09-22 | Miguel Cabrera, Paintings\n\n---\n\n2026-10-15 | José Martí, “Our América”\n\n---\n\n2026-09-15 | Borges, “Pierre Menard”\n\n---\n\n2026-08-25 | Introduction to Course\n\n---\n\n2026-09-03 | The Edict of Expulsion\n\n---\n\n2026-09-10 | Lazarillo de Tormes\n\n---\n\n2026-08-27 | El requerimiento\n\n---\n\n2026-09-29 | Midterm Review\n\n---\n\n2026-11-24 | Bolaño, Amulet\n\n---\n\n2026-12-01 | Bolaño, Amulet"
+    },
+    {
+      "name": "Essay 1",
+      "weight": 100.0,
+      "weight_unit": "points",
+      "start_date": "",
+      "due_date": "2026-09-18",
+      "is_group_project": false,
+      "assignments": [
+        {
+          "name": "Essay 1",
+          "start_date": "",
+          "due_date": "2026-09-18",
+          "notes": "Assignment"
+        }
+      ],
+      "sections": {
+        "Provisional Schedule": [
+          "2026-09-18 | Essay 1"
+        ],
+        "AI Policy": "ainting, film), the course analyzes works by consecrated writers and artists as well as by some less well-known figures. Although the order of our readings is to some extent chronological, the course is not intended as a traditional literary- or art-historical survey, but rather as an introduction to some of the issues at the heart of the interrelated fields of Hispanism and Latin American studies. We look at the concept of canonicity in the so-called Spanish Golden Age, the literary and visual representation of indigenous peoples in Latin America, the rise of anti-realist trends in the twenti"
+      },
+      "extracted_text": "ainting, film), the course analyzes works by consecrated writers and artists as well as by some less well-known figures. Although the order of our readings is to some extent chronological, the course is not intended as a traditional literary- or art-historical survey, but rather as an introduction to some of the issues at the heart of the interrelated fields of Hispanism and Latin American studies. We look at the concept of canonicity in the so-called Spanish Golden Age, the literary and visual representation of indigenous peoples in Latin America, the rise of anti-realist trends in the twenti\n\n---\n\n2026-09-18 | Essay 1"
+    },
+    {
+      "name": "Essay 2",
+      "weight": 100.0,
+      "weight_unit": "points",
+      "start_date": "",
+      "due_date": "2026-11-20",
+      "is_group_project": false,
+      "assignments": [
+        {
+          "name": "Essay 2",
+          "start_date": "",
+          "due_date": "2026-11-20",
+          "notes": "Assignment"
+        }
+      ],
+      "sections": {
+        "Provisional Schedule": [
+          "2026-11-20 | Essay 2"
+        ],
+        "AI Policy": "ainting, film), the course analyzes works by consecrated writers and artists as well as by some less well-known figures. Although the order of our readings is to some extent chronological, the course is not intended as a traditional literary- or art-historical survey, but rather as an introduction to some of the issues at the heart of the interrelated fields of Hispanism and Latin American studies. We look at the concept of canonicity in the so-called Spanish Golden Age, the literary and visual representation of indigenous peoples in Latin America, the rise of anti-realist trends in the twenti"
+      },
+      "extracted_text": "ainting, film), the course analyzes works by consecrated writers and artists as well as by some less well-known figures. Although the order of our readings is to some extent chronological, the course is not intended as a traditional literary- or art-historical survey, but rather as an introduction to some of the issues at the heart of the interrelated fields of Hispanism and Latin American studies. We look at the concept of canonicity in the so-called Spanish Golden Age, the literary and visual representation of indigenous peoples in Latin America, the rise of anti-realist trends in the twenti\n\n---\n\n2026-11-20 | Essay 2"
+    },
+    {
+      "name": "Midterm Exam",
+      "weight": 100.0,
+      "weight_unit": "points",
+      "start_date": "",
+      "due_date": "2026-10-01",
+      "is_group_project": false,
+      "assignments": [
+        {
+          "name": "Midterm Exam (in class)",
+          "start_date": "",
+          "due_date": "2026-10-01",
+          "notes": "Exam"
+        },
+        {
+          "name": "Midterm Review session",
+          "start_date": "",
+          "due_date": "2026-09-29",
+          "notes": "Reading"
+        }
+      ],
+      "sections": {
+        "Provisional Schedule": [
+          "2026-10-01 | MIDTERM (in class)"
+        ],
+        "AI Policy": "ainting, film), the course analyzes works by consecrated writers and artists as well as by some less well-known figures. Although the order of our readings is to some extent chronological, the course is not intended as a traditional literary- or art-historical survey, but rather as an introduction to some of the issues at the heart of the interrelated fields of Hispanism and Latin American studies. We look at the concept of canonicity in the so-called Spanish Golden Age, the literary and visual representation of indigenous peoples in Latin America, the rise of anti-realist trends in the twenti"
+      },
+      "extracted_text": "ainting, film), the course analyzes works by consecrated writers and artists as well as by some less well-known figures. Although the order of our readings is to some extent chronological, the course is not intended as a traditional literary- or art-historical survey, but rather as an introduction to some of the issues at the heart of the interrelated fields of Hispanism and Latin American studies. We look at the concept of canonicity in the so-called Spanish Golden Age, the literary and visual representation of indigenous peoples in Latin America, the rise of anti-realist trends in the twenti\n\n---\n\n2026-10-01 | MIDTERM (in class)"
+    },
+    {
+      "name": "Final Exam",
+      "weight": 100.0,
+      "weight_unit": "points",
+      "start_date": "",
+      "due_date": "",
+      "is_group_project": false,
+      "assignments": [
+        {
+          "name": "Final Review session",
+          "start_date": "",
+          "due_date": "2026-12-03",
+          "notes": "Reading"
+        }
+      ],
+      "sections": {
+        "Provisional Schedule": [
+          "2026-12-03 | FINAL REVIEW"
+        ],
+        "AI Policy": "ainting, film), the course analyzes works by consecrated writers and artists as well as by some less well-known figures. Although the order of our readings is to some extent chronological, the course is not intended as a traditional literary- or art-historical survey, but rather as an introduction to some of the issues at the heart of the interrelated fields of Hispanism and Latin American studies. We look at the concept of canonicity in the so-called Spanish Golden Age, the literary and visual representation of indigenous peoples in Latin America, the rise of anti-realist trends in the twenti"
+      },
+      "extracted_text": "ainting, film), the course analyzes works by consecrated writers and artists as well as by some less well-known figures. Although the order of our readings is to some extent chronological, the course is not intended as a traditional literary- or art-historical survey, but rather as an introduction to some of the issues at the heart of the interrelated fields of Hispanism and Latin American studies. We look at the concept of canonicity in the so-called Spanish Golden Age, the literary and visual representation of indigenous peoples in Latin America, the rise of anti-realist trends in the twenti\n\n---\n\n2026-12-03 | FINAL REVIEW"
+    }
+  ]
+}

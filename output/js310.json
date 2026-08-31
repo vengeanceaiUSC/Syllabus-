@@ -1,0 +1,226 @@
+{
+  "class": {
+    "code": "JS-310",
+    "name": "The Eastern European Jewish Experience through Literature and Film",
+    "instructor": "Andrzej Brylak / Yulia Dubasova",
+    "term": "Fall 2026",
+    "source_url": "https://raw.githubusercontent.com/vengeanceaiUSC/Syllabus-/cursor/add-syllabus-dissector-skill-a676/output/sources/js-310-source.pdf"
+  },
+  "grading_scale": {
+    "a_threshold": "90% (90-100)",
+    "raw_scale": "A – 90 – 100% B – 80 – 89% C – 70 – 79% D – 60 – 69% F – Below 60%",
+    "scale_type": "percentage"
+  },
+  "categories": [
+    {
+      "name": "Weekly Quizzes",
+      "weight": 30.0,
+      "weight_unit": "percent",
+      "start_date": "",
+      "due_date": "",
+      "is_group_project": false,
+      "assignments": [
+        {
+          "name": "Week 1 — Eastern European Jewish Experience: Historical Introduction — (Text on Brightspace); Antony Polonsky, Jews in P",
+          "start_date": "",
+          "due_date": "",
+          "notes": "Homework"
+        },
+        {
+          "name": "Week 2 — Small Town Jewish Life — Sholem Aleichem, Tevye the Dairyman and Motl the Cantor’s Son, pp. 1-1",
+          "start_date": "",
+          "due_date": "",
+          "notes": "Homework"
+        },
+        {
+          "name": "Week 3 — Tradition vs Modernity — Sholem Aleichem, Tevye the Dairyman and Motl the Cantor’s Son, pp. 135",
+          "start_date": "",
+          "due_date": "",
+          "notes": "Homework"
+        },
+        {
+          "name": "Week 4 — Jewish Emigration — Sholem Aleichem, Tevye the Dairyman and Motl the Cantor’s Son, pp. 235",
+          "start_date": "",
+          "due_date": "",
+          "notes": "Homework"
+        },
+        {
+          "name": "Week 5 — Americanization — Sholem Aleichem, Tevye the Dairyman and Motl the Cantor’s Son, pp. 281",
+          "start_date": "",
+          "due_date": "",
+          "notes": "Homework"
+        },
+        {
+          "name": "Week 6 — Jewish Criminal Underground — Issac Babel, Odessa Stories, pp. 1-103",
+          "start_date": "",
+          "due_date": "",
+          "notes": "Homework"
+        },
+        {
+          "name": "Week 7 — Jewish Childhood — Isaac Babel, Odessa Stories, pp. 103-175",
+          "start_date": "",
+          "due_date": "",
+          "notes": "Homework"
+        },
+        {
+          "name": "Week 8 — Holocaust and the Problem of Its Representation — Film: Unzere Kinder, dir. Natan Gross.",
+          "start_date": "",
+          "due_date": "",
+          "notes": "Homework"
+        },
+        {
+          "name": "Week 9 — Holocaust Literature: Characteristics — Imre Kertesz, Fatelessness, pp. 1-99",
+          "start_date": "",
+          "due_date": "",
+          "notes": "Homework"
+        },
+        {
+          "name": "Week 10 — Irony in Holocaust Literature — Imre Kertesz, Fatelessness, pp. 99-189",
+          "start_date": "",
+          "due_date": "",
+          "notes": "Homework"
+        },
+        {
+          "name": "Week 11 — Testimony as a Genre. Ethics and Poetics. — Imre Kertesz, Fatelessness, pp. 189- 262; Film: Everything is Illu",
+          "start_date": "",
+          "due_date": "",
+          "notes": "Homework"
+        },
+        {
+          "name": "Week 12 — Jewish American Literature — Gary Shteyngart, Super Sad True Love Story, pp. 1- 98",
+          "start_date": "",
+          "due_date": "",
+          "notes": "Homework"
+        },
+        {
+          "name": "Week 13 — Eastern European Influence on Contemporary Jewish Identity i — Gary Shteyngart, Super Sad True Love Story, pp.",
+          "start_date": "",
+          "due_date": "",
+          "notes": "Homework"
+        },
+        {
+          "name": "Week 14 — Jewishness and Postmodernism — Gary Shteyngart, Super Sad True Love Story, pp. 203- 330",
+          "start_date": "",
+          "due_date": "",
+          "notes": "Homework"
+        },
+        {
+          "name": "Week 14 — Jews and Money — Film: Uncut Gems, dir. Safdie Brothers",
+          "start_date": "",
+          "due_date": "",
+          "notes": "Homework"
+        }
+      ],
+      "sections": {
+        "Overview (Grading breakdown)": "Weekly Quizzes 30",
+        "Assignment Description": "Each Tuesday, at the beginning of each instructional week, students will be given a quiz on the\ncontent of the reading/viewing. 10 closed-ended questions, quiz to be taken on a phone or laptop.",
+        "Weekly Readings (quiz content)": [
+          "Week 1: Eastern European Jewish Experience: Historical Introduction | (Text on Brightspace); Antony Polonsky, Jews in Poland and Russia: A Short History (Excerpt).",
+          "Week 2: Small Town Jewish Life | Sholem Aleichem, Tevye the Dairyman and Motl the Cantor’s Son, pp. 1-135",
+          "Week 3: Tradition vs Modernity | Sholem Aleichem, Tevye the Dairyman and Motl the Cantor’s Son, pp. 135-235",
+          "Week 4: Jewish Emigration | Sholem Aleichem, Tevye the Dairyman and Motl the Cantor’s Son, pp. 235-281",
+          "Week 5: Americanization | Sholem Aleichem, Tevye the Dairyman and Motl the Cantor’s Son, pp. 281-375",
+          "Week 6: Jewish Criminal Underground | Issac Babel, Odessa Stories, pp. 1-103",
+          "Week 7: Jewish Childhood | Isaac Babel, Odessa Stories, pp. 103-175",
+          "Week 8: Holocaust and the Problem of Its Representation | Film: Unzere Kinder, dir. Natan Gross.",
+          "Week 9: Holocaust Literature: Characteristics | Imre Kertesz, Fatelessness, pp. 1-99",
+          "Week 10: Irony in Holocaust Literature | Imre Kertesz, Fatelessness, pp. 99-189",
+          "Week 11: Testimony as a Genre. Ethics and Poetics. | Imre Kertesz, Fatelessness, pp. 189- 262; Film: Everything is Illuminated, dir. Liev Schreiber",
+          "Week 12: Jewish American Literature | Gary Shteyngart, Super Sad True Love Story, pp. 1- 98",
+          "Week 13: Eastern European Influence on Contemporary Jewish Identity in America | Gary Shteyngart, Super Sad True Love Story, pp. 98-203",
+          "Week 14: Jewishness and Postmodernism | Gary Shteyngart, Super Sad True Love Story, pp. 203- 330",
+          "Week 14: Jews and Money | Film: Uncut Gems, dir. Safdie Brothers"
+        ]
+      },
+      "extracted_text": "Each Tuesday, at the beginning of each instructional week, students will be given a quiz on the\ncontent of the reading/viewing. 10 closed-ended questions, quiz to be taken on a phone or laptop.\n\n---\n\nWeek 1: Eastern European Jewish Experience: Historical Introduction | (Text on Brightspace); Antony Polonsky, Jews in Poland and Russia: A Short History (Excerpt).\n\n---\n\nWeek 11: Testimony as a Genre. Ethics and Poetics. | Imre Kertesz, Fatelessness, pp. 189- 262; Film: Everything is Illuminated, dir. Liev Schreiber\n\n---\n\nWeek 13: Eastern European Influence on Contemporary Jewish Identity in America | Gary Shteyngart, Super Sad True Love Story, pp. 98-203\n\n---\n\nWeek 3: Tradition vs Modernity | Sholem Aleichem, Tevye the Dairyman and Motl the Cantor’s Son, pp. 135-235\n\n---\n\nWeek 2: Small Town Jewish Life | Sholem Aleichem, Tevye the Dairyman and Motl the Cantor’s Son, pp. 1-135\n\n---\n\nWeek 4: Jewish Emigration | Sholem Aleichem, Tevye the Dairyman and Motl the Cantor’s Son, pp. 235-281\n\n---\n\nWeek 5: Americanization | Sholem Aleichem, Tevye the Dairyman and Motl the Cantor’s Son, pp. 281-375\n\n---\n\nWeek 8: Holocaust and the Problem of Its Representation | Film: Unzere Kinder, dir. Natan Gross.\n\n---\n\nWeek 14: Jewishness and Postmodernism | Gary Shteyngart, Super Sad True Love Story, pp. 203- 330\n\n---\n\nWeek 12: Jewish American Literature | Gary Shteyngart, Super Sad True Love Story, pp. 1- 98\n\n---\n\nWeek 9: Holocaust Literature: Characteristics | Imre Kertesz, Fatelessness, pp. 1-99\n\n---\n\nWeek 10: Irony in Holocaust Literature | Imre Kertesz, Fatelessness, pp. 99-189\n\n---\n\nWeek 6: Jewish Criminal Underground | Issac Babel, Odessa Stories, pp. 1-103\n\n---\n\nWeek 7: Jewish Childhood | Isaac Babel, Odessa Stories, pp. 103-175\n\n---\n\nWeek 14: Jews and Money | Film: Uncut Gems, dir. Safdie Brothers\n\n---\n\nWeekly Quizzes 30"
+    },
+    {
+      "name": "Midterm Quiz",
+      "weight": 15.0,
+      "weight_unit": "percent",
+      "start_date": "",
+      "due_date": "",
+      "is_group_project": false,
+      "assignments": [
+        {
+          "name": "Midterm Quiz — Thursday, instructional week 7 (20 questions, closed-ended)",
+          "start_date": "",
+          "due_date": "",
+          "notes": "Exam"
+        }
+      ],
+      "sections": {
+        "Overview (Grading breakdown)": "Midterm Quiz 15",
+        "Assignment Description": "On Thursday of the 7th instructional week, students will take a midterm exam devoted to the\nsocio-historical contexts in which the Eastern European Jewish literature covered in class arose\nand theoretical concepts related to it. The test will have a closed-ended, quiz format. All the\nquestions will refer directly to the topics covered in class, 20 questions.",
+        "Class Policies (attendance & devices)": "Attendance in all classes is mandatory; after two unexcused absences, the student is at risk of failing the class. Phone, laptop, tablet, and any electronic device use in class is strictly prohibited unless specified otherwise by the instructor. If you are caught using a phone during class two times, you might fail the class. You must bring a physical copy of the book we discuss that week. If you don’t have the book with you more than two times, you might fail the class. You don’t have to print texts that are uploaded on Brightspace. Use of AI in any shape or form is strictly prohibited"
+      },
+      "extracted_text": "Attendance in all classes is mandatory; after two unexcused absences, the student is at risk of failing the class. Phone, laptop, tablet, and any electronic device use in class is strictly prohibited unless specified otherwise by the instructor. If you are caught using a phone during class two times, you might fail the class. You must bring a physical copy of the book we discuss that week. If you don’t have the book with you more than two times, you might fail the class. You don’t have to print texts that are uploaded on Brightspace. Use of AI in any shape or form is strictly prohibited\n\n---\n\nOn Thursday of the 7th instructional week, students will take a midterm exam devoted to the\nsocio-historical contexts in which the Eastern European Jewish literature covered in class arose\nand theoretical concepts related to it. The test will have a closed-ended, quiz format. All the\nquestions will refer directly to the topics covered in class, 20 questions.\n\n---\n\nMidterm Quiz 15"
+    },
+    {
+      "name": "Midterm Oral Exam",
+      "weight": 20.0,
+      "weight_unit": "percent",
+      "start_date": "",
+      "due_date": "",
+      "is_group_project": false,
+      "assignments": [
+        {
+          "name": "Midterm Oral Exam — instructional week 8 (15-min quote presentation, 60 pts max)",
+          "start_date": "",
+          "due_date": "",
+          "notes": "Assignment"
+        }
+      ],
+      "sections": {
+        "Overview (Grading breakdown)": "Midterm Quiz 15",
+        "Assignment Description": "During the 8th instructional week, each student will deliver a 15-minute oral presentation on a\nquote from any of the readings covered so far. The presentation has to cover: 1. A thesis: what do\nyou want to prove by selecting the quote? 2. Formal literary devices, in the context of the thesis.\n3. Role of the quote in the larger context of a book. 4. Historical/Philosophical background of the\nquote. After the presentation, 5. the instructor will ask challenging follow-up questions about the\nquote and the book as a whole, and the student has to prepare to defend their position and\ninterpretation. 6. The presentation has to be delivered according to the high standards of public\nspeaking: no repetitions, confident voice, no filler words, appropriate cadence and rhythm. 10\npoints available for satisfying each item. 60-points maximum.",
+        "Class Policies (attendance & devices)": "Attendance in all classes is mandatory; after two unexcused absences, the student is at risk of failing the class. Phone, laptop, tablet, and any electronic device use in class is strictly prohibited unless specified otherwise by the instructor. If you are caught using a phone during class two times, you might fail the class. You must bring a physical copy of the book we discuss that week. If you don’t have the book with you more than two times, you might fail the class. You don’t have to print texts that are uploaded on Brightspace. Use of AI in any shape or form is strictly prohibited"
+      },
+      "extracted_text": "During the 8th instructional week, each student will deliver a 15-minute oral presentation on a\nquote from any of the readings covered so far. The presentation has to cover: 1. A thesis: what do\nyou want to prove by selecting the quote? 2. Formal literary devices, in the context of the thesis.\n3. Role of the quote in the larger context of a book. 4. Historical/Philosophical background of the\nquote. After the presentation, 5. the instructor will ask challenging follow-up questions about the\nquote and the book as a whole, and the student has to prepare to defend their position and\ninterpretation. 6. The presentation has to be delivered according to the high standards of public\nspeaking: no repetitions, confident voice, no filler words, appropriate cadence and rhythm. 10\npoints available for satisfying each item. 60-points maximum.\n\n---\n\nAttendance in all classes is mandatory; after two unexcused absences, the student is at risk of failing the class. Phone, laptop, tablet, and any electronic device use in class is strictly prohibited unless specified otherwise by the instructor. If you are caught using a phone during class two times, you might fail the class. You must bring a physical copy of the book we discuss that week. If you don’t have the book with you more than two times, you might fail the class. You don’t have to print texts that are uploaded on Brightspace. Use of AI in any shape or form is strictly prohibited\n\n---\n\nMidterm Quiz 15"
+    },
+    {
+      "name": "Final Quiz",
+      "weight": 15.0,
+      "weight_unit": "percent",
+      "start_date": "",
+      "due_date": "",
+      "is_group_project": false,
+      "assignments": [
+        {
+          "name": "Final Quiz — same format as midterm, second half of semester",
+          "start_date": "",
+          "due_date": "",
+          "notes": "Exam"
+        }
+      ],
+      "sections": {
+        "Overview (Grading breakdown)": "Final Quiz 15",
+        "Assignment Description": "Same format as the Midterm exam covering the second part of the semester.",
+        "Class Policies (attendance & devices)": "Attendance in all classes is mandatory; after two unexcused absences, the student is at risk of failing the class. Phone, laptop, tablet, and any electronic device use in class is strictly prohibited unless specified otherwise by the instructor. If you are caught using a phone during class two times, you might fail the class. You must bring a physical copy of the book we discuss that week. If you don’t have the book with you more than two times, you might fail the class. You don’t have to print texts that are uploaded on Brightspace. Use of AI in any shape or form is strictly prohibited"
+      },
+      "extracted_text": "Attendance in all classes is mandatory; after two unexcused absences, the student is at risk of failing the class. Phone, laptop, tablet, and any electronic device use in class is strictly prohibited unless specified otherwise by the instructor. If you are caught using a phone during class two times, you might fail the class. You must bring a physical copy of the book we discuss that week. If you don’t have the book with you more than two times, you might fail the class. You don’t have to print texts that are uploaded on Brightspace. Use of AI in any shape or form is strictly prohibited\n\n---\n\nSame format as the Midterm exam covering the second part of the semester.\n\n---\n\nFinal Quiz 15"
+    },
+    {
+      "name": "Final Oral Exam",
+      "weight": 20.0,
+      "weight_unit": "percent",
+      "start_date": "",
+      "due_date": "",
+      "is_group_project": false,
+      "assignments": [
+        {
+          "name": "Final Oral Exam — last instructional week (15-min presentation on Love/Tradition/Jewishness/Violence/Humor across 3 read",
+          "start_date": "",
+          "due_date": "",
+          "notes": "Assignment"
+        }
+      ],
+      "sections": {
+        "Overview (Grading breakdown)": "Final Quiz 15",
+        "Assignment Description": "During the last instructional week, each student will deliver a 15-minute oral presentation on a\ntopic of: 1. Love, 2. Tradition, 3. Jewishness, 4. Violence, 5. Humor as reflected in three\nself-selected readings covered in the class. The student has to thoroughly explain 1. how the\nreadings address the problem, both formally and content-wise (specific examples), 2. what\ndifferences and similarities there are between them, 3. What general conclusion can be drawn\n\n-- 3 of 11 --\n\nfrom said comparison, and how do the readings shine a new light on the theoretical problem?\nAfter the presentation, 4. the instructor will ask challenging follow-up questions, and the student\nhas to prepare to defend their position and interpretation. 5. The presentation has to be delivered\naccording to the high standards of public speaking: no repetitions, confident voice, no filler\nwords, appropriate cadence and rhythm. 10 points available for satisfying each item. 50 points\nmaximum.",
+        "Class Policies (attendance & devices)": "Attendance in all classes is mandatory; after two unexcused absences, the student is at risk of failing the class. Phone, laptop, tablet, and any electronic device use in class is strictly prohibited unless specified otherwise by the instructor. If you are caught using a phone during class two times, you might fail the class. You must bring a physical copy of the book we discuss that week. If you don’t have the book with you more than two times, you might fail the class. You don’t have to print texts that are uploaded on Brightspace. Use of AI in any shape or form is strictly prohibited"
+      },
+      "extracted_text": "During the last instructional week, each student will deliver a 15-minute oral presentation on a\ntopic of: 1. Love, 2. Tradition, 3. Jewishness, 4. Violence, 5. Humor as reflected in three\nself-selected readings covered in the class. The student has to thoroughly explain 1. how the\nreadings address the problem, both formally and content-wise (specific examples), 2. what\ndifferences and similarities there are between them, 3. What general conclusion can be drawn\n\n-- 3 of 11 --\n\nfrom said comparison, and how do the readings shine a new light on the theoretical problem?\nAfter the presentation, 4. the instructor will ask challenging follow-up questions, and the student\nhas to prepare to defend their position and interpretation. 5. The presentation has to be delivered\naccording to the high standards of public speaking: no repetitions, confident voice, no filler\nwords, appropriate cadence and rhythm. 10 points available for satisfying each item. 50 points\nmaximum.\n\n---\n\nAttendance in all classes is mandatory; after two unexcused absences, the student is at risk of failing the class. Phone, laptop, tablet, and any electronic device use in class is strictly prohibited unless specified otherwise by the instructor. If you are caught using a phone during class two times, you might fail the class. You must bring a physical copy of the book we discuss that week. If you don’t have the book with you more than two times, you might fail the class. You don’t have to print texts that are uploaded on Brightspace. Use of AI in any shape or form is strictly prohibited\n\n---\n\nFinal Quiz 15"
+    }
+  ]
+}

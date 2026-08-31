@@ -1,0 +1,334 @@
+{
+  "class": {
+    "code": "BUAD-281",
+    "name": "Managerial Accounting",
+    "instructor": "George Braunegg",
+    "term": "Fall 2026",
+    "source_url": "https://raw.githubusercontent.com/vengeanceaiUSC/Syllabus-/cursor/add-syllabus-dissector-skill-a676/output/sources/buad-281-source.pdf"
+  },
+  "grading_scale": {
+    "a_threshold": "N/A",
+    "raw_scale": "Total graded points in calendar: 1070 (letter scale not in document)",
+    "scale_type": "points"
+  },
+  "categories": [
+    {
+      "name": "Midterm 1",
+      "weight": 250.0,
+      "weight_unit": "points",
+      "start_date": "",
+      "due_date": "2026-09-30",
+      "is_group_project": false,
+      "assignments": [
+        {
+          "name": "9/30 Midterm 1: 250 Points Chapters 1, 2, 3, 4, 5, 8",
+          "start_date": "",
+          "due_date": "2026-09-30",
+          "notes": "Exam"
+        }
+      ],
+      "sections": {
+        "Exam": [
+          "9/30 Midterm 1: 250 Points Chapters 1, 2, 3, 4, 5, 8"
+        ],
+        "Review & Practice": [
+          "Class 9 | Due: 2026-09-23 (8:00 am) | Topic: Cost of Quality & ESG &; Overview of; /; Practice Midterm Questions will be Posted by 5:00 PM | Required Reading: Chapter 8 - ONLY; LO 8.7, 8, 9 | Homework: 4-21, 4-22; 10 Points",
+          "Class 10 | Due: 2026-09-28 (8:00 am) | Topic: Catchup & Midterm Review | Homework: 8-28, 8-29; 10 Points",
+          "Class 15 | Due: 2026-10-19 (8:00 am) | Topic: Capital Budgeting; Practice Midterm Questions Posted to Brightspace by; 5:00 PM | Required Reading: Chapter 16- ONLY; LO 16.1, 2, 3 | Homework: 9-25, 9-28, 9-37; 15 - Points",
+          "Class 2 | Due: 2026-12-02 (8:00 am) | Topic: Catchup & Final Review; Practice Final Questions Posted to Brightspace at; 5:00 PM | Homework: 14-35, 14-41; 10 Points; Assignments listed Be-; low Due by11:59 PM; Linked In Learning; Excel Certification; 75 Points; Stukent Simternship; 75 Points"
+        ]
+      },
+      "extracted_text": "Class 2 | Due: 2026-12-02 (8:00 am) | Topic: Catchup & Final Review; Practice Final Questions Posted to Brightspace at; 5:00 PM | Homework: 14-35, 14-41; 10 Points; Assignments listed Be-; low Due by11:59 PM; Linked In Learning; Excel Certification; 75 Points; Stukent Simternship; 75 Points\n\nClass 9 | Due: 2026-09-23 (8:00 am) | Topic: Cost of Quality & ESG &; Overview of; /; Practice Midterm Questions will be Posted by 5:00 PM | Required Reading: Chapter 8 - ONLY; LO 8.7, 8, 9 | Homework: 4-21, 4-22; 10 Points\n\nClass 15 | Due: 2026-10-19 (8:00 am) | Topic: Capital Budgeting; Practice Midterm Questions Posted to Brightspace by; 5:00 PM | Required Reading: Chapter 16- ONLY; LO 16.1, 2, 3 | Homework: 9-25, 9-28, 9-37; 15 - Points\n\nClass 10 | Due: 2026-09-28 (8:00 am) | Topic: Catchup & Midterm Review | Homework: 8-28, 8-29; 10 Points\n\n9/30 Midterm 1: 250 Points Chapters 1, 2, 3, 4, 5, 8"
+    },
+    {
+      "name": "Midterm 2",
+      "weight": 250.0,
+      "weight_unit": "points",
+      "start_date": "",
+      "due_date": "2026-10-26",
+      "is_group_project": false,
+      "assignments": [
+        {
+          "name": "10/26 Midterm 2: 250 Points Chapters 6, 7, 9, & 16",
+          "start_date": "",
+          "due_date": "2026-10-26",
+          "notes": "Exam"
+        }
+      ],
+      "sections": {
+        "Exam": [
+          "10/26 Midterm 2: 250 Points Chapters 6, 7, 9, & 16"
+        ],
+        "Review & Practice": [
+          "Class 15 | Due: 2026-10-19 (8:00 am) | Topic: Capital Budgeting; Practice Midterm Questions Posted to Brightspace by; 5:00 PM | Required Reading: Chapter 16- ONLY; LO 16.1, 2, 3 | Homework: 9-25, 9-28, 9-37; 15 - Points",
+          "Class 16 | Due: 2026-10-21 (8:00 am) | Topic: Catchup & Midterm Review | Homework: 16-28, 16-40; 10 Points"
+        ]
+      },
+      "extracted_text": "Class 15 | Due: 2026-10-19 (8:00 am) | Topic: Capital Budgeting; Practice Midterm Questions Posted to Brightspace by; 5:00 PM | Required Reading: Chapter 16- ONLY; LO 16.1, 2, 3 | Homework: 9-25, 9-28, 9-37; 15 - Points\n\nClass 16 | Due: 2026-10-21 (8:00 am) | Topic: Catchup & Midterm Review | Homework: 16-28, 16-40; 10 Points\n\n10/26 Midterm 2: 250 Points Chapters 6, 7, 9, & 16"
+    },
+    {
+      "name": "Final Exam",
+      "weight": 250.0,
+      "weight_unit": "points",
+      "start_date": "",
+      "due_date": "2026-12-16",
+      "is_group_project": false,
+      "assignments": [
+        {
+          "name": "Final Exam",
+          "start_date": "",
+          "due_date": "2026-12-16",
+          "notes": "Exam"
+        }
+      ],
+      "sections": {
+        "Exam": "Final Exam: 250 Points | Final Exam; Wednesday,; December 16th; 8:00 AM -10:00 AM PST | ISO date: 2026-12-16 | Chapters 10, 11, 13, 14a | Knowledge of Cost Behavior (Chapter 6) & Contribution Margin (Chapter 7) are essential to cor-",
+        "Review & Practice": [
+          "Class 2 | Due: 2026-12-02 (8:00 am) | Topic: Catchup & Final Review; Practice Final Questions Posted to Brightspace at; 5:00 PM | Homework: 14-35, 14-41; 10 Points; Assignments listed Be-; low Due by11:59 PM; Linked In Learning; Excel Certification; 75 Points; Stukent Simternship; 75 Points"
+        ],
+        "Calendar Footnotes": [
+          "Unless specifically Identified, Chapter Appendices ARE NOT included as Required Reading",
+          "Knowledge of Cost Behavior (Chapter 6) & Contribution Margin (Chapter 7) are essential to cor-"
+        ]
+      },
+      "extracted_text": "Class 2 | Due: 2026-12-02 (8:00 am) | Topic: Catchup & Final Review; Practice Final Questions Posted to Brightspace at; 5:00 PM | Homework: 14-35, 14-41; 10 Points; Assignments listed Be-; low Due by11:59 PM; Linked In Learning; Excel Certification; 75 Points; Stukent Simternship; 75 Points\n\nFinal Exam: 250 Points | Final Exam; Wednesday,; December 16th; 8:00 AM -10:00 AM PST | ISO date: 2026-12-16 | Chapters 10, 11, 13, 14a | Knowledge of Cost Behavior (Chapter 6) & Contribution Margin (Chapter 7) are essential to cor-\n\nUnless specifically Identified, Chapter Appendices ARE NOT included as Required Reading"
+    },
+    {
+      "name": "LinkedIn Learning Excel Certification",
+      "weight": 75.0,
+      "weight_unit": "points",
+      "start_date": "2026-09-23",
+      "due_date": "2026-12-02",
+      "is_group_project": false,
+      "assignments": [
+        {
+          "name": "LinkedIn Learning Excel Certification",
+          "start_date": "2026-09-23",
+          "due_date": "2026-12-02",
+          "notes": "Certification"
+        }
+      ],
+      "sections": {
+        "Assignment Details": [
+          "Class 9 | Mentioned: 2026-09-23 (in-class announcement) | Linked In Learning Excel - 75 Points | Context: Introduced during this session; submit by 12/2 11:59 PM",
+          "Class 2 | Due: 2026-12-02 (11:59 PM) | Linked In Learning Excel Certification | Context: Final submission deadline (calendar footer)"
+        ],
+        "Due Date & Submission": "Due: 2026-12-02 (11:59 PM) - Assignments listed below due by 11:59 PM"
+      },
+      "extracted_text": "Class 9 | Mentioned: 2026-09-23 (in-class announcement) | Linked In Learning Excel - 75 Points | Context: Introduced during this session; submit by 12/2 11:59 PM\n\nClass 2 | Due: 2026-12-02 (11:59 PM) | Linked In Learning Excel Certification | Context: Final submission deadline (calendar footer)\n\nDue: 2026-12-02 (11:59 PM) - Assignments listed below due by 11:59 PM"
+    },
+    {
+      "name": "Stukent Simternship",
+      "weight": 75.0,
+      "weight_unit": "points",
+      "start_date": "2026-09-23",
+      "due_date": "2026-12-02",
+      "is_group_project": false,
+      "assignments": [
+        {
+          "name": "Stukent Simternship",
+          "start_date": "2026-09-23",
+          "due_date": "2026-12-02",
+          "notes": "Certification"
+        }
+      ],
+      "sections": {
+        "Assignment Details": [
+          "Class 9 | Mentioned: 2026-09-23 (in-class announcement) | Stukent Simternship - 75 Points | Context: Introduced during this session; submit by 12/2 11:59 PM",
+          "Class 2 | Due: 2026-12-02 (11:59 PM) | Stukent Simternship | Context: Final submission deadline (calendar footer)"
+        ],
+        "Due Date & Submission": "Due: 2026-12-02 (11:59 PM) - Assignments listed below due by 11:59 PM"
+      },
+      "extracted_text": "Class 9 | Mentioned: 2026-09-23 (in-class announcement) | Stukent Simternship - 75 Points | Context: Introduced during this session; submit by 12/2 11:59 PM\n\nClass 2 | Due: 2026-12-02 (11:59 PM) | Stukent Simternship | Context: Final submission deadline (calendar footer)\n\nDue: 2026-12-02 (11:59 PM) - Assignments listed below due by 11:59 PM"
+    },
+    {
+      "name": "Homework",
+      "weight": 170.0,
+      "weight_unit": "points",
+      "start_date": "",
+      "due_date": "2026-12-02",
+      "is_group_project": false,
+      "assignments": [
+        {
+          "name": "Class 5 (9/9) - Product Cost Accumulation: Job; Order Co: Chapter 3",
+          "start_date": "",
+          "due_date": "2026-09-09",
+          "notes": "Reading"
+        },
+        {
+          "name": "Class 5 (9/9) - 2-29, 2-30, 2-40; 15 Points",
+          "start_date": "",
+          "due_date": "2026-09-09",
+          "notes": "Homework"
+        },
+        {
+          "name": "Class 7 (9/16) - Activity Based Costing: Chapter 5- ONLY; LO 5.1, 2, 4 & 5",
+          "start_date": "",
+          "due_date": "2026-09-16",
+          "notes": "Reading"
+        },
+        {
+          "name": "Class 7 (9/16) - 3-24, 3-28, 3-32; 15 Points",
+          "start_date": "",
+          "due_date": "2026-09-16",
+          "notes": "Homework"
+        },
+        {
+          "name": "Class 8 (9/21) - Product Cost Accumulation: Pro-; cess Co: Chapter 4- ONLY; LO 4.1, 3, 4, & 5",
+          "start_date": "",
+          "due_date": "2026-09-21",
+          "notes": "Reading"
+        },
+        {
+          "name": "Class 8 (9/21) - 5-27 5-46; 10 Points",
+          "start_date": "",
+          "due_date": "2026-09-21",
+          "notes": "Homework"
+        },
+        {
+          "name": "Class 9 (9/23) - Cost of Quality & ESG &; Overview of; • : Chapter 8 - ONLY; LO 8.7, 8, 9",
+          "start_date": "",
+          "due_date": "2026-09-23",
+          "notes": "Reading"
+        },
+        {
+          "name": "Class 9 (9/23) - 4-21, 4-22; 10 Points",
+          "start_date": "",
+          "due_date": "2026-09-23",
+          "notes": "Homework"
+        },
+        {
+          "name": "Class 10 (9/28) - Catchup & Midterm Review",
+          "start_date": "",
+          "due_date": "2026-09-28",
+          "notes": "Reading"
+        },
+        {
+          "name": "Class 10 (9/28) - 8-28, 8-29; 10 Points",
+          "start_date": "",
+          "due_date": "2026-09-28",
+          "notes": "Homework"
+        },
+        {
+          "name": "Class 12 (10/7) - Cost volume profit analysis: Chapter 7",
+          "start_date": "",
+          "due_date": "2026-10-07",
+          "notes": "Reading"
+        },
+        {
+          "name": "Class 12 (10/7) - 6-24, 6-25, 6-34; 15 Points",
+          "start_date": "",
+          "due_date": "2026-10-07",
+          "notes": "Homework"
+        },
+        {
+          "name": "Class 14 (10/14) - Financial planning and analysis:; Static: Chapter 9",
+          "start_date": "",
+          "due_date": "2026-10-14",
+          "notes": "Reading"
+        },
+        {
+          "name": "Class 14 (10/14) - 7-29, 7-33, 7-40; 15 Points",
+          "start_date": "",
+          "due_date": "2026-10-14",
+          "notes": "Homework"
+        },
+        {
+          "name": "Class 15 (10/19) - Capital Budgeting; Practice Midterm Ques: Chapter 16- ONLY; LO 16.1, 2, 3",
+          "start_date": "",
+          "due_date": "2026-10-19",
+          "notes": "Reading"
+        },
+        {
+          "name": "Class 15 (10/19) - 9-25, 9-28, 9-37; 15 - Points",
+          "start_date": "",
+          "due_date": "2026-10-19",
+          "notes": "Homework"
+        },
+        {
+          "name": "Class 16 (10/21) - Catchup & Midterm Review",
+          "start_date": "",
+          "due_date": "2026-10-21",
+          "notes": "Reading"
+        },
+        {
+          "name": "Class 16 (10/21) - 16-28, 16-40; 10 Points",
+          "start_date": "",
+          "due_date": "2026-10-21",
+          "notes": "Homework"
+        },
+        {
+          "name": "Class 19 (11/4) - Sales Variance Analysis; Flexible Budget: Chapter 11 - ONLY; LO 11.1, 11.2 &; Appendix B",
+          "start_date": "",
+          "due_date": "2026-11-04",
+          "notes": "Reading"
+        },
+        {
+          "name": "Class 19 (11/4) - 10-26, 10-30; 10 Points",
+          "start_date": "",
+          "due_date": "2026-11-04",
+          "notes": "Homework"
+        },
+        {
+          "name": "Class 20 (11/9) - Investment Centers: Chapter 13- ONLY; LO 13-1, 2, 3, 4",
+          "start_date": "",
+          "due_date": "2026-11-09",
+          "notes": "Reading"
+        },
+        {
+          "name": "Class 20 (11/9) - 11-31, 11-52; 10 Points",
+          "start_date": "",
+          "due_date": "2026-11-09",
+          "notes": "Homework"
+        },
+        {
+          "name": "Class 21 (11/16) - AI & FP&A",
+          "start_date": "",
+          "due_date": "2026-11-16",
+          "notes": "Reading"
+        },
+        {
+          "name": "Class 21 (11/16) - 13-29, 13-33; 10 Points",
+          "start_date": "",
+          "due_date": "2026-11-16",
+          "notes": "Homework"
+        },
+        {
+          "name": "Class 2 (12/2) - Catchup & Final Review; Practice Final Questions Posted to Brightspace at; 5:00 PM",
+          "start_date": "",
+          "due_date": "2026-12-02",
+          "notes": "Reading"
+        },
+        {
+          "name": "Class 2 (12/2) - 14-35, 14-41; 10 Points; Assignments listed Be-; low Due by11:59 PM; Linked In Learning; E",
+          "start_date": "",
+          "due_date": "2026-12-02",
+          "notes": "Homework"
+        }
+      ],
+      "sections": {
+        "Homework Assignments (by due date)": [
+          "Class 5 | Due: 2026-09-09 (8:00 am) | Topic: Product Cost Accumulation: Job; Order Costing | Required Reading: Chapter 3 | Homework: 2-29, 2-30, 2-40; 15 Points",
+          "Class 7 | Due: 2026-09-16 (8:00 am) | Topic: Activity Based Costing | Required Reading: Chapter 5- ONLY; LO 5.1, 2, 4 & 5 | Homework: 3-24, 3-28, 3-32; 15 Points",
+          "Class 8 | Due: 2026-09-21 (8:00 am) | Topic: Product Cost Accumulation: Pro-; cess Costing | Required Reading: Chapter 4- ONLY; LO 4.1, 3, 4, & 5 | Homework: 5-27 5-46; 10 Points",
+          "Class 9 | Due: 2026-09-23 (8:00 am) | Topic: Cost of Quality & ESG &; Overview of; • Linked In Learning Excel - 75 Points; • Stukent Simternship - 75 Points; Practice Midterm Questions will be Posted by 5:00 PM | Required Reading: Chapter 8 - ONLY; LO 8.7, 8, 9 | Homework: 4-21, 4-22; 10 Points",
+          "Class 10 | Due: 2026-09-28 (8:00 am) | Topic: Catchup & Midterm Review | Homework: 8-28, 8-29; 10 Points",
+          "Class 12 | Due: 2026-10-07 (8:00 am) | Topic: Cost volume profit analysis | Required Reading: Chapter 7 | Homework: 6-24, 6-25, 6-34; 15 Points",
+          "Class 14 | Due: 2026-10-14 (8:00 am) | Topic: Financial planning and analysis:; Static Master Budget; | Required Reading: Chapter 9 | Homework: 7-29, 7-33, 7-40; 15 Points",
+          "Class 15 | Due: 2026-10-19 (8:00 am) | Topic: Capital Budgeting; Practice Midterm Questions Posted to Brightspace by; 5:00 PM | Required Reading: Chapter 16- ONLY; LO 16.1, 2, 3 | Homework: 9-25, 9-28, 9-37; 15 - Points",
+          "Class 16 | Due: 2026-10-21 (8:00 am) | Topic: Catchup & Midterm Review | Homework: 16-28, 16-40; 10 Points",
+          "Class 19 | Due: 2026-11-04 (8:00 am) | Topic: Sales Variance Analysis; Flexible Budgeting | Required Reading: Chapter 11 - ONLY; LO 11.1, 11.2 &; Appendix B | Homework: 10-26, 10-30; 10 Points",
+          "Class 20 | Due: 2026-11-09 (8:00 am) | Topic: Investment Centers | Required Reading: Chapter 13- ONLY; LO 13-1, 2, 3, 4 | Homework: 11-31, 11-52; 10 Points",
+          "Class 21 | Due: 2026-11-16 (8:00 am) | Topic: AI & FP&A | Homework: 13-29, 13-33; 10 Points",
+          "Class 2 | Due: 2026-12-02 (8:00 am) | Topic: Catchup & Final Review; Practice Final Questions Posted to Brightspace at; 5:00 PM | Homework: 14-35, 14-41; 10 Points; Assignments listed Be-; low Due by11:59 PM; Linked In Learning; Excel Certification; 75 Points; Stukent Simternship; 75 Points"
+        ],
+        "Calendar Footnotes": [
+          "Unless specifically Identified, Chapter Appendices ARE NOT included as Required Reading",
+          "Knowledge of Cost Behavior (Chapter 6) & Contribution Margin (Chapter 7) are essential to cor-"
+        ]
+      },
+      "extracted_text": "Class 9 | Due: 2026-09-23 (8:00 am) | Topic: Cost of Quality & ESG &; Overview of; • Linked In Learning Excel - 75 Points; • Stukent Simternship - 75 Points; Practice Midterm Questions will be Posted by 5:00 PM | Required Reading: Chapter 8 - ONLY; LO 8.7, 8, 9 | Homework: 4-21, 4-22; 10 Points\n\nClass 2 | Due: 2026-12-02 (8:00 am) | Topic: Catchup & Final Review; Practice Final Questions Posted to Brightspace at; 5:00 PM | Homework: 14-35, 14-41; 10 Points; Assignments listed Be-; low Due by11:59 PM; Linked In Learning; Excel Certification; 75 Points; Stukent Simternship; 75 Points\n\nClass 15 | Due: 2026-10-19 (8:00 am) | Topic: Capital Budgeting; Practice Midterm Questions Posted to Brightspace by; 5:00 PM | Required Reading: Chapter 16- ONLY; LO 16.1, 2, 3 | Homework: 9-25, 9-28, 9-37; 15 - Points\n\nClass 19 | Due: 2026-11-04 (8:00 am) | Topic: Sales Variance Analysis; Flexible Budgeting | Required Reading: Chapter 11 - ONLY; LO 11.1, 11.2 &; Appendix B | Homework: 10-26, 10-30; 10 Points\n\nClass 8 | Due: 2026-09-21 (8:00 am) | Topic: Product Cost Accumulation: Pro-; cess Costing | Required Reading: Chapter 4- ONLY; LO 4.1, 3, 4, & 5 | Homework: 5-27 5-46; 10 Points\n\nClass 14 | Due: 2026-10-14 (8:00 am) | Topic: Financial planning and analysis:; Static Master Budget; | Required Reading: Chapter 9 | Homework: 7-29, 7-33, 7-40; 15 Points\n\nClass 7 | Due: 2026-09-16 (8:00 am) | Topic: Activity Based Costing | Required Reading: Chapter 5- ONLY; LO 5.1, 2, 4 & 5 | Homework: 3-24, 3-28, 3-32; 15 Points\n\nClass 5 | Due: 2026-09-09 (8:00 am) | Topic: Product Cost Accumulation: Job; Order Costing | Required Reading: Chapter 3 | Homework: 2-29, 2-30, 2-40; 15 Points\n\nClass 20 | Due: 2026-11-09 (8:00 am) | Topic: Investment Centers | Required Reading: Chapter 13- ONLY; LO 13-1, 2, 3, 4 | Homework: 11-31, 11-52; 10 Points\n\nClass 12 | Due: 2026-10-07 (8:00 am) | Topic: Cost volume profit analysis | Required Reading: Chapter 7 | Homework: 6-24, 6-25, 6-34; 15 Points\n\nClass 16 | Due: 2026-10-21 (8:00 am) | Topic: Catchup & Midterm Review | Homework: 16-28, 16-40; 10 Points\n\nClass 10 | Due: 2026-09-28 (8:00 am) | Topic: Catchup & Midterm Review | Homework: 8-28, 8-29; 10 Points\n\nKnowledge of Cost Behavior (Chapter 6) & Contribution Margin (Chapter 7) are essential to cor-\n\nClass 21 | Due: 2026-11-16 (8:00 am) | Topic: AI & FP&A | Homework: 13-29, 13-33; 10 Points\n\nUnless specifically Identified, Chapter Appendices ARE NOT included as Required Reading"
+    }
+  ],
+  "strategy": "If your AI tool breaks down and solves the homework bank problems - extracting step-by-step mechanics from the textbook - mastering those exact mechanics is all you need to get an A without reading prose."
+}

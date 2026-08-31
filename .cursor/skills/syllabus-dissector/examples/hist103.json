@@ -1,0 +1,257 @@
+{
+  "class": {
+    "code": "HIST-103",
+    "name": "The Emergence of Modern Europe",
+    "instructor": "Dr. Lindsay O'Neill",
+    "term": "Fall 2026"
+  },
+  "grading_scale": {
+    "a_threshold": "93% (100-93)",
+    "raw_scale": "A: 100-93; A-: 92-90; B+: 89-87; B: 86-83; B-: 82-80; C+: 79-77; C: 76-73; C-: 72-70; D+: 69-67; D: 66-63; D-: 62-60; F: 59-0",
+    "scale_type": "percentage"
+  },
+  "categories": [
+    {
+      "name": "Sleep Paper",
+      "weight": 20,
+      "weight_unit": "percent",
+      "start_date": "2025-09-04",
+      "due_date": "2025-09-15",
+      "is_group_project": false,
+      "notes": "Submit via your TA's Brightspace by 11:59pm",
+      "sections": {
+        "Overview": "This 4 page paper will ask you to use readings on early modern sleeping patterns to make an argument about primary sources and/or life in early modern Europe. You will turn it in via your TA's Brightspace. See Brightspace for prompts.",
+        "Due Date & Submission": [
+          "Due September 15th, 11:59pm via your TA's Brightspace",
+          "Sleep Paper Due by Midnight (Sep 15)"
+        ],
+        "Required Readings": [
+          "Roger Ekirch, 'Sleep we have lost: Pre-Industrial Slumber in the British Isles,' The American Historical Review, April 2001, pg. 343-365",
+          "Sasha Handley, Sleep in Early Modern England, Introduction & Chap 2",
+          "Readings assigned for section Sep 4"
+        ],
+        "Format Requirements": [
+          "4 pages, double spaced",
+          "Well written, include a specific thesis that gives a roadmap to your paper and tells us your argument",
+          "Body paragraphs should start with a topic sentence that says exactly what your main idea for the paragraph is",
+          "At least two quotes or direct references to the article/s that back up your main idea",
+          "Evidence needs to be cited through footnotes or in-text citations [ex: (Ekirch, 25)]",
+          "See the tips below and the paper rubric for more guidance"
+        ],
+        "Prompts (pick ONE)": [
+          "What do the patterns of sleep described by Ekirch and Handley tell us about structures of power or values held by people in the early modern world?",
+          "What primary sources do Ekirch and Handley use from the early modern period to investigate how people slept back then? What do these sources tell us about whose sleep patterns are easier for historians to research? And, in turn, what does this tell us about structure of power in the early modern world?",
+          "Do a google news search for 'sleep' and find articles discussing sleep today (these are your primary sources). Are our concerns about sleep similar or different from what Ekirch and Handley see? What does it say about the similarities and/or differences between our cultures?",
+          "Take on an early modern persona and write a tract entitled 'On Sleep' that reflects upon what sleep means for them/society and/or gives guidance on how to approach sleep. Be sure to use citations to Ekirch and Handley to show us where the information is coming from."
+        ],
+        "Helpful Hints": [
+          "Be sure to have a thesis statement in the introduction that tells your reader what the argument for the paper is and how you will approach it",
+          "Include direct quotes and/or specific examples from the article or primary sources you found. Cite them.",
+          "Each body paragraph should have its own distinct topic, stated in the first sentence",
+          "The best paper should do more than just show us x, y, and z about sleep — reach for what those points together tell us about society at that time",
+          "Cite all your evidence. If I can write 'How do we know?' in the margin, you should cite something",
+          "Be sure to explain how your evidence connects to your main point (analyze it)"
+        ]
+      },
+      "extracted_text": "Sleep Paper -20%\nThis 4 page paper will ask you to use readings on early modern sleeping patterns to make an argument about primary sources and/or life in early modern Europe. You will turn it in via your TA's Brightspace. See Brightspace for prompts.\n\nHIST 103 Paper 1: Sleep in the Early Modern Period\nDue September 15th, 11:59pm via your TA's Brightspace\n\nUse the Ekirch article 'Sleep we have lost' and the Handley chapters which we read for class to engage with the following prompts.\n\nPaper: 4pgs, double spaced, should be well written, include a specific thesis that gives a roadmap to your paper and tells us your argument, the body paragraphs should start with a topic sentence that says exactly what your main idea for the paragraph is and has at least two quotes or direct references to the article/s that back up your main idea. This evidence needs to be cited through footnotes or in-text citations [ex: (Ekirch, 25)]. See the tips below and the paper rubric for more guidance."
+    },
+    {
+      "name": "Witchcraft Paper",
+      "weight": 20,
+      "weight_unit": "percent",
+      "start_date": "2025-11-06",
+      "due_date": "2025-11-10",
+      "is_group_project": false,
+      "notes": "Submit via your TA's Brightspace by 11:59pm. Do not search the Internet.",
+      "sections": {
+        "Overview": "This 4 page paper will ask you to read a number of primary sources detailing early modern witchcraft trials and to pick a prompt to make argument about what you read. You will turn it in via your TA's Brightspace.",
+        "Due Date & Submission": [
+          "Due Nov 10 at 11:59pm via your TA's Brightspace page",
+          "Witchcraft Paper Due (Nov 10)"
+        ],
+        "Required Readings": [
+          "Brian Levack, The Witchcraft Sourcebook, Chaps 36-44, 46-47 (assigned for section Nov 6)",
+          "Pick ONE of the following prompts and use Brian Levack's The Witchcraft Sourcebook (2015) for your evidence"
+        ],
+        "Format Requirements": [
+          "4 pages, double spaced",
+          "Well written, include a specific thesis that gives a roadmap to your paper",
+          "Body paragraphs should start with a topic sentence",
+          "At least two quotes or few specific examples that back up your main idea",
+          "See the tips below and the paper rubric for more guidance",
+          "In the paper you can ONLY cite Levack's book or lecture"
+        ],
+        "Prompts (pick ONE)": [
+          "Based on what you read in the Levack primary sources: What are witches accused of attacking or harming? What does this say about what people valued at the time?",
+          "Using what you read in the Levack primary sources consider this: According to their confessions, what appears to tempt people to turn to the devil or witchcraft and what does it say about society at the time?",
+          "Using the Levack primary sources, examine the gender breakdown between the accused and the accusers. Are male witches treated the same or differently? Are the accusers mostly male or female? Why? What does this all tell us about gender and/or community during this period?",
+          "Using the Levack primary sources, what do these trials tell us about who had power in these societies or how class played a role in the trials and accusations? Do the trials show state power or communal power?"
+        ],
+        "Restrictions": [
+          "Do not search the Internet. We want you to just use Levack and maybe lecture for this paper.",
+          "If you include other sources without checking with your TA you will be penalized.",
+          "We reserve the right to tweak the prompts and guidelines up to a week before the assignment is due"
+        ],
+        "Helpful Hints": [
+          "Include direct quotes and/or specific examples from the primary sources and cite them",
+          "Your evidence should come from the primary sources, not the abstracts from the beginning",
+          "Each body paragraph should have its own distinct topic, centered on an idea rather than being descriptive",
+          "The best paper should reach for what those points together tell us about society at that time",
+          "In-text citations are fine: For example (Levack, 12)"
+        ]
+      },
+      "extracted_text": "Witchcraft Paper – 20%\nThis 4 page paper will ask you to read a number of primary sources detailing early modern witchcraft trials and to pick a prompt to make argument about what you read. You will turn it in via your TA's Brightspace. See Brightspace for prompts.\n\nWitchcraft & Daily Life Paper\nDue Nov 10 at 11:59pm via your Tas Brightspace page\n\nPaper: 4pgs, double spaced, should be well written, include a specific thesis that gives a roadmap to your paper, the body paragraphs should start with a topic sentence that says exactly what your main idea for the paragraph is and has at least two quotes or few specific examples that back up your main idea."
+    },
+    {
+      "name": "Mid-term",
+      "weight": 20,
+      "weight_unit": "percent",
+      "start_date": "2025-08-25",
+      "due_date": "2025-10-06",
+      "is_group_project": false,
+      "notes": "In-class exam. Study guide lists Oct 8, 5-6:20pm; module lists Oct 6.",
+      "sections": {
+        "Overview": "The midterm will include ten of the identification terms (I give a definition and you give the term, just like the quizzes) and one longer essay (you will be given five prompts in advance and two will be on the exam, you pick one to address). This will be an in-class exam.",
+        "Date & Location": [
+          "Midterm: October 8th, 5-6:20pm in class (per study guide)",
+          "Oct 6: Midterm (per course schedule module)"
+        ],
+        "Exam Format": [
+          "Part 1 (30%): Identifications — definitions of ten terms provided, you supply the term",
+          "Part 2 (70%): Essay — TWO of five pre-released prompts appear on exam, answer ONE",
+          "Terms will NOT be provided on the identification section",
+          "By the midterm you will have gathered 33 identifications from class lectures"
+        ],
+        "Essay Prompts (two will appear on exam)": [
+          "Could Europe in 1550 be called a 'new world'? Why or why not? [You can define what you mean by 'new world']",
+          "Create a character for yourself who is on their deathbed between 1450 and 1550 and looking back on their life. What structured their life and what changes did they witness?",
+          "True or False: 'The big events of the early modern period, like the Renaissance and westward expansion, were events created and experienced by male elites.' Defend your answer.",
+          "What changed early modern Europe more: art and ideas, war, or disease and/or environmental change?",
+          "Between 1348 and 1550 what impact did the outside world have upon Europe? Did it affect it more than interior changes?"
+        ],
+        "Tips": [
+          "Incorporate knowledge from lectures and readings",
+          "Use examples from readings — specific person, text, or event helps (evidence)",
+          "Do not use information learned elsewhere — testing on what you learned from this class",
+          "Essay should have an argument supported with examples, written in essay form"
+        ]
+      },
+      "extracted_text": "Mid-term – 20%\nThe midterm will include ten of the identification terms (I give a definition and you give the term, just like the quizzes) and one longer essay (you will be given five prompts in advance and two will be on the exam, you pick one to address). This will be an in-class exam.\n\nHist 103: Midterm Study Guide\nMidterm: October 8th, 5-6:20pm in class\nPart 1 (30%): Identifications\nPart 2 (70%): Essay"
+    },
+    {
+      "name": "Final Exam",
+      "weight": 20,
+      "weight_unit": "percent",
+      "start_date": "2025-10-13",
+      "due_date": "2025-12-10",
+      "is_group_project": false,
+      "notes": "In-class exam, THH 301",
+      "sections": {
+        "Overview": "The final is the same format as the midterm – 10 identifications and one longer essay. This too will be an in-class exam.",
+        "Date & Location": [
+          "Thursday, December 10th",
+          "4:30-6:30pm, THH 301"
+        ],
+        "Exam Format": [
+          "Part 1 (30%): Identifications — ten terms since midterm, definitions provided, you write correct person/place/event",
+          "Part 2 (70%): Essay — TWO of five pre-released prompts appear, answer ONE",
+          "Since the midterm you have gathered 42 identifications from class lectures",
+          "Terms will NOT be provided on the identification section"
+        ],
+        "Essay Prompts (two will appear on exam)": [
+          "If Martin Luther travelled through time to around the time of the French Revolution what would shock him and what would remain familiar?",
+          "How important was the written or printed word to the Reformation, the new science, the Enlightenment, and/or the French Revolution?",
+          "True or False: 'The French Revolution was the most revolutionary occurrence between 1520 and 1815.'",
+          "Europe faced a number of crises of authority between 1520 and 1815... What authorities were under attack and why? [Explore 3 crises]",
+          "How did the place of religion OR gender in society change between 1520 and 1800?"
+        ],
+        "Tips for Final Exam": [
+          "Know your ID Terms — hard to give partial credit if you miss a few",
+          "Essay grade benefits from specific references to class readings (Diefendorf, documentaries, witchcraft trials, Locke, Rousseau, activities)",
+          "Avoid using the definitions from id terms for your essay — show original engagement",
+          "Each body paragraph should include at least two pieces of evidence",
+          "Do NOT use resources beyond the lectures and readings"
+        ]
+      },
+      "extracted_text": "Final Exam – 20%\nThe final is the same format as the midterm – 10 identifications and one longer essay. This too will be an in-class exam.\n\nHist 103: Final Study Guide\nThursday, December 10th\n4:30-6:30pm, THH 301"
+    },
+    {
+      "name": "Discussion Section",
+      "weight": 15,
+      "weight_unit": "percent",
+      "start_date": "2025-08-25",
+      "due_date": "2025-12-04",
+      "is_group_project": false,
+      "notes": "Ongoing participation throughout semester",
+      "sections": {
+        "Overview": "This section of your grade is determined by your participation in your discussion section. Your TA will outline their participation policies in section.",
+        "Requirements": [
+          "Your presence both in lecture and in your discussion section is important",
+          "There is no hybrid option for either lectures or discussion",
+          "Powerpoints are not posted",
+          "Part of your participation grade is to complete two primary source activities on Nov 13 and Nov 20 (posted on Brightspace like a reading)",
+          "Activities should be turned into your TA's link on their Brightspace page before section begins for credit",
+          "Graded pass/fail",
+          "See your TA's syllabus for more information"
+        ],
+        "Teaching Assistants": [
+          "8am & 9am Discussion Sections: Emily Kuwaye (kuwaye@usc.edu)",
+          "10am & 11am Discussion Sections: Milena Kagel (kagel@usc.edu)"
+        ],
+        "Related Activities": [
+          "Nov 13: Enlightenment Primary Source Activity [Ungraded, but counts towards participation. Due in section]",
+          "Nov 20: Slavery and the African Presence in London Activity [Ungraded but counts towards participation. Due in section]"
+        ]
+      },
+      "extracted_text": "Discussion Section – 15%\nThis section of your grade is determined by your participation in your discussion section. Your TA will outline their participation policies in section. Part of your participation grade is to complete two primary source activities on Nov 13 and Nov 20 (posted on Brightspace like a reading). These should be turned into your TA's link on their Brightspace page before section begins for credit. It will be graded pass/fail."
+    },
+    {
+      "name": "Identification Quizzes",
+      "weight": 5,
+      "weight_unit": "percent",
+      "start_date": "2025-08-25",
+      "due_date": "2025-12-03",
+      "is_group_project": false,
+      "notes": "Lowest score dropped. No make-ups.",
+      "sections": {
+        "Overview": "After every lecture there will be three terms listed. Eleven times during the course of the semester there will be a quiz at the beginning of class that asks you to identify two of those terms.",
+        "Rules": [
+          "This exercise will prepare you for the exams, which will ask you to engage with these terms",
+          "You cannot make up these quizzes",
+          "Your lowest score will be dropped",
+          "Quizzes occur at the beginning of class",
+          "You must identify two of three listed terms"
+        ]
+      },
+      "extracted_text": "Identification Quizzes – 5%\nAfter every lecture there will be three terms listed. Eleven times during the course of the semester there will be a quiz at the beginning of class that asks you to identify two of those terms. This exercise will prepare you for the exams, which will ask you to engage with these terms. You cannot make up these quizzes, but your lowest score will be dropped."
+    },
+    {
+      "name": "Extra Credit",
+      "weight": null,
+      "weight_unit": "percent",
+      "start_date": "2025-08-25",
+      "due_date": "2025-12-04",
+      "is_group_project": false,
+      "notes": "Optional. Up to 2 assignments.",
+      "sections": {
+        "Overview": "Over the course of the semester I keep my eyes open for early modern opportunities on campus or in Los Angeles. I will send out an announcement if I see something you can attend for extra credit.",
+        "Experiencing the Past Activities": [
+          "You can do one or two of the attached 'Experiencing the Past' activities",
+          "Activities ask you to do a task like an early modern person (cook, read a letter, play music, fold a letter)",
+          "Directions on the word doc",
+          "Each one will give you two extra points on a paper",
+          "Email them to your TA when finished",
+          "Must be turned in by the end of classes or Dec 4th",
+          "You can do up to two extra credit assignments total"
+        ],
+        "Available Materials": [
+          "'Experiencing the Past' Assignments (Word Document)",
+          "'Experiencing the Past' Psalm (Image)",
+          "'Experiencing the Past' Book of Psalms (PDF document)",
+          "'Experiencing the Past' 18th C Recipes (Word Document)"
+        ]
+      },
+      "extracted_text": "Extra Credit\nOver the course of the semester I keep my eyes open for early modern opportunities on campus or in Los Angeles. I will send out an announcement if I see something you can attend for extra credit. You can also do one or two of the attached 'Experiencing the Past' activities that ask you to do a task like an early modern person (cook, read a letter, play music, fold a letter). You can do up to two extra credit assignments total. Each one will give you two extra points on a paper. You should email them to your TA when finished. They need to be turned in by the end of classes or Dec 4th."
+    }
+  ]
+}
