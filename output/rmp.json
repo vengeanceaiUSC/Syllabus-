@@ -1178,6 +1178,127 @@
     "would_take_again_pct": 81.8,
     "num_ratings": 43,
     "consensus": "STRENGTHS: Strong RMP profile (4.6 quality, 2.1 difficulty, 82% would take again). Students call Dr. Mayfield caring, accessible, and clear about expectations. Self-reported grades skew heavily A/A+ (avg ~3.93 GPA). Weekly quizzes have unlimited retakes (lowest 3 dropped); exams are open-book/notes and reviewers say she prepares them well — MC/TF largely mirrors quizzes.\n\nMIDTERM & EXAMS: Syllabus states most MC questions come straight from weekly quizzes; open notes/materials allowed. Reviews: 'prepares everyone for the final paper and online exams,' 'prepared us SO WELL for the exams,' 'open notes and super doable if you take notes on lectures/labs.' Caveat: Jan 2026 review warns exams still require knowing content despite open-book format.\n\nPAPERS & GRADING: Final paper (29%) is scaffolded via research-design worksheets + peer review; instructor gives section feedback if submitted early. Most reviews describe lenient/fair grading ('grades leniently,' 'easy on grading,' 'clear grading rubric'); a few recent outliers tag 'Tough grader' or 'harsh grader.' Workload is real — heavy reading, lab attendance, structured final paper.\n\nBOTTOM LINE: Solid GE-C pick for an A if you do weekly quizzes (exam prep), attend labs, and start the paper early. Not a zero-effort class despite generous structure.",
+    "essay_grading_reviews": [
+      {
+        "date": "2026-05-29",
+        "grade": "A",
+        "sentiment": "positive",
+        "topic": "essay_scaffold",
+        "quote": "Your grade is basically two exams (which are both easy if you keep up with the readings and films) and an essay (which is spread out over several weeks and the topic is your choice). Overall, a laid-back class and an easy A if you put in the effort."
+      },
+      {
+        "date": "2025-06-01",
+        "grade": "A",
+        "sentiment": "positive",
+        "topic": "exam_and_paper_prep",
+        "quote": "Professor Mayfield does her best to prepare everyone for the final paper and online exams. She was also very quick to respond to emails and very accessible."
+      },
+      {
+        "date": "2021-04-27",
+        "grade": "A+",
+        "sentiment": "positive",
+        "topic": "paper_straightforward",
+        "quote": "She makes all assignments, tests, papers very straightforward and is easy to access outside of class."
+      },
+      {
+        "date": "2020-11-19",
+        "grade": "Not sure yet",
+        "sentiment": "positive",
+        "topic": "final_paper_topic_choice",
+        "quote": "You can make this class into anything you want it to be, I wrote my final paper around urban studies. Take it trust me."
+      },
+      {
+        "date": "2020-05-03",
+        "grade": "",
+        "sentiment": "positive",
+        "topic": "paper_drafts",
+        "quote": "Basically one final paper and its drafts, along with the final and midterm. Still, an interesting and pretty easy GE."
+      },
+      {
+        "date": "2023-12-16",
+        "grade": "A+",
+        "sentiment": "positive",
+        "topic": "paper_length",
+        "quote": "The midterm and final are open notes, book, google, everything, and are super doable if you take notes on the online lectures and the lab sections' classes. One 7-8 page double spaced paper due in the final week of classes."
+      },
+      {
+        "date": "2023-01-08",
+        "grade": "A",
+        "sentiment": "positive",
+        "topic": "essay_help",
+        "quote": "She was always willing to help us with our essays and other questions. She prepared us SO WELL for the exams (which are online & open-note)."
+      },
+      {
+        "date": "2024-12-11",
+        "grade": "A",
+        "sentiment": "positive",
+        "topic": "lenient_grading",
+        "quote": "She assigns a midterm, final exam and final project in which she grades leniantly. Overall fun, enjoyable easy A."
+      },
+      {
+        "date": "2021-12-05",
+        "grade": "",
+        "sentiment": "positive",
+        "topic": "easy_grader",
+        "quote": "Mayfield is passionate about what she teaches. She is very caring and is easy on grading, attendance, etc."
+      },
+      {
+        "date": "2020-11-21",
+        "grade": "A",
+        "sentiment": "positive",
+        "topic": "grade_recovery",
+        "quote": "Mayfield is like Jesus: if Jesus can turn water into wine Mayfield can turn your grade to be fine."
+      },
+      {
+        "date": "2020-12-07",
+        "grade": "A",
+        "sentiment": "positive",
+        "topic": "achievable_a",
+        "quote": "Mayfield is really nice providing enough chances for you to pass, or to get an A. Not hard to archieve good grades if that's your goal."
+      },
+      {
+        "date": "2021-05-12",
+        "grade": "A",
+        "sentiment": "positive",
+        "topic": "lenient",
+        "quote": "Tons of opportunities for extra credit and is lenient. Pretty light course load, at least when online."
+      },
+      {
+        "date": "2019-11-20",
+        "grade": "",
+        "sentiment": "positive",
+        "topic": "grades_easily",
+        "quote": "She grades easily but is really invested in making sure you know the topic."
+      },
+      {
+        "date": "2024-12-07",
+        "grade": "Not sure yet",
+        "sentiment": "positive",
+        "topic": "clear_rubric",
+        "quote": "Clear grading rubric and well-defined expectations from class. Would love to take her again!"
+      },
+      {
+        "date": "2026-02-03",
+        "grade": "",
+        "sentiment": "negative",
+        "topic": "harsh_grader",
+        "quote": "Disrespectful, rude, overly demanding/harsh grader. Lots of youtube videos and harsh grading."
+      },
+      {
+        "date": "2026-01-09",
+        "grade": "A",
+        "sentiment": "negative",
+        "topic": "not_easy_a",
+        "quote": "Do not take this class for an easy A. You really have to put the work in. Yes tests are open note but you really have to know your stuff to succeed."
+      },
+      {
+        "date": "2025-05-17",
+        "grade": "Not sure yet",
+        "sentiment": "mixed",
+        "topic": "tough_grader_tag",
+        "quote": "Overall, Tracie Mayfield is a great professor. If you show up to classes and keep up with the syllabus, you'll probably do fine."
+      }
+    ],
     "url": "https://www.ratemyprofessors.com/professor/2432970",
     "source": "Rate My Professors",
     "as_of": "2026-08-30",

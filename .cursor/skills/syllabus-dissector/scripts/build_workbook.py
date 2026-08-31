@@ -145,6 +145,48 @@ def sort_sub_assignments(items: list[dict]) -> list[dict]:
     return sorted(items, key=key)
 
 
+def _estimate_wrap_rows(text: str, *, chars_per_row: int = 95, min_rows: int = 2, max_rows: int = 40) -> int:
+    lines = (text or "").splitlines() or [""]
+    total = sum(max(1, (len(line) + chars_per_row - 1) // chars_per_row) for line in lines)
+    return min(max_rows, max(min_rows, total))
+
+
+def write_professor_notes_block(
+    ws,
+    row: int,
+    ncols: int,
+    label_font: Font,
+    professor_notes,
+) -> int:
+    """Render syllabus + RMP professor notes on a class sheet. Returns next row."""
+    if not professor_notes:
+        return row
+    notes_fill = PatternFill("solid", fgColor="FFF2CC")
+    section_font = Font(bold=True, color="7F6000")
+    if isinstance(professor_notes, str):
+        sections = {"Professor notes": professor_notes}
+    elif isinstance(professor_notes, dict):
+        sections = professor_notes
+    else:
+        return row
+    for title, body in sections.items():
+        if not body:
+            continue
+        text = str(body).strip()
+        if not text:
+            continue
+        ws.cell(row=row, column=1, value=str(title)).font = label_font
+        ws.merge_cells(start_row=row, start_column=2, end_row=row, end_column=ncols)
+        cell = ws.cell(row=row, column=2, value=text)
+        cell.alignment = Alignment(wrap_text=True, vertical="top")
+        cell.fill = notes_fill
+        if str(title).lower().startswith("rmp"):
+            cell.font = section_font
+        ws.row_dimensions[row].height = min(240, 14 * _estimate_wrap_rows(text))
+        row += 1
+    return row
+
+
 def weight_breakdown_text(categories: list[dict]) -> str:
     """One-line grade weight summary for the sheet header bar."""
     parts: list[str] = []
@@ -1354,6 +1396,9 @@ def build(
         strat_cell.fill = PatternFill("solid", fgColor="E2EFDA")
         ws.row_dimensions[row].height = 48
         row += 1
+
+    professor_notes = data.get("professor_notes") or cls.get("professor_notes")
+    row = write_professor_notes_block(ws, row, ncols, label_font, professor_notes)
 
     if any((c.get("name") or "") == CONNECT_PREP_MARK for c in categories):
         ws.cell(row=row, column=1, value="Connect prep").font = label_font
